@@ -43,8 +43,6 @@ set(PRIVATE_HEADERS
     Unicode/CharClass.hpp
     Unicode/CharMap.hpp
     Unicode/CharMappingTypes.hpp
-    Unicode/StandardLowerCase.hpp
-    Unicode/StandardTitleCase.hpp
     Unicode/StandardUpperCase.hpp
     Unicode/UnicodeChars.hpp
     Unicode/UnicodePredicates.hpp

@@ -69,38 +69,6 @@ void appendBytes(Encoder&& dst, Decoder&& src)
 }
 
 template <typename Encoder, typename Decoder>
-void appendLower(Encoder&& dst, Decoder&& src)
-{
-    uint32_t ch;
-    while (src.next(ch))
-        dst.encode(Unicode::lower(ch));
-}
-
-template <typename Encoder, typename Decoder>
-void appendTitle(Encoder&& dst, Decoder&& src)
-{
-    uint32_t ch;
-    bool capNext = true;
-    while (src.next(ch))
-    {
-        if (!Unicode::isCasedLetter(ch))
-        {
-            dst.encode(ch);
-            capNext = !Unicode::isLetter(ch);
-        }
-        else if (capNext)
-        {
-            dst.encode(Unicode::title(ch));
-            capNext = false;
-        }
-        else
-        {
-            dst.encode(Unicode::lower(ch));
-        }
-    }
-}
-
-template <typename Encoder, typename Decoder>
 void appendUpper(Encoder&& dst, Decoder&& src)
 {
     uint32_t ch;
