@@ -76,13 +76,8 @@ set(PRIVATE_HEADERS
     )
 
 set(SOURCE_FILES
-    # EncodingInfo.cpp
     Predicates.cpp
     YstringException.cpp
-    # CodePage/CodePage.cpp
-    # CodePage/Cp437.cpp
-    # CodePage/Iso8859_1.cpp
-    # CodePage/Windows1252.cpp
     Unicode/CaseConverter.cpp
     Unicode/CharClass.cpp
     Unicode/CharMap.cpp
