@@ -7,7 +7,7 @@
 //****************************************************************************
 #include "Utf8String.hpp"
 
-#include "../PlatformDetails.hpp"
+#include "../PrivatePlatformDetails.hpp"
 #include "../Generic/GenericString.hpp"
 #include "../Utf16/Utf16Encoding.hpp"
 #include "../Utf32/Utf32Encoding.hpp"

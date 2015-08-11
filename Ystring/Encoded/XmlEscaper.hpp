@@ -1,6 +1,6 @@
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
-// Created by Jan Erik Breimo on 21.07.15
+// Created by Jan Erik Breimo on 2015-07-21
 //
 // This file is distributed under the BSD License.
 // License text is included with the source distribution.

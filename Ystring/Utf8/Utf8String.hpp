@@ -14,6 +14,7 @@
 #include "../Encoding.hpp"
 #include "../EscapeType.hpp"
 #include "../FindFlags.hpp"
+#include "../PlatformDetails.hpp"
 #include "../SplitFlags.hpp"
 #include "../YstringException.hpp"
 
@@ -341,6 +342,8 @@ YSTRING_API std::string toUtf8(const std::u16string& str,
 YSTRING_API std::string toUtf8(const std::u32string& str,
                                Encoding_t encoding = Encoding::UTF_32);
 
+#ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
+
 /** @brief Returns an UTF-8 encoded string equivalent to @a str.
   *
   * @param str The string to convert from.
@@ -360,6 +363,8 @@ YSTRING_API std::string toUtf8(const char16_t* str, size_t length,
   */
 YSTRING_API std::string toUtf8(const char32_t* str, size_t length,
                                Encoding_t encoding);
+
+#endif
 
 /** @brief Returns an UTF-8 encoded string equivalent to @a str.
   *

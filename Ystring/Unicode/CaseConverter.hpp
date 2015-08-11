@@ -12,6 +12,6 @@
 
 namespace Ystring { namespace Unicode {
 
-uint32_t upper(uint32_t ch);
+YSTRING_API uint32_t upper(uint32_t ch);
 
 }}

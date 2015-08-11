@@ -13,7 +13,7 @@
 
 namespace Ystring { namespace Unicode {
 
-class CharMap
+class YSTRING_API CharMap
 {
 public:
     CharMap(const CompactCharMapping* compactMappings,

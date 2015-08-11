@@ -7,11 +7,10 @@
 //****************************************************************************
 #pragma once
 
-#include <cstring>
 #include <cwchar>
 #include <iterator>
+#include <string>
 #include <utility>
-//#include "Iterators.hpp"
 
 namespace Ystring { namespace Generic {
 
@@ -22,10 +21,6 @@ public:
     typedef IteratorT Iterator;
     typedef std::iterator_traits<Iterator> IteratorTraits;
     typedef typename IteratorTraits::value_type ValueType;
-//    typedef typename IteratorTraits::difference_type DifferenceType;
-//    typedef typename IteratorTraits::pointer Pointer;
-//    typedef typename IteratorTraits::reference Reference;
-//    typedef typename IteratorTraits::iterator_category IteratorCategory;
 
     Range()
     {}
@@ -157,19 +152,15 @@ auto makeRange(Container& c) -> Range<decltype(begin(c))>
 }
 
 template <typename T, size_t N>
-Range<T*> makeRange(T (&a)[N])
+Range<T*> makeArrayRange(T (&a)[N])
 {
     return makeRange<T*>(a, a + N - (a[N - 1] ? 0 : 1));
 }
 
-inline Range<const char*> makeRange(const char* s)
+template <typename T>
+Range<T*> makeRange(T* s)
 {
-    return makeRange(s, s + std::strlen(s));
-}
-
-inline Range<const wchar_t*> makeRange(const wchar_t* s)
-{
-    return makeRange(s, s + std::wcslen(s));
+    return makeRange(s, s + std::char_traits<T>::length(s));
 }
 
 template <typename Iterator>

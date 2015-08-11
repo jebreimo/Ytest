@@ -7,14 +7,15 @@
 //****************************************************************************
 #pragma once
 
+#include "YstringDefinitions.hpp"
 #include "Unicode/UnicodePredicates.hpp"
 
 namespace Ystring {
 
-bool isPathSeparator(uint32_t chr);
+YSTRING_API bool isPathSeparator(uint32_t chr);
 
-bool isWindowsPathSeparator(uint32_t chr);
+YSTRING_API bool isWindowsPathSeparator(uint32_t chr);
 
-bool isPosixPathSeparator(uint32_t chr);
+YSTRING_API bool isPosixPathSeparator(uint32_t chr);
 
 }

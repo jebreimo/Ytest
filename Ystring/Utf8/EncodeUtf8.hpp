@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include "../YstringDefinitions.hpp"
 
 /** @file
   * @brief Defines functions for working with UTF-8 encoded strings.
@@ -44,9 +45,10 @@ size_t encodeUtf8(RndIt& begin, RndIt end, uint32_t c);
 /** @brief Encodes a unicode code point as UTF-8.
  *  @return the length of the encoded code point.
  */
-size_t encodeUtf8(char (&buffer)[MAX_ENCODED_UTF8_LENGTH], uint32_t chr);
+YSTRING_API size_t encodeUtf8(char (&buffer)[MAX_ENCODED_UTF8_LENGTH],
+                              uint32_t chr);
 
-size_t utf8EncodedLength(uint32_t c);
+YSTRING_API size_t utf8EncodedLength(uint32_t c);
 
 }}
 

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <cstdint>
+#include "../YstringDefinitions.hpp"
 
 namespace Ystring { namespace Unicode {
 
@@ -96,6 +97,6 @@ struct CharClass
 
 typedef CharClass::Type CharClass_t;
 
-CharClass_t charClass(uint32_t ch);
+YSTRING_API CharClass_t charClass(uint32_t ch);
 
 }}

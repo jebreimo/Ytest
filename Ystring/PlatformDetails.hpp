@@ -6,54 +6,23 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
-#include <cstddef>
 #include <cstdint>
-
-namespace Ystring
-{
+#include <type_traits>
 
 #ifdef _MSC_VER
-#define WCHAR_IS_2_BYTES
+    #define YSTRING_WCHAR_IS_2_BYTES
+    #if _MSC_VER >= 1900
+        static_assert(!std::is_same<char16_t, uint16_t>::value);
+        static_assert(!std::is_same<char32_t, uint32_t>::value);
+        #define YSTRING_CPP11_CHAR_TYPES_SUPPORTED
+    #endif
 #else
     static_assert(sizeof(wchar_t) == 4, "Size of wchar_t isn't 4 bytes.");
-    #define WCHAR_IS_4_BYTES
+    #define YSTRING_WCHAR_IS_4_BYTES
+
+    static_assert(!std::is_same<char16_t, uint16_t>::value,
+                  "char16_t and uint16_t can't be the same type.");
+    static_assert(!std::is_same<char32_t, uint32_t>::value,
+                  "char16_t and uint16_t can't be the same type.");
+    #define YSTRING_CPP11_CHAR_TYPES_SUPPORTED
 #endif
-
-template <size_t>
-struct InternalCharType;
-
-template <>
-struct InternalCharType<1>
-{
-    typedef char Type;
-};
-
-template <>
-struct InternalCharType<2>
-{
-    typedef uint16_t Type;
-};
-
-template <>
-struct InternalCharType<4>
-{
-    typedef uint32_t Type;
-};
-
-template <typename T>
-auto internal_char_type_cast(T* s)
-        -> typename InternalCharType<sizeof(T)>::Type*
-{
-    typedef typename InternalCharType<sizeof(T)>::Type Type;
-    return reinterpret_cast<Type*>(s);
-}
-
-template <typename T>
-auto internal_char_type_cast(const T* s)
-        -> const typename InternalCharType<sizeof(T)>::Type*
-{
-    typedef typename InternalCharType<sizeof(T)>::Type Type;
-    return reinterpret_cast<const Type*>(s);
-}
-
-}

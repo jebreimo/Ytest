@@ -37,7 +37,7 @@ template <typename Char1, typename Enc1,
 struct CanCopyRawValues
     : std::integral_constant<bool,
                              SameEncoding<Enc1, Enc2>::value &&
-                                std::is_same<Char1, Char2>()>
+                                std::is_same<Char1, Char2>::value>
 {};
 
 template <typename Str>
