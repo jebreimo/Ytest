@@ -19,27 +19,27 @@ struct InternalCharType
     typedef T Type;
 };
 
-#define DEFINE_INTERNAL_CHAR_TYPE(type, internalType) \
+#define YSTRING_DEFINE_INTERNAL_CHAR_TYPE(type, internalType) \
     template <> \
     struct InternalCharType<type> \
     { \
         typedef internalType Type; \
     }
 
-DEFINE_INTERNAL_CHAR_TYPE(int8_t, char);
-DEFINE_INTERNAL_CHAR_TYPE(uint8_t, char);
-DEFINE_INTERNAL_CHAR_TYPE(int16_t, uint16_t);
-DEFINE_INTERNAL_CHAR_TYPE(int32_t, uint32_t);
+YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int8_t, char);
+YSTRING_DEFINE_INTERNAL_CHAR_TYPE(uint8_t, char);
+YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int16_t, uint16_t);
+YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int32_t, uint32_t);
 
-#ifdef WCHAR_IS_2_BYTES
-    DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint16_t);
+#ifdef YSTRING_WCHAR_IS_2_BYTES
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint16_t);
 #else
-    DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint32_t);
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint32_t);
 #endif
 
 #ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
-DEFINE_INTERNAL_CHAR_TYPE(char16_t, uint16_t);
-DEFINE_INTERNAL_CHAR_TYPE(char32_t, uint32_t);
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(char16_t, uint16_t);
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(char32_t, uint32_t);
 #endif
 
 template <typename T>
