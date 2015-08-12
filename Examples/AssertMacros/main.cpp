@@ -1,3 +1,3 @@
-#include "../../Ytest/Ytest.hpp"
+#define Y_MAIN
 
-JT_CONSOLE_MAIN()
+#include "../../Ytest/Ytest.hpp"

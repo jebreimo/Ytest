@@ -59,6 +59,7 @@ set(PUBLIC_HEADERS
     Ytest/Session.hpp
     Ytest/TestScope.hpp
     Ytest/Ytest.hpp
+    Ytest/YtestMain.hpp
     )
 
 add_library(

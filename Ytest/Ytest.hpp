@@ -8,10 +8,16 @@
 #pragma once
 
 #ifdef _WIN32
-  #pragma comment (lib, "Ytest.lib")
+    #pragma comment (lib, "Ytest.lib")
 #endif
 
 #include "AutoTest.hpp"
 #include "AutoTestRunner.hpp"
 #include "Macros.hpp"
 #include "Session.hpp"
+
+#ifdef Y_MAIN
+
+#include "YtestMain.hpp"
+
+#endif
