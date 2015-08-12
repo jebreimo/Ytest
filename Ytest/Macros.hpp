@@ -25,30 +25,30 @@
   *  The macros in this file fall in following categories:
   *  - macros for defining the main function and executing all test suites
   *  - macros for defining test suites and adding and executing tests
-  *  - macros for doing the actual testing, e.g. JT_ASSERT and JT_EQUAL
+  *  - macros for doing the actual testing, e.g. Y_ASSERT and Y_EQUAL
   */
 
 /** @brief Internal macro. Used by other macros to create unique
   *     variable names.
   */
-#define JT_PRIV_UNIQUE_NAME_EXPANDER2(a, b) a##b
+#define Y_PRIV_UNIQUE_NAME_EXPANDER2(a, b) a##b
 
 /** @brief Internal macro. Used by other macros to create unique
   *     variable names.
   */
-#define JT_PRIV_UNIQUE_NAME_EXPANDER1(a, b) JT_PRIV_UNIQUE_NAME_EXPANDER2(a, b)
+#define Y_PRIV_UNIQUE_NAME_EXPANDER1(a, b) Y_PRIV_UNIQUE_NAME_EXPANDER2(a, b)
 
 /** @brief Internal macro. Used by other macros to create unique
   *     variable names.
   */
-#define JT_PRIV_UNIQUE_NAME(name) JT_PRIV_UNIQUE_NAME_EXPANDER1(name, __LINE__)
+#define Y_PRIV_UNIQUE_NAME(name) Y_PRIV_UNIQUE_NAME_EXPANDER1(name, __LINE__)
 
 /** @brief Starts a scope for running tests and test suites.
   *
   * All reports and messages are written to the console (command
   * line window).
   */
-#define JT_CONSOLE_BEGIN() \
+#define Y_CONSOLE_BEGIN() \
     try {
 
 /** @brief Ends a scope for running tests and test suites.
@@ -56,7 +56,7 @@
   * All reports and messages are written to the console (command
   * line window).
   */
-#define JT_CONSOLE_END() \
+#define Y_CONSOLE_END() \
     } catch (...) {} \
     ::Ytest::Session::instance().print(""); \
     ::Ytest::Session::instance().flushLog(); \
@@ -65,19 +65,19 @@
 /** @brief Creates a main function for console programs that run test suites.
   *
   * The created main function will run all tests in all test suites defined
-  * with the JT_TESTSUITE macro or added explicitly with a AutoTest variable.
+  * with the Y_TESTSUITE macro or added explicitly with a AutoTest variable.
   *
   * All reports and messages are written to the console (command line window)
   */
-#define JT_CONSOLE_MAIN() \
+#define Y_CONSOLE_MAIN() \
     int main(int argc, char* argv[]) \
     { \
         try { \
             if (!::Ytest::Session::instance().parseCommandLine(argc, argv)) \
                 return 1; \
-            JT_CONSOLE_BEGIN(); \
+            Y_CONSOLE_BEGIN(); \
             ::Ytest::AutoTestRunner::instance().run(); \
-            JT_CONSOLE_END(); \
+            Y_CONSOLE_END(); \
         } catch (std::exception& ex) { \
             std::cerr << "EXCEPTION: " << ex.what() << std::endl; \
             return 1; \
@@ -93,45 +93,45 @@
   *
   * The test suite's name in reports will be the current file name.
   */
-#define JT_TEST(...) \
-    static void JT_PRIV_UNIQUE_NAME(JT_suite_)() \
+#define Y_TEST(...) \
+    static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_JT_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_JT_); \
+        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
     } \
-    static ::Ytest::AutoTest JT_PRIV_UNIQUE_NAME(JT_suite_instance_) \
-            (__FILE__, JT_PRIV_UNIQUE_NAME(JT_suite_))
+    static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
+            (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_))
 
-#define JT_SUBTEST(path, ...) \
-    static void JT_PRIV_UNIQUE_NAME(JT_suite_)() \
+#define Y_SUBTEST(path, ...) \
+    static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_JT_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_JT_); \
+        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
     } \
-    static ::Ytest::AutoTest JT_PRIV_UNIQUE_NAME(JT_suite_instance_) \
-            (__FILE__, JT_PRIV_UNIQUE_NAME(JT_suite_), (path))
+    static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
+            (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_), (path))
 
-#define JT_PRIORITIZED_TEST(priority, ...) \
-    static void JT_PRIV_UNIQUE_NAME(JT_suite_)() \
+#define Y_PRIORITIZED_TEST(priority, ...) \
+    static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_JT_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_JT_); \
+        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
     } \
-    static ::Ytest::AutoTest JT_PRIV_UNIQUE_NAME(JT_suite_instance_) \
-            (__FILE__, JT_PRIV_UNIQUE_NAME(JT_suite_), "", (priority))
+    static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
+            (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_), "", (priority))
 
-#define JT_PRIORITIZED_SUBTEST(priority, path, ...) \
-    static void JT_PRIV_UNIQUE_NAME(JT_suite_)() \
+#define Y_PRIORITIZED_SUBTEST(priority, path, ...) \
+    static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_JT_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_JT_); \
+        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
     } \
-    static ::Ytest::AutoTest JT_PRIV_UNIQUE_NAME(JT_suite_instance_) \
-            (__FILE__, JT_PRIV_UNIQUE_NAME(JT_suite_), (path), (priority))
+    static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
+            (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_), (path), (priority))
 
 /** @brief Macro for explcitly running a test with arguments.
   *
-  * Normally you'll just use JT_TEST to define your tests, but
+  * Normally you'll just use Y_TEST to define your tests, but
   * if your tests need a common set of data, for instance the contents of a
   * file, it may make sense to create a "test suite function" that reads the
   * file first, then run each test function with the contents of that file
@@ -147,7 +147,7 @@
   *
   *     void test_Shapes() {...}
   *
-  *     JT_RUN_TEST(test_Shapes);
+  *     Y_RUN_TEST(test_Shapes);
   *
   * Execute a test function named test_SvgShapes that takes a file
   * name as argument:
@@ -156,11 +156,11 @@
   *
   *     void test_SvgTests()
   *     {
-  *         JT_RUN_TEST(test_SvgShapes, "first_svg_file.svg");
-  *         JT_RUN_TEST(test_SvgShapes, "second_svg_file.svg");
+  *         Y_RUN_TEST(test_SvgShapes, "first_svg_file.svg");
+  *         Y_RUN_TEST(test_SvgShapes, "second_svg_file.svg");
   *     }
   */
-#define JT_RUN_TEST(name, ...) \
+#define Y_RUN_TEST(name, ...) \
     if (::Ytest::Session::instance().isTestEnabled(#name)) \
     { \
         ::Ytest::TestScope scope(#name); \
@@ -185,7 +185,7 @@
         } \
     }
 
-#define JT_IMPL_THROWS(expr, exception, failure, file, line, msg) \
+#define Y_IMPL_THROWS(expr, exception, failure, file, line, msg) \
     do { \
         try { \
             expr; \
@@ -204,19 +204,19 @@
   * @param exception the type name of the exception that @a expr is expected
   *     to throw
   */
-#define JT_THROWS(expr, exception) \
-    JT_IMPL_THROWS(expr, exception, TestFailure, __FILE__, __LINE__, \
-                   #expr " didn't throw exception \"" #exception "\"")
+#define Y_THROWS(expr, exception) \
+    Y_IMPL_THROWS(expr, exception, TestFailure, __FILE__, __LINE__, \
+                  #expr " didn't throw exception \"" #exception "\"")
 
-#define JT_THROWS_CRITICAL(expr, exception) \
-    JT_IMPL_THROWS(expr, exception, CriticalFailure, __FILE__, __LINE__, \
-                   #expr " didn't throw exception \"" #exception "\"")
+#define Y_THROWS_CRITICAL(expr, exception) \
+    Y_IMPL_THROWS(expr, exception, CriticalFailure, __FILE__, __LINE__, \
+                  #expr " didn't throw exception \"" #exception "\"")
 
-#define JT_THROWS_FATAL(expr, exception) \
-    JT_IMPL_THROWS(expr, exception, FatalFailure, __FILE__, __LINE__, \
-                   #expr " didn't throw exception \"" #exception "\"")
+#define Y_THROWS_FATAL(expr, exception) \
+    Y_IMPL_THROWS(expr, exception, FatalFailure, __FILE__, __LINE__, \
+                  #expr " didn't throw exception \"" #exception "\"")
 
-#define JT_IMPL_EXPECT(cond, file, line, msg) \
+#define Y_IMPL_EXPECT(cond, file, line, msg) \
     do { \
         if (cond) { \
             ::Ytest::Session::instance().assertPassed(); \
@@ -226,23 +226,23 @@
         } \
     } while (false)
 
-#define JT_EXPECT(cond) \
-    JT_IMPL_EXPECT((cond), __FILE__, __LINE__, "Assertion failed: " #cond)
+#define Y_EXPECT(cond) \
+    Y_IMPL_EXPECT((cond), __FILE__, __LINE__, "Assertion failed: " #cond)
 
-#define JT_EXPECT_EQUAL(a, b) \
-    JT_IMPL_EXPECT(::Ytest::equal((a), (b)), \
-                   __FILE__, __LINE__, \
-                   ::Ytest::formatComparison((a), #a, (b), #b, "!="))
+#define Y_EXPECT_EQUAL(a, b) \
+    Y_IMPL_EXPECT(::Ytest::equal((a), (b)), \
+                  __FILE__, __LINE__, \
+                  ::Ytest::formatComparison((a), #a, (b), #b, "!="))
 
-#define JT_EXPECT_MSG(cond, msg) \
+#define Y_EXPECT_MSG(cond, msg) \
     do { \
         if (cond) { \
             ::Ytest::Session::instance().assertPassed(); \
         } else { \
-            std::ostringstream JT_os; \
-            JT_os << "Error: " #cond ". " << msg; \
+            std::ostringstream Y_os; \
+            Y_os << "Error: " #cond ". " << msg; \
             ::Ytest::Session::instance().testFailed(::Ytest::Error( \
-                    __FILE__, __LINE__, JT_os.str(), \
+                    __FILE__, __LINE__, Y_os.str(), \
                     ::Ytest::Error::Failure)); \
         } \
     } while (false)
@@ -250,7 +250,7 @@
 
 /** @brief Internal macro. Used by other assert macros.
   */
-#define JT_IMPL_ASSERT(cond, failure, file, line, msg) \
+#define Y_IMPL_ASSERT(cond, failure, file, line, msg) \
     do { \
         if (cond) { \
             ::Ytest::Session::instance().assertPassed(); \
@@ -263,26 +263,26 @@
   *
   * The test fails if @a cond is false.
   */
-#define JT_ASSERT(cond) \
-    JT_IMPL_ASSERT((cond), TestFailure, __FILE__, __LINE__, \
-                   "Assertion failed: " #cond)
+#define Y_ASSERT(cond) \
+    Y_IMPL_ASSERT((cond), TestFailure, __FILE__, __LINE__, \
+                  "Assertion failed: " #cond)
 
-#define JT_ASSERT_CRITICAL(cond) \
-    JT_IMPL_ASSERT((cond), CriticalFailure, __FILE__, __LINE__, \
-                   "Assertion failed: " #cond)
+#define Y_ASSERT_CRITICAL(cond) \
+    Y_IMPL_ASSERT((cond), CriticalFailure, __FILE__, __LINE__, \
+                  "Assertion failed: " #cond)
 
-#define JT_ASSERT_FATAL(cond) \
-    JT_IMPL_ASSERT((cond), FatalFailure, __FILE__, __LINE__, \
-                   "Assertion failed: " #cond)
+#define Y_ASSERT_FATAL(cond) \
+    Y_IMPL_ASSERT((cond), FatalFailure, __FILE__, __LINE__, \
+                  "Assertion failed: " #cond)
 
-#define JT_IMPL_ASSERT_MSG(cond, condStr, failure, file, line, msg) \
+#define Y_IMPL_ASSERT_MSG(cond, condStr, failure, file, line, msg) \
     do { \
         if (cond) { \
             ::Ytest::Session::instance().assertPassed(); \
         } else { \
-            std::ostringstream JT_os; \
-            JT_os << "Assertion failed: " condStr ". " << msg; \
-            throw ::Ytest::failure(file, line, JT_os.str()); \
+            std::ostringstream Y_os; \
+            Y_os << "Assertion failed: " condStr ". " << msg; \
+            throw ::Ytest::failure(file, line, Y_os.str()); \
         } \
     } while (false)
 
@@ -295,38 +295,38 @@
   * @param msg a string that that will be include in the test report if
   *     @a cond is false.
   */
-#define JT_ASSERT_MSG(cond, msg) \
-    JT_IMPL_ASSERT_MSG(cond, #cond, TestFailure, __FILE__, __LINE__, msg)
+#define Y_ASSERT_MSG(cond, msg) \
+    Y_IMPL_ASSERT_MSG(cond, #cond, TestFailure, __FILE__, __LINE__, msg)
 
-#define JT_ASSERT_MSG_CRITICAL(cond, msg) \
-    JT_IMPL_ASSERT_MSG(cond, #cond, CriticalFailure, __FILE__, __LINE__, msg)
+#define Y_ASSERT_MSG_CRITICAL(cond, msg) \
+    Y_IMPL_ASSERT_MSG(cond, #cond, CriticalFailure, __FILE__, __LINE__, msg)
 
-#define JT_ASSERT_MSG_FATAL(cond, msg) \
-    JT_IMPL_ASSERT_MSG(cond, #cond, FatalFailure, __FILE__, __LINE__, msg)
+#define Y_ASSERT_MSG_FATAL(cond, msg) \
+    Y_IMPL_ASSERT_MSG(cond, #cond, FatalFailure, __FILE__, __LINE__, msg)
 
-#define JT_IMPL_COMPARISON(test, a, b, failure, file, line, cmpStr) \
+#define Y_IMPL_COMPARISON(test, a, b, failure, file, line, cmpStr) \
     do { \
-        auto&& JT_PRIV_UNIQUE_NAME(aa) = (a); \
-        auto&& JT_PRIV_UNIQUE_NAME(bb) = (b); \
-        JT_IMPL_ASSERT( \
-                test(JT_PRIV_UNIQUE_NAME(aa), JT_PRIV_UNIQUE_NAME(bb)), \
+        auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
+        auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
+        Y_IMPL_ASSERT( \
+                test(Y_PRIV_UNIQUE_NAME(aa), Y_PRIV_UNIQUE_NAME(bb)), \
                 failure, file, line, \
-                ::Ytest::formatComparison(JT_PRIV_UNIQUE_NAME(aa), #a, \
-                                            JT_PRIV_UNIQUE_NAME(bb), #b, \
-                                            cmpStr)); \
+                ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
+                                          Y_PRIV_UNIQUE_NAME(bb), #b, \
+                                          cmpStr)); \
     } while (false)
 
-#define JT_IMPL_EQUIVALENT(a, b, epsilon, failure, file, line) \
+#define Y_IMPL_EQUIVALENT(a, b, epsilon, failure, file, line) \
     do { \
-        auto&& JT_PRIV_UNIQUE_NAME(aa) = (a); \
-        auto&& JT_PRIV_UNIQUE_NAME(bb) = (b); \
-        JT_IMPL_ASSERT( \
-                ::Ytest::equivalent(JT_PRIV_UNIQUE_NAME(aa), \
-                                      JT_PRIV_UNIQUE_NAME(bb), epsilon), \
+        auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
+        auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
+        Y_IMPL_ASSERT( \
+                ::Ytest::equivalent(Y_PRIV_UNIQUE_NAME(aa), \
+                                    Y_PRIV_UNIQUE_NAME(bb), epsilon), \
                 failure, file, line, \
-                ::Ytest::formatComparison(JT_PRIV_UNIQUE_NAME(aa), #a, \
-                                            JT_PRIV_UNIQUE_NAME(bb), #b, \
-                                            "!=")); \
+                ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
+                                          Y_PRIV_UNIQUE_NAME(bb), #b, \
+                                          "!=")); \
     } while (false)
 
 /** @brief Verifies that @a a equals @a b.
@@ -338,69 +338,69 @@
   * - if @a b is not of the same type as @a a, there must also be an iostream
   *   output operator that accepts @a b.
   */
-#define JT_EQUAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::equal, a, b, TestFailure, \
-                       __FILE__, __LINE__, "!=")
+#define Y_EQUAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::equal, a, b, TestFailure, \
+                      __FILE__, __LINE__, "!=")
 
-#define JT_EQUAL_CRITICAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::equal, a, b, CriticalFailure, \
-                       __FILE__, __LINE__, "!=")
+#define Y_EQUAL_CRITICAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::equal, a, b, CriticalFailure, \
+                      __FILE__, __LINE__, "!=")
 
-#define JT_EQUAL_FATAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::equal, a, b, FatalFailure, \
-                       __FILE__, __LINE__, "!=")
+#define Y_EQUAL_FATAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::equal, a, b, FatalFailure, \
+                      __FILE__, __LINE__, "!=")
 
-#define JT_GREATER(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::greaterThan, a, b, TestFailure, \
-                       __FILE__, __LINE__, "<=")
+#define Y_GREATER(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::greaterThan, a, b, TestFailure, \
+                      __FILE__, __LINE__, "<=")
 
-#define JT_LESS(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::lessThan, a, b, TestFailure, \
-                       __FILE__, __LINE__, ">=")
+#define Y_LESS(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::lessThan, a, b, TestFailure, \
+                      __FILE__, __LINE__, ">=")
 
-#define JT_EQUAL_RANGES(a, b) \
+#define Y_EQUAL_RANGES(a, b) \
     do { \
         auto resultYtest = ::Ytest::equalRanges(a, b, #a, #b); \
-        JT_IMPL_ASSERT(resultYtest.first, TestFailure, __FILE__, __LINE__, \
-                       resultYtest.second); \
+        Y_IMPL_ASSERT(resultYtest.first, TestFailure, __FILE__, __LINE__, \
+                      resultYtest.second); \
     } while (false)
 
 /** @brief Verifies that number @a a is sufficiently close to @a b.
   */
-#define JT_EQUIVALENT(a, b, epsilon) \
-    JT_IMPL_EQUIVALENT(a, b, epsilon, TestFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT(a, b, epsilon) \
+    Y_IMPL_EQUIVALENT(a, b, epsilon, TestFailure, __FILE__, __LINE__)
 
-#define JT_EQUIVALENT_CRITICAL(a, b, epsilon) \
-    JT_IMPL_EQUIVALENT(a, b, epsilon, CriticalFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT_CRITICAL(a, b, epsilon) \
+    Y_IMPL_EQUIVALENT(a, b, epsilon, CriticalFailure, __FILE__, __LINE__)
 
-#define JT_EQUIVALENT_FATAL(a, b, epsilon) \
-    JT_IMPL_EQUIVALENT(a, b, epsilon, FatalFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT_FATAL(a, b, epsilon) \
+    Y_IMPL_EQUIVALENT(a, b, epsilon, FatalFailure, __FILE__, __LINE__)
 
 /** @brief Verifies that @a a is not equal to @a b.
   *
-  *  Requirements to @a a and @a b are the same as in JT_EQUAL.
+  *  Requirements to @a a and @a b are the same as in Y_EQUAL.
   */
-#define JT_NOT_EQUAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::notEqual, a, b, TestFailure, \
-                       __FILE__, __LINE__, "==")
+#define Y_NOT_EQUAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::notEqual, a, b, TestFailure, \
+                      __FILE__, __LINE__, "==")
 
-#define JT_NOT_EQUAL_CRITICAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::notEqual, a, b, CriticalFailure, \
-                       __FILE__, __LINE__, "==")
+#define Y_NOT_EQUAL_CRITICAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::notEqual, a, b, CriticalFailure, \
+                      __FILE__, __LINE__, "==")
 
-#define JT_NOT_EQUAL_FATAL(a, b) \
-    JT_IMPL_COMPARISON(::Ytest::notEqual, a, b, FatalFailure, \
-                       __FILE__, __LINE__, "==")
+#define Y_NOT_EQUAL_FATAL(a, b) \
+    Y_IMPL_COMPARISON(::Ytest::notEqual, a, b, FatalFailure, \
+                      __FILE__, __LINE__, "==")
 
 /** @brief Force a test failure with the given error message.
   */
-#define JT_FAILURE(msg) \
+#define Y_FAILURE(msg) \
     throw ::Ytest::TestFailure(__FILE__, __LINE__, msg)
 
-#define JT_CRITICAL_FAILURE(msg) \
+#define Y_CRITICAL_FAILURE(msg) \
     throw ::Ytest::CriticalFailure(__FILE__, __LINE__, msg)
 
-#define JT_FATAL_FAILURE(msg) \
+#define Y_FATAL_FAILURE(msg) \
     throw ::Ytest::FatalFailure(__FILE__, __LINE__, msg)
 
 /** @brief Provide extra call-stack information when calling a function from
@@ -417,7 +417,7 @@
   *  condition that made the fail test if this assertion is executed many
   *  times. This macro helps solve that problem.
   */
-#define JT_CALL(expr) \
+#define Y_CALL(expr) \
     do { \
         try \
         { \
@@ -430,7 +430,7 @@
         } \
     } while (false)
 
-#define JT_CALL_1(expr, arg1) \
+#define Y_CALL_1(expr, arg1) \
     do { \
         try \
         { \
@@ -445,8 +445,7 @@
         } \
     } while (false)
 
-
-#define JT_CALL_2(expr, arg1, arg2) \
+#define Y_CALL_2(expr, arg1, arg2) \
     do { \
         try \
         { \

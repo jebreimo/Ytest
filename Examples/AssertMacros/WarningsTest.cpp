@@ -18,59 +18,59 @@ static double divide(double a, double b)
 
 // static void throwsSuccessful()
 // {
-//     JT_THROWS(divide(1, 0), std::logic_error);
+//     Y_THROWS(divide(1, 0), std::logic_error);
 // }
 
 // static void throwsUnsuccessful()
 // {
-//     JT_THROWS(divide(5, 2.5), std::logic_error);
+//     Y_THROWS(divide(5, 2.5), std::logic_error);
 // }
 
 static void testEXPECT()
 {
     std::vector<int> foo(2);
-    JT_EXPECT(foo.empty());
-    JT_EXPECT(!foo.empty());
-    JT_EXPECT(foo.size() == 4);
-    JT_EXPECT(foo.size() == 2);
+    Y_EXPECT(foo.empty());
+    Y_EXPECT(!foo.empty());
+    Y_EXPECT(foo.size() == 4);
+    Y_EXPECT(foo.size() == 2);
 }
 
 static void testEXPECT_MSG()
 {
     std::vector<int> foo(2);
-    JT_EXPECT_MSG(foo.empty(), "Vector isn't empty!");
-    JT_EXPECT_MSG(!foo.empty(), "Vector is empty!");
-    JT_EXPECT_MSG(foo.size() == 3, "Size isn't 3!");
-    JT_EXPECT_MSG(foo.size() == 2, "Size is 2!");
+    Y_EXPECT_MSG(foo.empty(), "Vector isn't empty!");
+    Y_EXPECT_MSG(!foo.empty(), "Vector is empty!");
+    Y_EXPECT_MSG(foo.size() == 3, "Size isn't 3!");
+    Y_EXPECT_MSG(foo.size() == 2, "Size is 2!");
 }
 
 static void testEQUAL()
 {
-    JT_EQUAL(divide(10, 3), 3.333);
-    JT_EQUAL(divide(10, 2), 5);
+    Y_EQUAL(divide(10, 3), 3.333);
+    Y_EQUAL(divide(10, 2), 5);
 }
 
 // static void equivalentSuccessful()
 // {
-//     JT_EQUIVALENT(divide(10, 3), 3.333, 0.001);
+//     Y_EQUIVALENT(divide(10, 3), 3.333, 0.001);
 // }
 
 // static void equivalentUnsuccessful()
 // {
-//     JT_EQUIVALENT(divide(10, 3), 3.333, 0.0001);
+//     Y_EQUIVALENT(divide(10, 3), 3.333, 0.0001);
 // }
 
 // static void notEqualSuccessful()
 // {
-//     JT_NOT_EQUAL(divide(10, 2), 4.999);
+//     Y_NOT_EQUAL(divide(10, 2), 4.999);
 // }
 
 // static void notEqualUnsuccessful()
 // {
-//     JT_NOT_EQUAL(divide(10, 2), 5);
+//     Y_NOT_EQUAL(divide(10, 2), 5);
 // }
 
-JT_SUBTEST("BasicMacroTests",
+Y_SUBTEST("BasicMacroTests",
            testEXPECT,
            testEXPECT_MSG,
            testEQUAL);

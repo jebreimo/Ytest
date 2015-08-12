@@ -13,66 +13,66 @@ double divide(double a, double b)
 
 void throwsSuccessful()
 {
-    JT_THROWS(divide(1, 0), std::logic_error);
+    Y_THROWS(divide(1, 0), std::logic_error);
 }
 
 void throwsUnsuccessful()
 {
-    JT_THROWS(divide(5, 2.5), std::logic_error);
+    Y_THROWS(divide(5, 2.5), std::logic_error);
 }
 
 void assertSuccessful()
 {
     std::vector<int> foo;
-    JT_ASSERT(foo.empty());
+    Y_ASSERT(foo.empty());
 }
 
 void assertUnsuccessful()
 {
     std::vector<int> foo(2);
-    JT_ASSERT(foo.empty());
+    Y_ASSERT(foo.empty());
 }
 
 void assertMsgSuccessful()
 {
     std::vector<int> foo;
-    JT_ASSERT_MSG(foo.empty(), "Vector isn't empty!");
+    Y_ASSERT_MSG(foo.empty(), "Vector isn't empty!");
 }
 
 void assertMsgUnsuccessful()
 {
     std::vector<int> foo(2);
-    JT_ASSERT_MSG(foo.empty(), "Vector isn't empty!");
+    Y_ASSERT_MSG(foo.empty(), "Vector isn't empty!");
 }
 
 void equalSuccessful()
 {
-    JT_EQUAL(divide(10, 2), 5);
+    Y_EQUAL(divide(10, 2), 5);
 }
 
 void equalUnsuccessful()
 {
-    JT_EQUAL(divide(10, 3), 3.333);
+    Y_EQUAL(divide(10, 3), 3.333);
 }
 
 void equivalentSuccessful()
 {
-    JT_EQUIVALENT(divide(10, 3), 3.333, 0.001);
+    Y_EQUIVALENT(divide(10, 3), 3.333, 0.001);
 }
 
 void equivalentUnsuccessful()
 {
-    JT_EQUIVALENT(divide(10, 3), 3.333, 0.0001);
+    Y_EQUIVALENT(divide(10, 3), 3.333, 0.0001);
 }
 
 void notEqualSuccessful()
 {
-    JT_NOT_EQUAL(divide(10, 2), 4.999);
+    Y_NOT_EQUAL(divide(10, 2), 4.999);
 }
 
 void notEqualUnsuccessful()
 {
-    JT_NOT_EQUAL(divide(10, 2), 5);
+    Y_NOT_EQUAL(divide(10, 2), 5);
 }
 
 void equalRangesSuccessful()
@@ -81,7 +81,7 @@ void equalRangesSuccessful()
   v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4);
   std::vector<int> u;
   u.push_back(1); u.push_back(2); u.push_back(3); u.push_back(4);
-  JT_EQUAL_RANGES(v, u);
+  Y_EQUAL_RANGES(v, u);
 }
 
 void equalRangesUnsuccessful_not_equal()
@@ -90,7 +90,7 @@ void equalRangesUnsuccessful_not_equal()
   v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4);
   std::vector<int> u;
   u.push_back(1); u.push_back(2); u.push_back(4);
-  JT_EQUAL_RANGES(v, u);
+  Y_EQUAL_RANGES(v, u);
 }
 
 void equalRangesUnsuccessful_longer_left()
@@ -99,7 +99,7 @@ void equalRangesUnsuccessful_longer_left()
   v.push_back(1); v.push_back(2); v.push_back(3); v.push_back(4);
   std::vector<int> u;
   u.push_back(1); u.push_back(2); u.push_back(3);
-  JT_EQUAL_RANGES(v, u);
+  Y_EQUAL_RANGES(v, u);
 }
 
 void equalRangesUnsuccessful_longer_right()
@@ -108,7 +108,7 @@ void equalRangesUnsuccessful_longer_right()
   v.push_back(1); v.push_back(2); v.push_back(3);
   std::vector<int> u;
   u.push_back(1); u.push_back(2); u.push_back(3); u.push_back(4);
-  JT_EQUAL_RANGES(v, u);
+  Y_EQUAL_RANGES(v, u);
 }
 
 void failure()
@@ -117,12 +117,12 @@ void failure()
     for (int i = 0; i < 10; ++i)
         v.push_back(i * i);
     if (v.size() != 11)
-        JT_FAILURE("Added 10 elements, should have been 11.");
+        Y_FAILURE("Added 10 elements, should have been 11.");
 }
 
 void subtest(const std::string& s, char c, size_t count)
 {
-    JT_ASSERT(!s.empty());
+    Y_ASSERT(!s.empty());
     size_t pos = 0;
     size_t actualCount = 0;
     while (true)
@@ -133,24 +133,24 @@ void subtest(const std::string& s, char c, size_t count)
         ++pos;
         ++actualCount;
     }
-    JT_EQUAL(actualCount, count);
+    Y_EQUAL(actualCount, count);
 }
 
 void subSuccessful()
 {
-    JT_CALL(subtest("abcdabcdabcd", 'a', 3));
-    JT_CALL(subtest("abcdabcdabcd", 'b', 3));
-    JT_CALL(subtest("abcdabcdabcd", 'f', 0));
+    Y_CALL(subtest("abcdabcdabcd", 'a', 3));
+    Y_CALL(subtest("abcdabcdabcd", 'b', 3));
+    Y_CALL(subtest("abcdabcdabcd", 'f', 0));
 }
 
 void subUnsuccessful()
 {
-    JT_CALL(subtest("abcdabcdabcd", 'a', 3));
-    JT_CALL(subtest("abcdabcdabcd", 'b', 3));
-    JT_CALL(subtest("abcdabcdabcd", 'f', 3)); // This test fails
+    Y_CALL(subtest("abcdabcdabcd", 'a', 3));
+    Y_CALL(subtest("abcdabcdabcd", 'b', 3));
+    Y_CALL(subtest("abcdabcdabcd", 'f', 3)); // This test fails
 }
 
-JT_TEST(throwsSuccessful,
+Y_TEST(throwsSuccessful,
         throwsUnsuccessful,
         assertSuccessful,
         assertUnsuccessful,
