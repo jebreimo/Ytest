@@ -1095,7 +1095,7 @@ namespace Detail
         auto token = nextTokenFunc(str);
         if (!SplitFlags::ignoreEmptyFront(flags) || !empty(token))
         {
-            result.emplace_back(token.begin(), token.end());
+            result.push_back(Str(token.begin(), token.end()));
             --maxSplits;
         }
         if (token.end() == str.end())
@@ -1111,7 +1111,7 @@ namespace Detail
                 str = token;
                 break;
             }
-            result.emplace_back(token.begin(), token.end());
+            result.push_back(Str(token.begin(), token.end()));
             --maxSplits;
         }
 
@@ -1123,7 +1123,7 @@ namespace Detail
         if ((!SplitFlags::ignoreRemainder(flags)) &&
             (!SplitFlags::ignoreEmptyBack(flags) || !empty(str)))
         {
-            result.emplace_back(str.begin(), str.end());
+            result.push_back(Str(str.begin(), str.end()));
         }
         return result;
     }
@@ -1165,7 +1165,7 @@ namespace Detail
         auto token = nextToken(str, cmp);
         if (!SplitFlags::ignoreEmptyFront(flags) || !empty(token))
         {
-            result.emplace_back(token.begin(), token.end());
+            result.push_back(Str(token.begin(), token.end()));
             --maxSplits;
         }
         if (token.end() == str.end())
@@ -1181,7 +1181,7 @@ namespace Detail
                 str = token;
                 break;
             }
-            result.emplace_back(token.begin(), token.end());
+            result.push_back(Str(token.begin(), token.end()));
             --maxSplits;
         }
 
@@ -1193,29 +1193,8 @@ namespace Detail
         if ((!SplitFlags::ignoreRemainder(flags)) &&
             (!SplitFlags::ignoreEmptyBack(flags) || !empty(str)))
         {
-            result.emplace_back(str.begin(), str.end());
+            result.push_back(Str(str.begin(), str.end()));
         }
-//        if (maxSplits == 0)
-//            --maxSplits;
-//        std::vector<Str> result;
-//        while (maxSplits != 0 && str.begin() != str.end())
-//        {
-//            auto token = search(str, cmp);
-//            if (!SplitFlags::ignoreEmpty(flags) ||
-//                str.begin() != token.begin())
-//            {
-//                result.emplace_back(str.begin(), token.begin());
-//                --maxSplits;
-//            }
-//            if (token.end() == str.end())
-////                return result;
-//            str.begin() = token.end();
-//        }
-//        if ((!SplitFlags::ignoreRemainder(flags)) &&
-//            (!SplitFlags::ignoreEmpty(flags) || str.begin() != str.end()))
-//        {
-//            result.emplace_back(str.begin(), str.end());
-//        }
         return result;
     }
 

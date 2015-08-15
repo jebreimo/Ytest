@@ -24,7 +24,7 @@ public:
     template <typename FwdIt>
     bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
     {
-        switch (nextUtf16CodePoint<FwdIt, SwapBytes>(codePoint, it, last))
+        switch (nextUtf16CodePoint<SwapBytes>(codePoint, it, last))
         {
             case DecoderResult::END_OF_STRING:
                 return false;
@@ -41,7 +41,7 @@ public:
     template <typename BiIt>
     bool prev(uint32_t& codePoint, BiIt first, BiIt& it)
     {
-        switch (prevUtf16CodePoint<BiIt, SwapBytes>(codePoint, first, it))
+        switch (prevUtf16CodePoint<SwapBytes>(codePoint, first, it))
         {
             case DecoderResult::END_OF_STRING:
                 return false;
@@ -58,13 +58,13 @@ public:
     template <typename FwdIt>
     bool skipNext(FwdIt& it, FwdIt last)
     {
-        return skipNextUtf16CodePoint<FwdIt, SwapBytes>(it, last);
+        return skipNextUtf16CodePoint<SwapBytes>(it, last);
     }
 
     template <typename BiIt>
     bool skipPrev(BiIt first, BiIt& it)
     {
-        return skipPrevUtf16CodePoint<BiIt, SwapBytes>(first, it);
+        return skipPrevUtf16CodePoint<SwapBytes>(first, it);
     }
 
     template <typename OutIt>

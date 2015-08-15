@@ -16,14 +16,21 @@
 /// @cond
 
 #ifdef _WIN32
+    // Disabling warnings about exposing std::string, std::vector and
+    // std::logic_error through the external DLL interface. The warnings are
+    // valid, but it would defeat much of the purpose of Ystring to remove
+    // their cause (i.e. stop using std::string etc.).
+    // The issue is instead solved by having separate debug and release
+    // versions of the DLL and LIB files.
+    #pragma warning(disable: 4251 4275)
     #ifdef YSTRING_EXPORTS
         #define YSTRING_API __declspec(dllexport)
     #else
         #define YSTRING_API
-        #ifdef _DEBUG
+        #ifdef NDEBUG
             #pragma comment (lib, "Ystring.lib")
         #else
-            #pragma comment (lib, "Ystring.lib")
+            #pragma comment (lib, "Ystring.debug.lib")
         #endif
     #endif
 #else

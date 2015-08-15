@@ -11,6 +11,10 @@
 #include <string>
 #include "YstringDefinitions.hpp"
 
+#ifndef _NOEXCEPT
+	#define _NOEXCEPT
+#endif
+
 namespace Ystring {
 
 class YSTRING_API YstringException : public std::logic_error

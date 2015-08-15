@@ -24,7 +24,7 @@ public:
     template <typename FwdIt>
     bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
     {
-        switch (nextUtf32CodePoint<FwdIt, SwapBytes>(codePoint, it, last))
+        switch (nextUtf32CodePoint<SwapBytes>(codePoint, it, last))
         {
             case DecoderResult::END_OF_STRING:
                 return false;
@@ -41,7 +41,7 @@ public:
     template <typename BiIt>
     bool prev(uint32_t& codePoint, BiIt first, BiIt& it)
     {
-        switch (prevUtf32CodePoint<BiIt, SwapBytes>(codePoint, first, it))
+        switch (prevUtf32CodePoint<SwapBytes>(codePoint, first, it))
         {
             case DecoderResult::END_OF_STRING:
                 return false;
