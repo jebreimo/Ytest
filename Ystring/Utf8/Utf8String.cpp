@@ -25,6 +25,17 @@ std::string& append(std::string& str, uint32_t chr)
     return str;
 }
 
+size_t countCharacters(const std::string& str)
+{
+    return Generic::countCharacters(makeRange(str), Utf8Encoding());
+}
+
+size_t countCharacters(std::string::const_iterator first,
+                       std::string::const_iterator last)
+{
+    return Generic::countCharacters(makeRange(first, last), Utf8Encoding());
+}
+
 bool endsWith(const std::string& str,
               const std::string& cmp,
               FindFlags_t flags)

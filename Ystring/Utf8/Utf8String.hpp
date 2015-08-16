@@ -40,6 +40,23 @@ typedef std::pair<std::string::const_iterator, std::string::const_iterator>
   */
 YSTRING_API std::string& append(std::string& str, uint32_t chr);
 
+/** @brief Returns the number of characters in @a str.
+  *
+  * @note A composed character can consist of multiple code points.
+  * @return the number of characters.
+  * @throw YstringException if str contains an invalid UTF-8 code point.
+  */
+YSTRING_API size_t countCharacters(const std::string& str);
+
+/** @brief Returns the number of characters between @a first and @a last.
+  *
+  * @note A composed character can consist of multiple code points.
+  * @return the number of characters.
+  * @throw YstringException if str contains an invalid UTF-8 code point.
+  */
+YSTRING_API size_t countCharacters(std::string::const_iterator first,
+                                   std::string::const_iterator last);
+
 /** @brief Returns true if @a str ends with @a cmp.
   * @note Composed and decomposed versions of the same characters are treated
   *     as different characters (the decomposed character is typically "the

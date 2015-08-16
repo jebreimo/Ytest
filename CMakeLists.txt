@@ -26,6 +26,7 @@ set(SOURCE_FILES
     Ytest/Error.cpp
     Ytest/Exceptions.cpp
     Ytest/Formatters.cpp
+    Ytest/Indentation.cpp
     Ytest/JUnitReport.cpp
     Ytest/MacroUtilities.cpp
     Ytest/ParseArguments.cpp
@@ -35,15 +36,18 @@ set(SOURCE_FILES
     Ytest/Test.cpp
     Ytest/TextReport.cpp
     Ytest/VisualStudioReport.cpp
+    # Ytest/XmlWriter.cpp
     )
 
 set(PRIVATE_HEADERS
+    Ytest/Indentation.hpp
     Ytest/JUnitReport.hpp
     Ytest/PathFilter.hpp
     Ytest/StreamRedirection.hpp
     Ytest/Test.hpp
     Ytest/TextReport.hpp
     Ytest/VisualStudioReport.hpp
+    Ytest/XmlWriter.hpp
     )
 
 set(PUBLIC_HEADERS

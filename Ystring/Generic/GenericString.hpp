@@ -63,6 +63,9 @@ void appendUpper(StringReference<Str>& dst,
 template <typename Str, typename It, typename Enc1, typename Enc2>
 Str convert(Range<It> str, Enc1 fromEncoding, Enc2 toEncoding);
 
+template <typename It, typename Enc>
+size_t countCharacters(Range<It> str, Enc encoding);
+
 template <typename It1, typename It2, typename Enc>
 bool endsWith(Range<It1> str,
               Range<It2> cmp,
