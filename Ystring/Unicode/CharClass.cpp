@@ -630,7 +630,7 @@ static uint32_t CompleteCharClasses[] =
     0x0E01EF05, 0x0EFFFF1D, 0x0FFFFD1C, 0x0FFFFF1D, 0x10FFFD1C
 };
 
-CharClass_t charClass(uint32_t ch)
+CharClass_t getCharClass(uint32_t ch)
 {
     if (ch < 128)
         return CharClass_t(1 << AsciiCharClasses[ch]);

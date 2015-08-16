@@ -9,6 +9,10 @@
 
 #include <cstdint>
 
+/** @file
+  * @brief Defines constants for some common non-ASCII unicode code-points.
+  */
+
 namespace Ystring { namespace Unicode {
 
 static const uint32_t START_OF_HEADING = 0x0001u;

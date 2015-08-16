@@ -10,10 +10,19 @@
 #include <cstdint>
 #include "../YstringDefinitions.hpp"
 
+/** @file
+  * @brief Defines the CharClass enum and the getCharClass function.
+  */
+
 namespace Ystring { namespace Unicode {
 
+/** @brief CharClass provides a "namespace" for the unicode character class
+  * values.
+  */
 struct CharClass
 {
+    /** @brief Enums for all the difference unicode character classes.
+      */
     enum Type
     {
         /// An uppercase letter (Lu)
@@ -95,8 +104,12 @@ struct CharClass
     };
 };
 
+/** @brief A shorter alias for CharClass::Type.
+  */
 typedef CharClass::Type CharClass_t;
 
-YSTRING_API CharClass_t charClass(uint32_t ch);
+/** @brief Returns the unicode character class of character @a ch.
+  */
+YSTRING_API CharClass_t getCharClass(uint32_t ch);
 
 }}

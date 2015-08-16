@@ -9,6 +9,14 @@
 #include <cstdint>
 #include <type_traits>
 
+/** @file
+  * @brief Defines compile-time macros that are used to enable or disable
+  *     platform-dependent functionality.
+  */
+
+
+/// @cond
+
 #ifdef _MSC_VER
     #define YSTRING_WCHAR_IS_2_BYTES
     #if _MSC_VER >= 1900
@@ -26,3 +34,5 @@
                   "char16_t and uint16_t can't be the same type.");
     #define YSTRING_CPP11_CHAR_TYPES_SUPPORTED
 #endif
+
+/// @endcond

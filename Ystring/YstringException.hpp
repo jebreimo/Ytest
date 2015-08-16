@@ -11,6 +11,10 @@
 #include <string>
 #include "YstringDefinitions.hpp"
 
+/** @file
+  * @brief Defines the exception thrown by Ystring functions.
+  */
+
 #ifndef _NOEXCEPT
 	#define _NOEXCEPT
 #endif

@@ -10,6 +10,10 @@
 #include "YstringDefinitions.hpp"
 #include "Unicode/UnicodePredicates.hpp"
 
+/** @file
+  * @brief Defines character predicates.
+  */
+
 namespace Ystring {
 
 YSTRING_API bool isPathSeparator(uint32_t chr);

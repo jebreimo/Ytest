@@ -44,6 +44,11 @@
   */
 namespace Ystring
 {
+    /** @brief The maxmum value for unicode code points.
+      */
     static const uint32_t UNICODE_MAX = (1 << 20) - 1;
+
+    /** @brief A value representing invalid code points.
+      */
     static const uint32_t INVALID_CHAR = 0xFFFFFFFFul;
 }

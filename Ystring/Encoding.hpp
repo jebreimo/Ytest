@@ -7,6 +7,10 @@
 //****************************************************************************
 #pragma once
 
+/** @file
+  * @brief Defines the Encoding enum.
+  */
+
 namespace Ystring {
 
 /** @brief The @a Encoding struct provides a *"namespace"* for the different
