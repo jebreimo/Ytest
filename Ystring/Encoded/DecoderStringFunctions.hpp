@@ -18,12 +18,6 @@ template <typename Decoder>
 size_t advanceCharacters(Decoder& it, size_t n);
 
 template <typename Encoder, typename Decoder>
-void appendLower(Encoder&& dst, Decoder&& src);
-
-template <typename Encoder, typename Decoder>
-void appendTitle(Encoder&& dst, Decoder&& src);
-
-template <typename Encoder, typename Decoder>
 void appendUpper(Encoder&& dst, Decoder&& src);
 
 template <typename Decoder1, typename Decoder2>

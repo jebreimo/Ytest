@@ -40,16 +40,6 @@ template <typename Str, typename It>
 void appendJoin(StringReference<Str>& dst, It first, It last);
 
 template <typename Str, typename It, typename Enc>
-void appendLower(StringReference<Str>& dst,
-                 Range<It> src,
-                 Enc encoding);
-
-template <typename Str, typename It, typename Enc>
-void appendTitle(StringReference<Str>& dst,
-                 Range<It> src,
-                 Enc encoding);
-
-template <typename Str, typename It, typename Enc>
 void appendUnescaped(StringReference<Str>& dst,
                      Range<It> src,
                      EscapeType_t type,

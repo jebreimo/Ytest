@@ -267,28 +267,6 @@ void appendJoin(StringReference<Str>& dst, It first, It last)
 }
 
 template <typename Str, typename It, typename Enc>
-void appendLower(StringReference<Str>& dst,
-                 Range<It> src,
-                 Enc encoding)
-{
-    Encoded::appendLower(
-            dst.getEncoder(encoding),
-            Encoded::makeForwardDecoder(src, encoding));
-    dst.terminate();
-}
-
-template <typename Str, typename It, typename Enc>
-void appendTitle(StringReference<Str>& dst,
-                 Range<It> src,
-                 Enc encoding)
-{
-    Encoded::appendTitle(
-            dst.getEncoder(encoding),
-            Encoded::makeForwardDecoder(src, encoding));
-    dst.terminate();
-}
-
-template <typename Str, typename It, typename Enc>
 void appendUnescaped(StringReference<Str>& dst,
                      Range<It> src,
                      EscapeType_t type,
@@ -655,17 +633,6 @@ size_t sizeOfJoin(It first, It last)
     for (; first != last; ++first)
         size += getSize(makeRange(first));
     return size;
-}
-
-template <typename It, typename Enc>
-size_t sizeOfLower(Range<It> src, Enc encoding)
-{
-    size_t n = 0;
-    Utilities::CountingOutputIterator<typename Enc::CanonicalType> it(&n);
-    Encoded::appendLower(
-            Encoded::makeEncoder(it, encoding),
-            Encoded::makeForwardDecoder(src, encoding));
-    return n;
 }
 
 template <typename It, typename Enc>
