@@ -465,6 +465,25 @@ std::pair<Range<It>, Range<It>> findInsertPosition(Range<It> str,
     return std::make_pair(range1, range2);
 }
 
+template <typename It, typename Enc>
+uint32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding)
+{
+    auto it = str.begin();
+    if (pos > 0)
+    {
+        encoding.skipNext(it, str.end(), static_cast<size_t>(pos));
+    }
+    else if (pos < 0)
+    {
+        it = str.end();
+        encoding.skipPrev(str.begin(), it, static_cast<size_t>(-pos));
+    }
+    uint32_t chr;
+    if (!encoding.next(chr, it, str.end()))
+        YSTRING_THROW("No character at position " + std::to_string(pos));
+    return chr;
+}
+
 template <typename Str, typename It1, typename It2, typename Enc>
 Str insert(Range<It1> str, ptrdiff_t pos, Range<It2> sub, Enc encoding)
 {
@@ -528,8 +547,7 @@ It nextCharacter(Range<It> str, size_t n, Enc encoding)
 {
     auto dec = Encoded::makeForwardDecoder(str, encoding);
     if (advanceCharacters(dec, n) != n)
-      YSTRING_THROW(
-              "can't advance beyond the end of the range");
+        YSTRING_THROW("can't advance beyond the end of the range");
     return dec.begin();
 }
 
@@ -547,8 +565,7 @@ It prevCharacter(Range<It> str, size_t n, Enc encoding)
 {
     auto dec = Encoded::makeReverseDecoder(str, encoding);
     if (advanceCharacters(dec, n) != n)
-      YSTRING_THROW(
-              "can't advance beyond the start of the range");
+        YSTRING_THROW("can't advance beyond the start of the range");
     return dec.end();
 }
 

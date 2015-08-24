@@ -75,6 +75,9 @@ template <typename It1, typename It2, typename Enc>
 Range<It1> findFirstNewline(Range<It1> str,
                             Enc encoding);
 
+template <typename It, typename Enc>
+uint32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding);
+
 template <typename Str, typename It1, typename It2>
 Str join(It1 first, It1 last, Range<It2> delimiter);
 

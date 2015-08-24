@@ -52,6 +52,11 @@ std::string escape(const std::string& str, EscapeType_t mode)
     return Generic::escape<std::string>(makeRange(str), mode, Utf8Encoding());
 }
 
+uint32_t getCodePoint(const std::string& str, ptrdiff_t n)
+{
+    return Generic::getCodePoint(makeRange(str), n, Utf8Encoding());
+}
+
 bool isValidUtf8(const std::string& str)
 {
     return isValidUtf8(begin(str), end(str));

@@ -61,9 +61,6 @@ DecoderResult_t nextUtf8CodePoint(uint32_t& codePoint, FwdIt& it, FwdIt end)
 
     codePoint &= bit - 1;
 
-//    if (!codePoint)
-//        return DecoderResult::INVALID;
-
     FwdIt initialIt = it;
     while (++it != end && count && Detail::isContinuation(*it))
     {
@@ -135,31 +132,37 @@ DecoderResult_t prevUtf8CodePoint(uint32_t& codePoint, BiIt begin, BiIt& it)
 }
 
 template <typename FwdIt>
-bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end)
+bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end, size_t count)
 {
-    if (it == end)
+    if (it == end && count != 0)
         return false;
 
-    do
+    for (auto i = 0u; i < count; ++i)
     {
-        ++it;
+        do
+        {
+            ++it;
+        }
+        while (it != end && Detail::isContinuation(*it));
     }
-    while (it != end && Detail::isContinuation(*it));
 
     return true;
 }
 
 template <typename BiIt>
-bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it)
+bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it, size_t count)
 {
     if (it == begin)
         return false;
 
-    do
+    for (auto i = 0u; i < count; ++i)
     {
-        --it;
+        do
+        {
+            --it;
+        }
+        while (it != begin && Detail::isContinuation(*it));
     }
-    while (it != begin && Detail::isContinuation(*it));
 
     return true;
 }

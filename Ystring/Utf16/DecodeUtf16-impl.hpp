@@ -244,26 +244,32 @@ DecoderResult_t prevUtf16CodePoint(uint32_t& codePoint, BiIt begin, BiIt& it)
 }
 
 template <bool SwapBytes, typename FwdIt>
-bool skipNextUtf16CodePoint(FwdIt& it, FwdIt end)
+bool skipNextUtf16CodePoint(FwdIt& it, FwdIt end, size_t count)
 {
-    uint16_t chr;
-    auto res = Detail::skipNextWord<SwapBytes>(chr, it, end);
-    if (res != DecoderResult::OK)
-        return res != DecoderResult::END_OF_STRING;
-    if (0xD800 <= chr && chr < 0xDC00)
-        Detail::skipNextWord<SwapBytes>(chr, it, end);
+    for (auto i = 0u; i < count; ++i)
+    {
+        uint16_t chr;
+        auto res = Detail::skipNextWord<SwapBytes>(chr, it, end);
+        if (res != DecoderResult::OK)
+            return res != DecoderResult::END_OF_STRING;
+        if (0xD800 <= chr && chr < 0xDC00)
+            Detail::skipNextWord<SwapBytes>(chr, it, end);
+    }
     return true;
 }
 
 template <bool SwapBytes, typename BiIt>
-bool skipPrevUtf16CodePoint(BiIt begin, BiIt& it)
+bool skipPrevUtf16CodePoint(BiIt begin, BiIt& it, size_t count)
 {
-    uint16_t chr;
-    auto res = Detail::skipPrevWord<SwapBytes>(chr, begin, it);
-    if (res != DecoderResult::OK)
-        return res != DecoderResult::END_OF_STRING;
-    if (0xD800 <= chr && chr < 0xDC00)
-        Detail::skipPrevWord<SwapBytes>(chr, begin, it);
+    for (auto i = 0u; i < count; ++i)
+    {
+        uint16_t chr;
+        auto res = Detail::skipPrevWord<SwapBytes>(chr, begin, it);
+        if (res != DecoderResult::OK)
+            return res != DecoderResult::END_OF_STRING;
+        if (0xD800 <= chr && chr < 0xDC00)
+            Detail::skipPrevWord<SwapBytes>(chr, begin, it);
+    }
     return true;
 }
 

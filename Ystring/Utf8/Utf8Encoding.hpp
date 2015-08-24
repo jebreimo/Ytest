@@ -37,9 +37,9 @@ public:
     }
 
     template <typename FwdIt>
-    bool skipNext(FwdIt& it, FwdIt last)
+    bool skipNext(FwdIt& it, FwdIt last, size_t count)
     {
-        return skipNextUtf8CodePoint(it, last);
+        return skipNextUtf8CodePoint(it, last, count);
     }
 
     template <typename BiIt>
@@ -60,9 +60,9 @@ public:
     }
 
     template <typename BiIt>
-    bool skipPrev(BiIt first, BiIt& it)
+    bool skipPrev(BiIt first, BiIt& it, size_t count)
     {
-        return skipPrevUtf8CodePoint(first, it);
+        return skipPrevUtf8CodePoint(first, it, count);
     }
 
     template <typename OutIt>
@@ -70,7 +70,6 @@ public:
     {
         return addUtf8(dst, codePoint);
     }
-
 
     template <typename OutIt>
     OutIt encodeAsBytes(OutIt dst, uint32_t codePoint)

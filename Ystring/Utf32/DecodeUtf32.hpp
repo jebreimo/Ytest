@@ -49,31 +49,31 @@ DecoderResult_t prevUtf32BECodePoint(uint32_t& codePoint, BiIt begin, BiIt& it)
 }
 
 template <bool SwapBytes, typename FwdIt>
-bool skipNextUtf32CodePoint(FwdIt& it, FwdIt end);
+bool skipNextUtf32CodePoint(FwdIt& it, FwdIt end, size_t count);
 
 template <typename FwdIt>
-bool skipNextUtf32LECodePoint(FwdIt& it, FwdIt end)
+bool skipNextUtf32LECodePoint(FwdIt& it, FwdIt end, size_t count)
 {
     return skipNextUtf32CodePoint<IsBigEndian>(it, end);
 }
 
 template <typename FwdIt>
-bool skipNextUtf32BECodePoint(FwdIt& it, FwdIt end)
+bool skipNextUtf32BECodePoint(FwdIt& it, FwdIt end, size_t count)
 {
     return skipNextUtf32CodePoint<IsLittleEndian>(it, end);
 }
 
 template <bool SwapBytes, typename BiIt>
-bool skipPrevUtf32CodePoint(BiIt begin, BiIt& it);
+bool skipPrevUtf32CodePoint(BiIt begin, BiIt& it, size_t count);
 
 template <typename BiIt>
-bool skipPrevUtf32LECodePoint(BiIt begin, BiIt& it)
+bool skipPrevUtf32LECodePoint(BiIt begin, BiIt& it, size_t count)
 {
     return skipPrevUtf32CodePoint<IsBigEndian>(begin, it);
 }
 
 template <typename BiIt>
-bool skipPrevUtf32BECodePoint(BiIt begin, BiIt& it)
+bool skipPrevUtf32BECodePoint(BiIt begin, BiIt& it, size_t count)
 {
     return skipPrevUtf32CodePoint<IsLittleEndian>(begin, it);
 }

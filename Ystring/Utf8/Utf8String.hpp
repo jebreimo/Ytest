@@ -75,6 +75,14 @@ YSTRING_API bool endsWith(const std::string& str,
 YSTRING_API std::string escape(const std::string& str,
                                EscapeType_t type = EscapeType::BACKSLASH);
 
+/** @brief Return code point at position @a pos in @a str.
+  *
+  * The first code point has position 0.
+  * If @a pos is negative, code points are counted from the end of @a str
+  *  where the last character in @a str is at position -1.
+  */
+YSTRING_API uint32_t getCodePoint(const std::string& str, ptrdiff_t pos);
+
 /** @brief Returns true if all characters in @a str are valid UTF-8.
   */
 YSTRING_API bool isValidUtf8(const std::string& str);

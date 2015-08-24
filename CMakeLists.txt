@@ -36,7 +36,7 @@ set(SOURCE_FILES
     Ytest/Test.cpp
     Ytest/TextReport.cpp
     Ytest/VisualStudioReport.cpp
-    # Ytest/XmlWriter.cpp
+    Ytest/XmlWriter.cpp
     )
 
 set(PRIVATE_HEADERS

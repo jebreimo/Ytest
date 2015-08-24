@@ -42,10 +42,10 @@ template <typename BiIt>
 DecoderResult_t prevUtf8CodePoint(uint32_t& codePoint, BiIt begin, BiIt& it);
 
 template <typename FwdIt>
-bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end);
+bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end, size_t count);
 
 template <typename BiIt>
-bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it);
+bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it, size_t count);
 
 }}
 

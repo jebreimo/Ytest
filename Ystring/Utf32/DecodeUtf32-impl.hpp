@@ -6,6 +6,7 @@
 // License text is included with the source distribution.
 //****************************************************************************
 #include <type_traits>
+#include "../Utilities/Iterators.hpp"
 #include "../Utilities/Union32.hpp"
 #include "../DecoderResult.hpp"
 
@@ -112,61 +113,39 @@ namespace Details
     }
 
     template <typename FwdIt, typename T>
-    bool skipNextWord(FwdIt& it, FwdIt end, T)
+    bool skipNextWord(FwdIt& it, FwdIt end, size_t count, T)
     {
-        if (it == end)
-            return false;
-        ++it;
-        return true;
+        return Utilities::advance(it, end, count);
     }
 
     template <typename FwdIt>
-    bool skipNextWord(FwdIt& it, FwdIt end, uint8_t)
+    bool skipNextWord(FwdIt& it, FwdIt end, size_t count, uint8_t)
     {
-        if (it == end)
-            return false;
-
-        for (auto i = 0; i < 4; ++i)
-        {
-            if (++it == end)
-                break;
-        }
-        return true;
+        return Utilities::advance(it, end, count * 4);
     }
 
     template <typename FwdIt>
-    bool skipNextWord(FwdIt& it, FwdIt end, char)
+    bool skipNextWord(FwdIt& it, FwdIt end, size_t count, char)
     {
-        return skipNextWord<FwdIt>(it, end, uint8_t());
+        return skipNextWord<FwdIt>(it, end, count, uint8_t());
     }
 
     template <typename BiIt, typename T>
-    bool skipPrevWord(BiIt begin, BiIt& it, T)
+    bool skipPrevWord(BiIt begin, BiIt& it, size_t count, T)
     {
-        if (it == begin)
-            return false;
-        --it;
-        return true;
+        return Utilities::recede(begin, it, count);
     }
 
     template <typename BiIt>
-    bool skipPrevWord(BiIt begin, BiIt& it)
+    bool skipPrevWord(BiIt begin, BiIt& it, size_t count, uint8_t)
     {
-        if (it == begin)
-            return false;
-
-        for (auto i = 0; i < 4; ++i)
-        {
-            if (--it == begin)
-                break;
-        }
-        return true;
+        return Utilities::recede(begin, it, count * 4);
     }
 
     template <typename BiIt>
-    bool skipPrevWord(BiIt begin, BiIt& it, char)
+    bool skipPrevWord(BiIt begin, BiIt& it, size_t count, char)
     {
-        return skipPrevWord<BiIt>(begin, it, uint8_t());
+        return skipPrevWord<BiIt>(begin, it, count, uint8_t());
     }
 }
 
@@ -174,30 +153,28 @@ template <bool SwapBytes, typename FwdIt>
 DecoderResult_t nextUtf32CodePoint(uint32_t& codePoint, FwdIt& it, FwdIt end)
 {
     typedef typename std::iterator_traits<FwdIt>::value_type ValueType;
-    return Details::nextWord<SwapBytes>(codePoint, it, end,
-                                               ValueType());
+    return Details::nextWord<SwapBytes>(codePoint, it, end, ValueType());
 }
 
-template <bool SwapBytes, typename BiIt>
+template<bool SwapBytes, typename BiIt>
 DecoderResult_t prevUtf32CodePoint(uint32_t& codePoint, BiIt begin, BiIt& it)
 {
     typedef typename std::iterator_traits<BiIt>::value_type ValueType;
-    return Details::prevWord<SwapBytes>(codePoint, begin, it,
-                                              ValueType());
+    return Details::prevWord<SwapBytes>(codePoint, begin, it, ValueType());
 }
 
 template <typename FwdIt>
-bool skipNextUtf32CodePoint(FwdIt& it, FwdIt end)
+bool skipNextUtf32CodePoint(FwdIt& it, FwdIt end, size_t count)
 {
     typedef typename std::iterator_traits<FwdIt>::value_type ValueType;
-    return Details::skipNextWord(it, end, ValueType());
+    return Details::skipNextWord(it, end, count, ValueType());
 }
 
 template <typename BiIt>
-bool skipPrevUtf32CodePoint(BiIt begin, BiIt& it)
+bool skipPrevUtf32CodePoint(BiIt begin, BiIt& it, size_t count)
 {
     typedef typename std::iterator_traits<BiIt>::value_type ValueType;
-    return Details::skipPrevWord(begin, it, ValueType());
+    return Details::skipPrevWord(begin, it, count, ValueType());
 }
 
 }}

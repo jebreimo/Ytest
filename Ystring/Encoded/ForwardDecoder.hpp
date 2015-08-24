@@ -29,9 +29,9 @@ public:
         return m_Encoding.next(ch, m_First, m_Last);
     }
 
-    bool skip()
+    bool skip(size_t n = 1)
     {
-        return m_Encoding.skipNext(m_First, m_Last);
+        return m_Encoding.skipNext(m_First, m_Last, n);
     }
 
     const Encoding& getEncoding() const
