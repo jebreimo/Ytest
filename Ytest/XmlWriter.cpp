@@ -412,7 +412,7 @@ void XmlWriter::beginSpecialTag(const string& start, const string& end)
     write(start);
     m_Context.push_back(end);
 
-    if (Ystring::Unicode::isAlphaNumeric(Ystring::Utf8::nthCharacter(start, -1)))
+    if (Ystring::Unicode::isAlphaNumeric(Ystring::Utf8::getCodePoint(start, -1)))
     {
         m_FormattingState = FirstAttribute;
     }
