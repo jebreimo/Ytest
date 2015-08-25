@@ -58,13 +58,13 @@ public:
     template <typename FwdIt>
     bool skipNext(FwdIt& it, FwdIt last, size_t count)
     {
-        return skipNextUtf16CodePoint<SwapBytes>(it, last);
+        return skipNextUtf16CodePoint<SwapBytes>(it, last, count);
     }
 
     template <typename BiIt>
     bool skipPrev(BiIt first, BiIt& it, size_t count)
     {
-        return skipPrevUtf16CodePoint<SwapBytes>(first, it);
+        return skipPrevUtf16CodePoint<SwapBytes>(first, it, count);
     }
 
     template <typename OutIt>

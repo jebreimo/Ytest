@@ -7,8 +7,8 @@
 //****************************************************************************
 #include "Session.hpp"
 
+#include <algorithm>
 #include <ctime>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include "../Ystring/Utf8.hpp"
