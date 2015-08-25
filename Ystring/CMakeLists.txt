@@ -20,18 +20,12 @@ set(PRIVATE_HEADERS
     YstringDefinitions.hpp
     YstringException.hpp
     Encoded/Appender.hpp
-    Encoded/AppendEscaped.hpp
-    Encoded/AppendUnescaped.hpp
-    Encoded/BackslashUnescaper.hpp
     Encoded/DecoderAlgorithms.hpp
     Encoded/DecoderStringFunctions.hpp
     Encoded/DecoderStringFunctions-impl.hpp
     Encoded/Encoder.hpp
-    Encoded/FixedLengthBackslashEscaper.hpp
     Encoded/ForwardDecoder.hpp
     Encoded/ReverseDecoder.hpp
-    Encoded/VariableLengthBackslashEscaper.hpp
-    Encoded/XmlEscaper.hpp
     Generic/StringReference.hpp
     Generic/GenericString.hpp
     Generic/GenericString-impl.hpp
@@ -64,14 +58,11 @@ set(PRIVATE_HEADERS
     Utf32/EncodeUtf32-impl.hpp
     Utf32/Utf32Encoding.hpp
     Utilities/Algorithms.hpp
-    Utilities/ArrayOutputIterator.hpp
-    Utilities/CountingOutputIterator.hpp
     Utilities/Endian.hpp
     Utilities/Iterators.hpp
     Utilities/KeyFunctionAlgorithms.hpp
     Utilities/Union16.hpp
     Utilities/Union32.hpp
-    Utilities/Union64.hpp
     Utilities/Utilities.hpp
     )
 

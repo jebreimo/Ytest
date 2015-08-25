@@ -11,7 +11,6 @@
 #include "../Encoded/Encoder.hpp"
 #include "../Encoded/ForwardDecoder.hpp"
 #include "../Encoded/ReverseDecoder.hpp"
-#include "../Utilities/CountingOutputIterator.hpp"
 #include "StringTypeTraits.hpp"
 
 namespace Ystring { namespace Generic {

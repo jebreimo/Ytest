@@ -10,7 +10,6 @@
 #include <iterator>
 #include "../Encoded/Appender.hpp"
 #include "../Encoded/Encoder.hpp"
-#include "../Utilities/ArrayOutputIterator.hpp"
 
 namespace Ystring { namespace Generic {
 
@@ -49,64 +48,10 @@ private:
 };
 
 template <typename T>
-class StringReference<T*>
-{
-public:
-    typedef T ValueType;
-    typedef Utilities::ArrayOutputIterator<T*> BackInsertIterator;
-
-    StringReference(T* str, size_t size, size_t capacity)
-        : m_String(str),
-          m_Size(size)
-    {}
-
-    Encoded::Appender<T*> getAppender()
-    {
-        return Encoded::Appender<T*>(m_String, &m_Size, m_Capacity);
-    }
-
-    template <typename Encoding>
-    Encoded::Encoder<BackInsertIterator, Encoding>
-        getEncoder(Encoding encoding)
-    {
-        return Encoded::makeEncoder(
-                BackInsertIterator(m_String, &m_Size, m_Capacity - 1),
-                encoding);
-    }
-
-    void reserve(size_t size)
-    {}
-
-    void terminate()
-    {
-        if (m_Size != m_Capacity)
-            m_String[m_Size] = 0;
-        else
-            m_String[m_Capacity - 1] = 0;
-    }
-private:
-    T* m_String;
-    size_t m_Size;
-    size_t m_Capacity;
-};
-
-template <typename T>
 StringReference<T> makeStringReference(T& str)
 {
     using namespace std;
     return StringReference<T>(str);
-}
-
-template <typename T, size_t N>
-StringReference<T*> makeStringReference(T (&arr)[N], size_t size = 0)
-{
-    return StringReference<T*>(&arr[0], size, N - 1);
-}
-
-template <typename T>
-StringReference<T*> makeStringReference(T* str, size_t size, size_t capacity)
-{
-    return StringReference<T*>(str, size, capacity);
 }
 
 }}

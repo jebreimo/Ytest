@@ -61,30 +61,6 @@ private:
     std::pair<Iterator, Iterator> m_Range;
 };
 
-//template <typename Iterator>
-//void advance(Range<Iterator>& range, size_t n)
-//{
-//    advance(range.begin(), range.end(), n);
-//}
-//
-//template <typename Iterator>
-//Iterator next(Range<Iterator> range, size_t n)
-//{
-//    return next(range.begin(), range.end(), n);
-//}
-//
-//template <typename Iterator>
-//void recede(Range<Iterator>& range, size_t n)
-//{
-//    recede(range.begin(), range.end(), n);
-//}
-//
-//template <typename Iterator>
-//Iterator prev(Range<Iterator> range, size_t n)
-//{
-//    return prev(range.begin(), range.end(), n);
-//}
-
 template <typename Iterator>
 Iterator begin(Range<Iterator> range)
 {
@@ -97,41 +73,11 @@ Iterator end(Range<Iterator> range)
     return range.end();
 }
 
-//template <typename Iterator>
-//Iterator nth(Range<Iterator> range, ptrdiff_t index)
-//{
-//    return nth(begin(range), end(range), index);
-//}
-
 template <typename Iterator>
 bool empty(const Range<Iterator>& range)
 {
     return begin(range) == end(range);
 }
-
-//template <typename Iterator>
-//auto front(Range<Iterator> range) -> decltype(*range.begin())
-//{
-//    return *range.begin();
-//}
-//
-//template <typename Iterator>
-//auto back(Range<Iterator> range) -> decltype(*range.end())
-//{
-//    return *--range.end();
-//}
-//
-//template <typename Iterator>
-//Range<Iterator> frontRange(Range<Iterator> range)
-//{
-//    return Range<Iterator>(range.begin(), range.begin());
-//}
-//
-//template <typename Iterator>
-//Range<Iterator> endRange(Range<Iterator> range)
-//{
-//    return Range<Iterator>(range.end(), range.end());
-//}
 
 template <typename Iterator>
 Range<Iterator> makeRange(Iterator first, Iterator last)
@@ -181,49 +127,6 @@ size_t getSize(const Range<Iterator>& range)
 {
     return static_cast<size_t>(std::distance(begin(range), end(range)));
 }
-
-//template <typename Iterator>
-//Range<Iterator> subrange(const Range<Iterator>& range, ptrdiff_t first, ptrdiff_t last)
-//{
-//    return makeRange(nth(range, first), nth(range, last));
-//}
-//
-//template <typename Iterator>
-//Range<Iterator> takeHead(Range<Iterator>& range, Iterator splitPos)
-//{
-//    auto b = begin(range);
-//    range.begin() = splitPos;
-//    return makeRange(b, splitPos);
-//}
-//
-//template <typename Iterator>
-//Range<Iterator> takeTail(Range<Iterator>& range, Iterator splitPos)
-//{
-//    auto e = end(range);
-//    range.end() = splitPos;
-//    return makeRange(splitPos, e);
-//}
-//
-//template <typename It, typename T>
-//It transformIterator(It it, T)
-//{
-//    return it;
-//}
-//
-//template <typename Container, typename Iterator>
-//Container& appendRange(Container& c, Iterator first, Iterator last)
-//{
-//    c.insert(end(c),
-//             transformIterator(first, typename Container::value_type()),
-//             transformIterator(last, typename Container::value_type()));
-//    return c;
-//}
-//
-//template <typename Container, typename Iterator>
-//Container& appendRange(Container& c, Range<Iterator> range)
-//{
-//    return appendRange(c, begin(range), end(range));
-//}
 
 template <typename Container, typename Iterator>
 Container fromRange(Range<Iterator> range)

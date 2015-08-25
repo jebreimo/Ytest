@@ -8,7 +8,6 @@
 #pragma once
 
 #include <string>
-#include "../Utilities/ArrayOutputIterator.hpp"
 #include "StringReference.hpp"
 
 namespace Ystring { namespace Generic {
