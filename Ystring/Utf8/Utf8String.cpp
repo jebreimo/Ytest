@@ -19,12 +19,6 @@ using Generic::makeStringReference;
 using Generic::makeRange;
 using Generic::fromRange;
 
-std::string& append(std::string& str, uint32_t chr)
-{
-    append(makeStringReference(str), chr, Utf8Encoding());
-    return str;
-}
-
 size_t countCharacters(const std::string& str)
 {
     return Generic::countCharacters(makeRange(str), Utf8Encoding());
@@ -47,19 +41,9 @@ bool endsWith(const std::string& str,
             flags);
 }
 
-std::string escape(const std::string& str, EscapeType_t mode)
-{
-    return Generic::escape<std::string>(makeRange(str), mode, Utf8Encoding());
-}
-
 uint32_t getCodePoint(const std::string& str, ptrdiff_t n)
 {
     return Generic::getCodePoint(makeRange(str), n, Utf8Encoding());
-}
-
-bool isValidUtf8(const std::string& str)
-{
-    return isValidUtf8(begin(str), end(str));
 }
 
 std::string join(const std::vector<std::string>& strings,
@@ -76,49 +60,6 @@ std::string join(const std::string* strings,
            Generic::join<std::string>(strings, strings + count) :
            Generic::join<std::string>(strings, strings + count,
                                       makeRange(delimiter));
-}
-
-std::string replaceInvalidUtf8(const std::string& str, uint32_t chr)
-{
-    std::string result;
-    result.reserve(str.size());
-    auto first = str.begin();
-    auto it = str.begin();
-    while (it != str.end())
-    {
-        uint32_t cp;
-        if (nextUtf8CodePoint(cp, it, str.end()) != DecoderResult::OK)
-        {
-            result.append(first, it);
-            first = ++it;
-            append(result, chr);
-        }
-    }
-    result.append(first, str.end());
-    return result;
-}
-
-std::string& replaceInvalidUtf8InPlace(std::string& str, char chr)
-{
-    assert(chr > 0);
-    auto it = str.begin();
-    while (it != str.end())
-    {
-        uint32_t cp;
-        if (nextUtf8CodePoint(cp, it, str.end()) != DecoderResult::OK)
-            *it++ = chr;
-    }
-    return str;
-}
-
-std::vector<std::string> split(
-        const std::string& str,
-        ptrdiff_t maxSplits,
-        SplitFlags_t flags)
-{
-    return Generic::split<std::string>(
-            makeRange(str), Utf8Encoding(),
-            maxSplits, flags);
 }
 
 std::vector<std::string> split(
@@ -139,21 +80,6 @@ std::vector<std::string> splitIf(
 {
     return Generic::splitIf<std::string>(
             makeRange(str), Utf8Encoding(), predicate, maxSplits, flags);
-}
-
-bool startsWith(const std::string& str,
-                const std::string& cmp,
-                FindFlags_t flags)
-{
-    return Generic::startsWith(makeRange(str), makeRange(cmp),
-                               Utf8Encoding(), flags);
-}
-
-std::string toUtf8(uint32_t chr)
-{
-    std::string s;
-    append(s, chr);
-    return s;
 }
 
 std::string toUtf8(const std::wstring& str, Encoding_t encoding)
@@ -226,8 +152,6 @@ std::string toUtf8(const wchar_t* str, size_t length, Encoding_t encoding)
     return toUtf8(internal_char_type_cast(str), length, encoding);
 }
 
-#ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
-
 std::string toUtf8(const char16_t* str, size_t length, Encoding_t encoding)
 {
     return toUtf8(internal_char_type_cast(str), length, encoding);
@@ -238,22 +162,12 @@ std::string toUtf8(const char32_t* str, size_t length, Encoding_t encoding)
     return toUtf8(internal_char_type_cast(str), length, encoding);
 }
 
-#endif
-
 std::string trim(const std::string& str)
 {
     return fromRange<std::string>(Generic::trim(
             makeRange(str),
             Utf8Encoding(),
             Unicode::isWhitespace));
-}
-
-std::string unescape(const std::string& str, EscapeType_t type)
-{
-    return Generic::unescape<std::string>(
-            makeRange(str),
-            type,
-            Utf8Encoding());
 }
 
 }}
