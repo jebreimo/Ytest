@@ -15,6 +15,7 @@ set(PRIVATE_HEADERS
     FindFlags.hpp
     PlatformDetails.hpp
     Predicates.hpp
+    PrivatePlatformDetails.hpp
     SplitFlags.hpp
     Utf8.hpp
     YstringDefinitions.hpp

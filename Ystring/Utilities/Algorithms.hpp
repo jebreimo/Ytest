@@ -74,9 +74,9 @@ std::pair<FwdIt1, FwdIt1> search(FwdIt1 beg, FwdIt1 end,
 
 template <typename FwdIt1, typename FwdIt2, typename BinaryPredicate>
 std::pair<FwdIt1, FwdIt1> searchLastImpl(FwdIt1 beg, FwdIt1 end,
-                                           FwdIt2 cmpBeg, FwdIt2 cmpEnd,
-                                           BinaryPredicate pred,
-                                           std::forward_iterator_tag)
+                                         FwdIt2 cmpBeg, FwdIt2 cmpEnd,
+                                         BinaryPredicate pred,
+                                         std::forward_iterator_tag)
 {
     std::pair<FwdIt1, FwdIt1> result(end, end);
     if (cmpBeg == cmpEnd)
@@ -93,9 +93,9 @@ std::pair<FwdIt1, FwdIt1> searchLastImpl(FwdIt1 beg, FwdIt1 end,
 
 template <typename BiIt, typename FwdIt, typename BinaryPredicate>
 std::pair<BiIt, BiIt> searchLastImpl(BiIt beg, BiIt end,
-                                       FwdIt cmpBeg, FwdIt cmpEnd,
-                                       BinaryPredicate pred,
-                                       std::bidirectional_iterator_tag)
+                                     FwdIt cmpBeg, FwdIt cmpEnd,
+                                     BinaryPredicate pred,
+                                     std::bidirectional_iterator_tag)
 {
     if (cmpBeg == cmpEnd)
         return std::make_pair(end, end);
@@ -112,8 +112,8 @@ std::pair<BiIt, BiIt> searchLastImpl(BiIt beg, BiIt end,
 
 template <typename FwdIt1, typename FwdIt2, typename BinaryPredicate>
 std::pair<FwdIt1, FwdIt1> searchLast(FwdIt1 beg, FwdIt1 end,
-                                      FwdIt2 cmpBeg, FwdIt2 cmpEnd,
-                                      BinaryPredicate pred)
+                                     FwdIt2 cmpBeg, FwdIt2 cmpEnd,
+                                     BinaryPredicate pred)
 {
     return searchLastImpl(
             beg, end,
@@ -124,7 +124,7 @@ std::pair<FwdIt1, FwdIt1> searchLast(FwdIt1 beg, FwdIt1 end,
 
 template <typename FwdIt1, typename FwdIt2>
 std::pair<FwdIt1, FwdIt1> searchLast(FwdIt1 beg, FwdIt1 end,
-                                      FwdIt2 cmpBeg, FwdIt2 cmpEnd)
+                                     FwdIt2 cmpBeg, FwdIt2 cmpEnd)
 {
     return searchLast(
             beg, end,
