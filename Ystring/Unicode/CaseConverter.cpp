@@ -8,6 +8,7 @@
 #include "CaseConverter.hpp"
 
 #include <type_traits>
+#include "CharMap.hpp"
 #include "StandardUpperCase.hpp"
 
 namespace Ystring { namespace Unicode {

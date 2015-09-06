@@ -38,15 +38,15 @@ CharMap::CharMap(const CompactCharMapping* compactMappings,
     assert(compactMappingsSize != 0);
     assert(compactMappings[0].segment < 0x80);
     assert(compactMappingsSize == 1 || compactMappings[1].segment >= 0x80);
+    initializeFastMapping();
 }
 
 uint32_t CharMap::get(uint32_t chr) const
 {
-    if (chr >= m_CompactMappings[0].segment + 1 &&
-        chr <= m_CompactMappings[0].segment + 26)
-        return chr + m_CompactMappings[0].offset;
-    else if (chr < 128)
+    if (chr < 64)
         return chr;
+    if (chr < FAST_MAPPING_MAX)
+        return m_FastMapping[chr - 64];
 
     uint32_t mappedChr = chr;
     if (findInCompactMapping(chr, mappedChr) || findInMapping(chr, mappedChr))
@@ -88,6 +88,33 @@ bool CharMap::findInMapping(uint32_t chr, uint32_t& mappedChr) const
 
     mappedChr = mapping->mappedChr;
     return true;
+}
+
+void CharMap::initializeFastMapping()
+{
+    for (uint32_t i = 0; i < FAST_MAPPING_SIZE; ++i)
+        m_FastMapping[i] = i + 64;
+    for (size_t i = 0; i < m_CompactMappingsSize; ++i)
+    {
+        auto& mapping = m_CompactMappings[i];
+        auto j = mapping.segment - 64;
+        if (j >= FAST_MAPPING_SIZE)
+            break;
+        auto mask = mapping.affected;
+        while (j < FAST_MAPPING_SIZE && mask)
+        {
+            if (mask & 1)
+                m_FastMapping[j] += mapping.offset;
+            mask >>= 1;
+            ++j;
+        }
+    }
+    for (size_t i = 0; i < m_MappingsSize; ++i)
+    {
+        if (m_Mappings[i].chr > FAST_MAPPING_MAX)
+            break;
+        m_FastMapping[m_Mappings[i].chr - 64] = m_Mappings[i].mappedChr;
+    }
 }
 
 }}

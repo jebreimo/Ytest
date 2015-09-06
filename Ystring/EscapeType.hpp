@@ -39,10 +39,10 @@ struct EscapeType
           */
         JSON,
         JSON_ASCII,
-        /** @brief Escape the characters that are illegal in an URL with
+        /** @brief Escape the characters that are illegal in an URL query with
           *     percentage characters.
           */
-        URL,
+        URL_QUERY,
         /** @brief Escape characters that are illegal in XML text with ampersands.
           */
         XML_TEXT,

@@ -7,11 +7,17 @@
 //****************************************************************************
 #pragma once
 
+#include <array>
 #include <map>
 #include <vector>
 #include "CharMappingTypes.hpp"
 
 namespace Ystring { namespace Unicode {
+
+static const size_t FAST_MAPPING_SIZE = 1024;
+// The max code point is 63 greater than the array size because the first
+// 64 code points are non-letters and can therefore be ignored.
+static const size_t FAST_MAPPING_MAX = FAST_MAPPING_SIZE + 64 - 1;
 
 class YSTRING_API CharMap
 {
@@ -26,9 +32,11 @@ public:
 private:
     bool findInCompactMapping(uint32_t chr, uint32_t& mappedChr) const;
     bool findInMapping(uint32_t chr, uint32_t& mappedChr) const;
+    void initializeFastMapping();
 
     const CompactCharMapping* m_CompactMappings;
     const CharMapping* m_Mappings;
+    std::array<uint32_t, FAST_MAPPING_SIZE> m_FastMapping;
     size_t m_CompactMappingsSize;
     size_t m_MappingsSize;
 };
