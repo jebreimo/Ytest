@@ -11,7 +11,6 @@ project(Ytest_Ystring)
 set(PRIVATE_HEADERS
     DecoderResult.hpp
     Encoding.hpp
-    EscapeType.hpp
     FindFlags.hpp
     PlatformDetails.hpp
     Predicates.hpp

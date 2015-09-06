@@ -12,7 +12,6 @@
 #include <string>
 #include <vector>
 #include "../Encoding.hpp"
-#include "../EscapeType.hpp"
 #include "../FindFlags.hpp"
 #include "../PlatformDetails.hpp"
 #include "../SplitFlags.hpp"

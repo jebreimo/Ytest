@@ -8,7 +8,6 @@
 #pragma once
 
 #include <vector>
-#include "../EscapeType.hpp"
 #include "../FindFlags.hpp"
 #include "../SplitFlags.hpp"
 #include "RangeAlgorithms.hpp"
