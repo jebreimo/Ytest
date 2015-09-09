@@ -20,7 +20,6 @@
 #include "TextReport.hpp"
 #include "VisualStudioReport.hpp"
 
-
 namespace Ytest {
 
 using namespace Ytest_Ystring;

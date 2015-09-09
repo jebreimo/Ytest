@@ -16,8 +16,7 @@
 namespace Ytest {
 
 AutoTestRunner::AutoTestRunner()
-{
-}
+{}
 
 AutoTestRunner& AutoTestRunner::instance()
 {

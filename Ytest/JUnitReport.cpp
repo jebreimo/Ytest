@@ -8,10 +8,9 @@
 #include "JUnitReport.hpp"
 
 #include <iomanip>
-#include "XmlWriter.hpp"
-
 #include "Session.hpp"
 #include "Test.hpp"
+#include "XmlWriter.hpp"
 
 namespace Ytest {
 

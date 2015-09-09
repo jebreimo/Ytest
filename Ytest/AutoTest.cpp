@@ -10,14 +10,11 @@
 #include <limits>
 #include "../Ystring/Predicates.hpp"
 #include "../Ystring/Utf8.hpp"
-// #include "JEBIO/JEBPath.hpp"
 #include "AutoTestRunner.hpp"
-#include "MacroUtilities.hpp"
 
 namespace Ytest {
 
 using namespace Ystring;
-// using namespace Ytest_Yio;
 
 namespace
 {

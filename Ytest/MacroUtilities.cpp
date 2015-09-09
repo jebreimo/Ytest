@@ -7,10 +7,8 @@
 //****************************************************************************
 #include "MacroUtilities.hpp"
 
-#include <algorithm>
 #include <cassert>
 #include "../Ystring/Utf8.hpp"
-
 #include "Exceptions.hpp"
 #include "Session.hpp"
 #include "TestScope.hpp"

@@ -8,7 +8,6 @@
 #include "Indentation.hpp"
 
 #include <cassert>
-#include <limits>
 #include <ostream>
 #include <stdexcept>
 
@@ -20,20 +19,17 @@ std::string Indentation::s_DefaultIndentationString("  ");
 
 Indentation::Indentation()
     : m_IndentationString(s_DefaultIndentationString)
-{
-}
+{}
 
 Indentation::Indentation(const Indentation& rhs)
     : m_IndentationString(rhs.m_IndentationString),
       m_Indents(rhs.m_Indents)
-{
-}
+{}
 
 Indentation::Indentation(Indentation&& rhs)
     : m_IndentationString(std::move(rhs.m_IndentationString)),
       m_Indents(std::move(rhs.m_Indents))
-{
-}
+{}
 
 Indentation::~Indentation()
 {}
@@ -89,7 +85,7 @@ void Indentation::pop()
 
 void Indentation::write(ostream& os) const
 {
-    for (vector<int>::const_iterator it = m_Indents.begin(); it != m_Indents.end(); it++)
+    for (auto it = m_Indents.begin(); it != m_Indents.end(); it++)
     {
         if (*it == -1)
         {

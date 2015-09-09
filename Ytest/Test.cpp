@@ -7,7 +7,6 @@
 //****************************************************************************
 #include "Test.hpp"
 #include <algorithm>
-#include <iostream>
 #include <stdexcept>
 
 namespace Ytest {
@@ -17,8 +16,7 @@ Test::Test(const std::string& name)
       m_Name(name),
       m_StartTime(0),
       m_EndTime(0)
-{
-}
+{}
 
 size_t Test::assertions() const
 {

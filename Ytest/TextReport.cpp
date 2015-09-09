@@ -7,8 +7,7 @@
 //****************************************************************************
 #include "TextReport.hpp"
 
-#include <iomanip>
-#include <iostream>
+#include <ostream>
 #undef JEB
 
 #include "Session.hpp"

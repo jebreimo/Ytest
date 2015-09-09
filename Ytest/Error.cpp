@@ -13,8 +13,7 @@ namespace Ytest {
 Error::Error()
     : m_Type(None),
       m_LineNo(0)
-{
-}
+{}
 
 Error::Error(const std::string& file,
              unsigned lineNo,
