@@ -200,12 +200,6 @@ namespace
         return !stream.fail();
     }
 
-    bool fromString(const std::string& s, std::string& value)
-    {
-        value = s;
-        return true;
-    }
-
     bool error(const std::string& flag,
                Arguments& result,
                const std::string& errorMsg)
@@ -415,11 +409,10 @@ std::unique_ptr<Arguments> parse_arguments(int argc, char* argv[])
         }
     }
 
-
     size_t excess = args.size() - 0;
     std::vector<std::string>::const_iterator it = args.begin();
 
-    for (size_t i = 0; excess && i < -1; ++i)
+    while (excess)
     {
         result->test_name.push_back(*it++);
         --excess;
