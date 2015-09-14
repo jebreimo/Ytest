@@ -22,7 +22,7 @@
 
 namespace Ytest {
 
-using namespace Ytest_Ystring;
+using namespace Ystring;
 
 Session::Session()
     : m_AllTestsEnabled(true),

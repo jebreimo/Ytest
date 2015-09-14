@@ -15,7 +15,7 @@
 
 namespace Ytest {
 
-using namespace Ytest_Ystring;
+using namespace Ystring;
 
 namespace
 {
