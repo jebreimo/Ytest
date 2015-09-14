@@ -90,18 +90,6 @@ namespace Ystring { namespace Utf16
             return DecoderResult::OK;
         }
 
-    //    template <bool SwapBytes, typename FwdIt>
-    //    DecoderResult_t nextWord(uint16_t& word, FwdIt& it, FwdIt end, char)
-    //    {
-    //        return nextWord<SwapBytes>(word, it, end, uint8_t());
-    //    }
-    //
-    //    template <bool SwapBytes, typename FwdIt>
-    //    DecoderResult_t nextWord(uint16_t& word, FwdIt& it, FwdIt end, wchar_t)
-    //    {
-    //        return nextWord<SwapBytes>(word, it, end, UnsignedWChar());
-    //    }
-
         template <bool SwapBytes, typename BiIt>
         DecoderResult_t prevWord(uint16_t& word, BiIt begin, BiIt& it, uint8_t)
         {
