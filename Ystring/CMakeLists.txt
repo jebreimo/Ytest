@@ -32,6 +32,7 @@ set(PRIVATE_HEADERS
     Generic/Range.hpp
     Generic/RangeAlgorithms.hpp
     Generic/StringTypeTraits.hpp
+    Streaming/StreamOperators.hpp
     Unicode/CaseConverter.hpp
     Unicode/CaseInsensitive.hpp
     Unicode/CharClass.hpp
@@ -69,6 +70,7 @@ set(PRIVATE_HEADERS
 set(SOURCE_FILES
     Predicates.cpp
     YstringException.cpp
+    Streaming/StreamOperators.cpp
     Unicode/CaseConverter.cpp
     Unicode/CharClass.cpp
     Unicode/CharMap.cpp

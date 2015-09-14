@@ -92,7 +92,7 @@ bool CharMap::findInMapping(uint32_t chr, uint32_t& mappedChr) const
 
 void CharMap::initializeFastMapping()
 {
-    for (uint32_t i = 0; i < FAST_MAPPING_SIZE; ++i)
+    for (uint16_t i = 0; i < FAST_MAPPING_SIZE; ++i)
         m_FastMapping[i] = i + 64;
     for (size_t i = 0; i < m_CompactMappingsSize; ++i)
     {
@@ -104,7 +104,7 @@ void CharMap::initializeFastMapping()
         while (j < FAST_MAPPING_SIZE && mask)
         {
             if (mask & 1)
-                m_FastMapping[j] += mapping.offset;
+                m_FastMapping[j] += uint16_t(mapping.offset);
             mask >>= 1;
             ++j;
         }
@@ -113,7 +113,8 @@ void CharMap::initializeFastMapping()
     {
         if (m_Mappings[i].chr > FAST_MAPPING_MAX)
             break;
-        m_FastMapping[m_Mappings[i].chr - 64] = m_Mappings[i].mappedChr;
+        m_FastMapping[m_Mappings[i].chr - 64] =
+                uint16_t(m_Mappings[i].mappedChr);
     }
 }
 

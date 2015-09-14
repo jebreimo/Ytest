@@ -2,7 +2,7 @@
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-07-28
 //
-// This file is distributed under the BSD License.
+// This file is distributed under the Simplified BSD License.
 // License text is included with the source distribution.
 //****************************************************************************
 #pragma once
@@ -13,7 +13,6 @@
   * @brief Defines compile-time macros that are used to enable or disable
   *     platform-dependent functionality.
   */
-
 
 /// @cond
 

@@ -11,32 +11,31 @@
 #include <limits>
 #include <string>
 
-namespace Ystring { namespace Utf32 {
+namespace Ystring { namespace Utf32
+{
+    template <bool SwapBytes, typename OutIt>
+    OutIt addUtf32(OutIt out, uint32_t codePoint);
 
-template <bool SwapBytes, typename OutIt>
-OutIt addUtf32(OutIt out, uint32_t codePoint);
+    template <typename OutIt>
+    OutIt addUtf32(OutIt out, uint32_t codePoint);
 
-template <typename OutIt>
-OutIt addUtf32(OutIt out, uint32_t codePoint);
+    template <typename OutIt>
+    OutIt addUtf32LE(OutIt out, uint32_t codePoint);
 
-template <typename OutIt>
-OutIt addUtf32LE(OutIt out, uint32_t codePoint);
+    template <typename OutIt>
+    OutIt addUtf32BE(OutIt out, uint32_t codePoint);
 
-template <typename OutIt>
-OutIt addUtf32BE(OutIt out, uint32_t codePoint);
+    template<bool SwapBytes, typename OutIt>
+    OutIt addUtf32AsBytes(OutIt out, uint32_t codePoint);
 
-template<bool SwapBytes, typename OutIt>
-OutIt addUtf32AsBytes(OutIt out, uint32_t codePoint);
+    template <typename FwdIt>
+    size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint);
 
-template <typename FwdIt>
-size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint);
+    template <typename FwdIt>
+    size_t encodeUtf32LE(FwdIt& begin, FwdIt end, uint32_t codePoint);
 
-template <typename FwdIt>
-size_t encodeUtf32LE(FwdIt& begin, FwdIt end, uint32_t codePoint);
-
-template <typename FwdIt>
-size_t encodeUtf32BE(FwdIt& begin, FwdIt end, uint32_t codePoint);
-
+    template <typename FwdIt>
+    size_t encodeUtf32BE(FwdIt& begin, FwdIt end, uint32_t codePoint);
 }}
 
 #include "EncodeUtf32-impl.hpp"

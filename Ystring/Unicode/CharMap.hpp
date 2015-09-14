@@ -14,10 +14,11 @@
 
 namespace Ystring { namespace Unicode {
 
-static const size_t FAST_MAPPING_SIZE = 1024;
-// The max code point is 63 greater than the array size because the first
-// 64 code points are non-letters and can therefore be ignored.
-static const size_t FAST_MAPPING_MAX = FAST_MAPPING_SIZE + 64 - 1;
+static const uint16_t FAST_MAPPING_SIZE = 1024;
+// The max code point is 63 greater than the array size and not 1 less
+// because the first 64 code points are non-letters and can therefore
+// be ignored.
+static const uint16_t FAST_MAPPING_MAX = FAST_MAPPING_SIZE + 64 - 1;
 
 class YSTRING_API CharMap
 {
@@ -36,7 +37,7 @@ private:
 
     const CompactCharMapping* m_CompactMappings;
     const CharMapping* m_Mappings;
-    std::array<uint32_t, FAST_MAPPING_SIZE> m_FastMapping;
+    std::array<uint16_t, FAST_MAPPING_SIZE> m_FastMapping;
     size_t m_CompactMappingsSize;
     size_t m_MappingsSize;
 };
