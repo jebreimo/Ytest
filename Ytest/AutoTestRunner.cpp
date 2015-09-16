@@ -7,63 +7,61 @@
 //****************************************************************************
 #include "AutoTestRunner.hpp"
 
-#include <algorithm>
 #include "AutoTest.hpp"
 #include "Exceptions.hpp"
 #include "Session.hpp"
 #include "TestScope.hpp"
 
-namespace Ytest {
-
-AutoTestRunner::AutoTestRunner()
-{}
-
-AutoTestRunner& AutoTestRunner::instance()
+namespace Ytest
 {
-    static AutoTestRunner runner;
-    return runner;
-}
+    AutoTestRunner::AutoTestRunner()
+    {}
 
-void AutoTestRunner::addTest(const AutoTest* suite)
-{
-    m_Tests.push_back(suite);
-}
-
-static bool hasHigherPriority(const AutoTest* a, const AutoTest* b)
-{
-    if (a->priority() >= 0 && b->priority() >= 0)
-        return a->priority() < b->priority();
-    else
-        return a->priority() > b->priority();
-}
-
-void AutoTestRunner::run()
-{
-    std::sort(m_Tests.begin(), m_Tests.end(), hasHigherPriority);
-    for (auto test = m_Tests.begin(); test != m_Tests.end(); ++test)
+    AutoTestRunner& AutoTestRunner::instance()
     {
-        TestScope scope;
-        auto& session = Session::instance();
-        auto& path = (*test)->path();
-        auto name = begin(path);
-        for (; name != end(path); ++name)
+        static AutoTestRunner runner;
+        return runner;
+    }
+
+    void AutoTestRunner::addTest(const AutoTest* suite)
+    {
+        m_Tests.push_back(suite);
+    }
+
+    static bool hasHigherPriority(const AutoTest* a, const AutoTest* b)
+    {
+        if (a->priority() >= 0 && b->priority() >= 0)
+            return a->priority() < b->priority();
+        else
+            return a->priority() > b->priority();
+    }
+
+    void AutoTestRunner::run()
+    {
+        std::sort(m_Tests.begin(), m_Tests.end(), hasHigherPriority);
+        for (auto test = m_Tests.begin(); test != m_Tests.end(); ++test)
         {
-            if (session.isTestEnabled(*name))
-                scope.push(*name, true);
-        }
-        if (name == end(path) && session.isTestEnabled((*test)->name()))
-        {
-            scope.push((*test)->name());
-            try
+            TestScope scope;
+            auto& session = Session::instance();
+            auto& path = (*test)->path();
+            auto name = begin(path);
+            for (; name != end(path); ++name)
             {
-                (*test)->function()();
+                if (session.isTestEnabled(*name))
+                    scope.push(*name, true);
             }
-            catch (const TestFailure&)
-            {}
-            catch (const CriticalFailure&)
-            {}
+            if (name == end(path) && session.isTestEnabled((*test)->name()))
+            {
+                scope.push((*test)->name());
+                try
+                {
+                    (*test)->function()();
+                }
+                catch (const TestFailure&)
+                {}
+                catch (const CriticalFailure&)
+                {}
+            }
         }
     }
-}
-
 }

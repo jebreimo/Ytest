@@ -15,78 +15,77 @@
 
 #include "Error.hpp"
 
-namespace Ytest {
-
-class PathFilter;
-class StreamRedirection;
-
-typedef std::shared_ptr<class Test> TestPtr;
-
-enum ReportFormat
+namespace Ytest
 {
-    TextReport = 1,
-    JUnitReport = 2,
-    FullTextReport = 3
-};
+    class PathFilter;
+    class StreamRedirection;
 
-class Session
-{
-public:
-    static Session& instance();
+    typedef std::shared_ptr<class Test> TestPtr;
 
-    bool parseCommandLine(int argc, char* argv[]);
+    enum ReportFormat
+    {
+        TextReport = 1,
+        JUnitReport = 2,
+        FullTextReport = 3
+    };
 
-    bool reportEnabled(ReportFormat format) const;
-    void setReportEnabled(ReportFormat format, bool enabled);
+    class Session
+    {
+    public:
+        static Session& instance();
 
-    const std::string& reportFileName() const;
-    void setReportFileName(const std::string& fileName);
+        bool parseCommandLine(int argc, char* argv[]);
 
-    void writeReports();
+        bool reportEnabled(ReportFormat format) const;
+        void setReportEnabled(ReportFormat format, bool enabled);
 
-    void beginTest(const std::string& name = "<unnamed>",
-                   bool silent = false);
-    void endTest();
-    void testFailed(const Error& error);
-    void assertPassed();
+        const std::string& reportFileName() const;
+        void setReportFileName(const std::string& fileName);
 
-    size_t numberOfFailedTests() const;
+        void writeReports();
 
-    bool areAllTestsEnabled() const;
-    void setAllTestsEnabled(bool enable);
-    bool isTestEnabled(const std::string& name) const;
-    void setTestEnabled(const std::string& name, bool enable);
+        void beginTest(const std::string& name = "<unnamed>",
+                       bool silent = false);
+        void endTest();
+        void testFailed(const Error& error);
+        void assertPassed();
 
-    const std::vector<TestPtr>& tests() const;
+        size_t numberOfFailedTests() const;
 
-    void print(const std::string& text, bool startOnNewLine = true);
-    void printInfo(const std::string& text, bool startOnNewLine = true);
+        bool areAllTestsEnabled() const;
+        void setAllTestsEnabled(bool enable);
+        bool isTestEnabled(const std::string& name) const;
+        void setTestEnabled(const std::string& name, bool enable);
 
-    std::ostream* log();
-    void setLog(std::ostream* log);
-    void flushLog();
+        const std::vector<TestPtr>& tests() const;
 
-    bool verbose() const;
-    void setVerbose(bool verbose);
-private:
-    Session();
-    ~Session();
-    TestPtr findTest(const std::string& name);
-    std::string getTestName() const;
-    std::string getTestName(const std::string& name) const;
-    void setLogFile(const std::string& fileName);
+        void print(const std::string& text, bool startOnNewLine = true);
+        void printInfo(const std::string& text, bool startOnNewLine = true);
 
-    std::vector<TestPtr> m_ActiveTest;
-    bool m_AllTestsEnabled;
-    unsigned m_EnabledReports;
-    std::ostream* m_Log;
-    std::ofstream m_LogFile;
-    std::vector<StreamRedirection> m_Redirections;
-    std::string m_ReportFileName;
-    bool m_StartOfLine;
-    std::unique_ptr<PathFilter> m_TestFilter;
-    std::vector<TestPtr> m_Tests;
-    bool m_Verbose;
-};
+        std::ostream* log();
+        void setLog(std::ostream* log);
+        void flushLog();
 
+        bool verbose() const;
+        void setVerbose(bool verbose);
+    private:
+        Session();
+        ~Session();
+        TestPtr findTest(const std::string& name);
+        std::string getTestName() const;
+        std::string getTestName(const std::string& name) const;
+        void setLogFile(const std::string& fileName);
+
+        std::vector<TestPtr> m_ActiveTest;
+        bool m_AllTestsEnabled;
+        unsigned m_EnabledReports;
+        std::ostream* m_Log;
+        std::ofstream m_LogFile;
+        std::vector<StreamRedirection> m_Redirections;
+        std::string m_ReportFileName;
+        bool m_StartOfLine;
+        std::unique_ptr<PathFilter> m_TestFilter;
+        std::vector<TestPtr> m_Tests;
+        bool m_Verbose;
+    };
 }

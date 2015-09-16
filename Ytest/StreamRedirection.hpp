@@ -9,18 +9,17 @@
 
 #include <ios>
 
-namespace Ytest {
-
-class StreamRedirection
+namespace Ytest
 {
-public:
-    StreamRedirection(std::ios& stream, std::ios& replacement);
-    StreamRedirection(std::ios& stream, std::streambuf* replacement);
-    StreamRedirection(StreamRedirection&& other);
-    ~StreamRedirection();
-private:
-    std::ios& m_Stream;
-    std::streambuf* m_OriginalBuffer;
-};
-
+    class StreamRedirection
+    {
+    public:
+        StreamRedirection(std::ios& stream, std::ios& replacement);
+        StreamRedirection(std::ios& stream, std::streambuf* replacement);
+        StreamRedirection(StreamRedirection&& other);
+        ~StreamRedirection();
+    private:
+        std::ios& m_Stream;
+        std::streambuf* m_OriginalBuffer;
+    };
 }

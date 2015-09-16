@@ -12,59 +12,58 @@
 #include <string>
 #include "Error.hpp"
 
-namespace Ytest {
-
-typedef std::shared_ptr<class Test> TestPtr;
-
-class Test
+namespace Ytest
 {
-public:
-    Test(const std::string& name);
+    typedef std::shared_ptr<class Test> TestPtr;
 
-    size_t assertions() const;
-    void incrementAssertions();
+    class Test
+    {
+    public:
+        Test(const std::string& name);
 
-    /** @brief Returns the depth of the test hierarchy this test is the
-      *     root of.
-      *
-      * @returns 1 + the maximum depth of its children.
-      */
-    size_t depth() const;
+        size_t assertions() const;
+        void incrementAssertions();
 
-    const std::vector<Error>& errors() const;
-    void addError(const Error& error);
-    void addError(Error&& error);
+        /** @brief Returns the depth of the test hierarchy this test is the
+          *     root of.
+          *
+          * @returns 1 + the maximum depth of its children.
+          */
+        size_t depth() const;
 
-    /** @brief Returns true if the test failed (i.e. error() is set).
-      */
-    bool failed() const;
+        const std::vector<Error>& errors() const;
+        void addError(const Error& error);
+        void addError(Error&& error);
 
-    /** @brief Returns true if the test or any of its sub-tests failed.
-      */
-    bool failedHierarchy() const;
+        /** @brief Returns true if the test failed (i.e. error() is set).
+          */
+        bool failed() const;
 
-    const std::string& name() const;
+        /** @brief Returns true if the test or any of its sub-tests failed.
+          */
+        bool failedHierarchy() const;
 
-    clock_t startTime() const;
-    void setStartTime(clock_t startTime);
+        const std::string& name() const;
 
-    clock_t endTime() const;
-    void setEndTime(clock_t endTime);
+        clock_t startTime() const;
+        void setStartTime(clock_t startTime);
 
-    double elapsedTime() const;
+        clock_t endTime() const;
+        void setEndTime(clock_t endTime);
 
-    void addTest(TestPtr test);
-    std::vector<TestPtr>& tests();
-    const std::vector<TestPtr>& tests() const;
-    TestPtr findTest(const std::string& name) const;
-private:
-    size_t m_Assertions;
-    std::vector<Error> m_Errors;
-    std::string m_Name;
-    clock_t m_StartTime;
-    clock_t m_EndTime;
-    std::vector<TestPtr> m_Tests;
-    std::vector<std::pair<std::string, std::string>> m_Filter;
-};
+        double elapsedTime() const;
 
+        void addTest(TestPtr test);
+        std::vector<TestPtr>& tests();
+        const std::vector<TestPtr>& tests() const;
+        TestPtr findTest(const std::string& name) const;
+    private:
+        size_t m_Assertions;
+        std::vector<Error> m_Errors;
+        std::string m_Name;
+        clock_t m_StartTime;
+        clock_t m_EndTime;
+        std::vector<TestPtr> m_Tests;
+        std::vector<std::pair<std::string, std::string>> m_Filter;
+    };
 }

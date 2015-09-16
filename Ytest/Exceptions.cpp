@@ -7,57 +7,57 @@
 //****************************************************************************
 #include "Exceptions.hpp"
 
-namespace Ytest {
-
-AbstractFailure::AbstractFailure(const Error& error)
-    : m_Error(error)
-{}
-
-AbstractFailure::~AbstractFailure()
-{}
-
-const Error& AbstractFailure::error() const
+namespace Ytest
 {
-    return m_Error;
-}
+    AbstractFailure::AbstractFailure(const Error& error)
+        : m_Error(error)
+    {}
 
-std::string AbstractFailure::what() const
-{
-    return m_Error.text();
-}
+    AbstractFailure::~AbstractFailure()
+    {}
 
-void AbstractFailure::addContext(const std::string& file,
-                                 unsigned lineNo,
-                                 const std::string& message)
-{
-    m_Error.addContext(file, lineNo, message);
-}
+    const Error& AbstractFailure::error() const
+    {
+        return m_Error;
+    }
 
-TestFailure::TestFailure(const std::string& file,
-                         unsigned lineNo,
-                         const std::string& message)
-    : AbstractFailure(Error(file, lineNo, message, Error::Failure))
-{}
+    std::string AbstractFailure::what() const
+    {
+        return m_Error.text();
+    }
 
-TestFailure::~TestFailure()
-{}
+    void AbstractFailure::addContext(const std::string& file,
+                                     unsigned lineNo,
+                                     const std::string& message)
+    {
+        m_Error.addContext(file, lineNo, message);
+    }
 
-CriticalFailure::CriticalFailure(const std::string& file,
-                                 unsigned lineNo,
-                                 const std::string& message)
-    : AbstractFailure(Error(file, lineNo, message, Error::CriticalFailure))
-{}
+    TestFailure::TestFailure(const std::string& file,
+                             unsigned lineNo,
+                             const std::string& message)
+        : AbstractFailure(Error(file, lineNo, message, Error::Failure))
+    {}
 
-CriticalFailure::~CriticalFailure()
-{}
+    TestFailure::~TestFailure()
+    {}
 
-FatalFailure::FatalFailure(const std::string& file,
-                           unsigned lineNo,
-                           const std::string& message)
-    : AbstractFailure(Error(file, lineNo, message, Error::FatalFailure))
-{}
+    CriticalFailure::CriticalFailure(const std::string& file,
+                                     unsigned lineNo,
+                                     const std::string& message)
+        : AbstractFailure(Error(file, lineNo, message,
+                                Error::CriticalFailure))
+    {}
 
-FatalFailure::~FatalFailure()
-{}
+    CriticalFailure::~CriticalFailure()
+    {}
 
+    FatalFailure::FatalFailure(const std::string& file,
+                               unsigned lineNo,
+                               const std::string& message)
+        : AbstractFailure(Error(file, lineNo, message, Error::FatalFailure))
+    {}
+
+    FatalFailure::~FatalFailure()
+    {}
 }

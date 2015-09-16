@@ -7,30 +7,30 @@
 //****************************************************************************
 #include "StreamRedirection.hpp"
 
-namespace Ytest {
-
-StreamRedirection::StreamRedirection(std::ios& stream, std::ios& replacement)
-    : m_Stream(stream),
-      m_OriginalBuffer(stream.rdbuf(replacement.rdbuf()))
-{}
-
-StreamRedirection::StreamRedirection(std::ios& stream,
-                                     std::streambuf* replacement)
-    : m_Stream(stream),
-      m_OriginalBuffer(stream.rdbuf(replacement))
-{}
-
-StreamRedirection::StreamRedirection(StreamRedirection&& other)
-    : m_Stream(other.m_Stream),
-      m_OriginalBuffer(other.m_OriginalBuffer)
+namespace Ytest
 {
-    other.m_OriginalBuffer = nullptr;
-}
+    StreamRedirection::StreamRedirection(std::ios& stream,
+                                         std::ios& replacement)
+        : m_Stream(stream),
+          m_OriginalBuffer(stream.rdbuf(replacement.rdbuf()))
+    {}
 
-StreamRedirection::~StreamRedirection()
-{
-    if (m_OriginalBuffer)
-        m_Stream.rdbuf(m_OriginalBuffer);
-}
+    StreamRedirection::StreamRedirection(std::ios& stream,
+                                         std::streambuf* replacement)
+        : m_Stream(stream),
+          m_OriginalBuffer(stream.rdbuf(replacement))
+    {}
 
+    StreamRedirection::StreamRedirection(StreamRedirection&& other)
+        : m_Stream(other.m_Stream),
+          m_OriginalBuffer(other.m_OriginalBuffer)
+    {
+        other.m_OriginalBuffer = nullptr;
+    }
+
+    StreamRedirection::~StreamRedirection()
+    {
+        if (m_OriginalBuffer)
+            m_Stream.rdbuf(m_OriginalBuffer);
+    }
 }

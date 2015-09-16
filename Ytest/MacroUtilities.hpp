@@ -9,16 +9,15 @@
 
 #include <functional>
 
-namespace Ytest {
-
-void runTests(const char* file, int line, const char* testNamesString,
-              std::function<void()>* testFuncs, size_t testFuncSize);
-
-template <size_t N>
-void runTests(const char* file, int line, const char* testNamesString,
-              std::function<void()> (&testFuncs)[N])
+namespace Ytest
 {
-    runTests(file, line, testNamesString, testFuncs, N);
-}
+    void runTests(const char* file, int line, const char* testNamesString,
+                  std::function<void()>* testFuncs, size_t testFuncSize);
 
+    template <size_t N>
+    void runTests(const char* file, int line, const char* testNamesString,
+                  std::function<void()> (&testFuncs)[N])
+    {
+        runTests(file, line, testNamesString, testFuncs, N);
+    }
 }

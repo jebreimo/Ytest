@@ -9,14 +9,13 @@
 
 #include <iosfwd>
 
-namespace Ytest {
+namespace Ytest
+{
+    class Session;
 
-class Session;
+    bool isRunnningInVisualStudio();
 
-bool isRunnningInVisualStudio();
-
-void writeVisualStudioReport(
-        void (*reportFunc)(std::ostream&, const Session&),
-        const Session& session);
-
+    void writeVisualStudioReport(
+            void (*reportFunc)(std::ostream&, const Session&),
+            const Session& session);
 }

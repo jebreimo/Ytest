@@ -13,30 +13,32 @@
 #include "Session.hpp"
 #include "TestScope.hpp"
 
-namespace Ytest {
-
-using namespace Ystring;
-
-namespace
+namespace Ytest
 {
-    std::vector<std::string> extractTestNames(const std::string& names)
-    {
-        auto result = Utf8::split(names, ",", 0, SplitFlags::IGNORE_EMPTY);
-        for (auto it = result.begin(); it != result.end(); ++it)
-          *it = Utf8::trim(*it);
-        return result;
-    }
-}
+    using namespace Ystring;
 
-void runTests(const char* file, int line, const char* testNamesString,
-              std::function<void()>* testFuncs, size_t testFuncsSize)
-{
-    std::vector<std::string> testNames = extractTestNames(testNamesString);
-    assert(testNames.size() == testFuncsSize);
-    for (size_t i = 0; i < testNames.size(); i++)
+    namespace
     {
-        if (Session::instance().isTestEnabled(testNames[i]))
+        std::vector<std::string> extractTestNames(const std::string& names)
         {
+            auto result = Utf8::split(names, ",", 0,
+                                      SplitFlags::IGNORE_EMPTY);
+            for (auto it = result.begin(); it != result.end(); ++it)
+              *it = Utf8::trim(*it);
+            return result;
+        }
+    }
+
+    void runTests(const char* file, int line, const char* testNamesString,
+                  std::function<void()>* testFuncs, size_t testFuncsSize)
+    {
+        auto testNames = extractTestNames(testNamesString);
+        assert(testNames.size() == testFuncsSize);
+        for (size_t i = 0; i < testNames.size(); i++)
+        {
+            if (!Session::instance().isTestEnabled(testNames[i]))
+                continue;
+
             TestScope scope(testNames[i]);
             try
             {
@@ -52,7 +54,7 @@ void runTests(const char* file, int line, const char* testNamesString,
             {
                 Session::instance().testFailed(Error(file, line,
                     std::string("Unhandled exception: \"") + ex.what() + "\"",
-                    Error::UnhandledException));
+                                Error::UnhandledException));
                 throw;
             }
             catch (...)
@@ -64,6 +66,4 @@ void runTests(const char* file, int line, const char* testNamesString,
             }
         }
     }
-}
-
 }

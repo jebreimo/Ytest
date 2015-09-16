@@ -9,34 +9,33 @@
 
 #include "Session.hpp"
 
-namespace Ytest {
-
-class TestScope
+namespace Ytest
 {
-public:
-    TestScope()
-        : m_Count(0)
-    {}
-
-    TestScope(const std::string& name)
-        : m_Count(1)
+    class TestScope
     {
-        Session::instance().beginTest(name);
-    }
+    public:
+        TestScope()
+            : m_Count(0)
+        {}
 
-    ~TestScope()
-    {
-        while (m_Count--)
-            Session::instance().endTest();
-    }
+        TestScope(const std::string& name)
+            : m_Count(1)
+        {
+            Session::instance().beginTest(name);
+        }
 
-    void push(const std::string& name, bool silent = false)
-    {
-        Session::instance().beginTest(name, silent);
-        ++m_Count;
-    }
-private:
-    int m_Count;
-};
+        ~TestScope()
+        {
+            while (m_Count--)
+                Session::instance().endTest();
+        }
 
+        void push(const std::string& name, bool silent = false)
+        {
+            Session::instance().beginTest(name, silent);
+            ++m_Count;
+        }
+    private:
+        int m_Count;
+    };
 }

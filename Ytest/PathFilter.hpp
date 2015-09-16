@@ -10,33 +10,32 @@
 #include <string>
 #include <vector>
 
-namespace Ytest {
-
-enum PathFilterType
+namespace Ytest
 {
-    ExclusiveFilter,
-    InclusiveFilter
-};
+    enum PathFilterType
+    {
+        ExclusiveFilter,
+        InclusiveFilter
+    };
 
-class FilterState;
+    class FilterState;
 
-class PathFilter
-{
-public:
-    PathFilter();
-    ~PathFilter();
+    class PathFilter
+    {
+    public:
+        PathFilter();
+        ~PathFilter();
 
-    bool descend(const std::string& name);
-    bool shouldDescend(const std::string& name);
-    bool ascend();
+        bool descend(const std::string& name);
+        bool shouldDescend(const std::string& name);
+        bool ascend();
 
-    void excludePath(const std::string& path);
-    void includePath(const std::string& path);
+        void excludePath(const std::string& path);
+        void includePath(const std::string& path);
 
-    PathFilterType type() const;
-    void setType(PathFilterType type);
-private:
-    std::vector<FilterState> m_States;
-};
-
+        PathFilterType type() const;
+        void setType(PathFilterType type);
+    private:
+        std::vector<FilterState> m_States;
+    };
 }

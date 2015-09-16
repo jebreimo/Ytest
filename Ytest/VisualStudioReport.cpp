@@ -32,18 +32,17 @@ void writeVisualStudioReport(
 
 #else
 
-namespace Ytest {
-
-bool isRunnningInVisualStudio()
+namespace Ytest
 {
-    return false;
-}
+    bool isRunnningInVisualStudio()
+    {
+        return false;
+    }
 
-void writeVisualStudioReport(
-        void (*reportFunc)(std::ostream&, const Session&),
-        const Session& session)
-{}
-
+    void writeVisualStudioReport(
+            void (*reportFunc)(std::ostream&, const Session&),
+            const Session& session)
+    {}
 }
 
 #endif

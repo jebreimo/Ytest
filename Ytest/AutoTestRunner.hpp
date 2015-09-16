@@ -9,21 +9,20 @@
 
 #include <vector>
 
-namespace Ytest {
-
-class AutoTest;
-
-class AutoTestRunner
+namespace Ytest
 {
-public:
-    static AutoTestRunner& instance();
+    class AutoTest;
 
-    void addTest(const AutoTest* suite);
-    void run();
-private:
-    AutoTestRunner();
+    class AutoTestRunner
+    {
+    public:
+        static AutoTestRunner& instance();
 
-    std::vector<const AutoTest*> m_Tests;
-};
+        void addTest(const AutoTest* suite);
+        void run();
+    private:
+        AutoTestRunner();
 
+        std::vector<const AutoTest*> m_Tests;
+    };
 }

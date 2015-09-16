@@ -9,10 +9,9 @@
 
 #include <iosfwd>
 
-namespace Ytest {
+namespace Ytest
+{
+    class Session;
 
-class Session;
-
-void writeJUnitReport(std::ostream& os, const Session& session);
-
+    void writeJUnitReport(std::ostream& os, const Session& session);
 }
