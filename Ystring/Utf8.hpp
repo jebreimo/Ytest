@@ -12,13 +12,3 @@
 /** @file
   * @brief Top-level include file for the UTF-8 function library.
   */
-
-namespace Ystring
-{
-
-/** @brief The namespace for all UTF-8 related classes and functions.
-  */
-namespace Utf8
-{}
-
-}

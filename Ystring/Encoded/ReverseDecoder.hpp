@@ -10,98 +10,97 @@
 #include <cstdint>
 #include "../Generic/Range.hpp"
 
-namespace Ystring { namespace Encoded {
-
-template <typename BiIt, typename Encoding>
-class ReverseDecoder
+namespace Ystring { namespace Encoded
 {
-public:
-    static const bool isForward = false;
-
-    ReverseDecoder(BiIt first, BiIt last, Encoding encoding)
-        : m_First(first),
-          m_Last(last),
-          m_Encoding(encoding)
-    {}
-
-    bool next(uint32_t& ch)
+    template <typename BiIt, typename Encoding>
+    class ReverseDecoder
     {
-        return m_Encoding.prev(ch, m_First, m_Last);
+    public:
+        static const bool isForward = false;
+
+        ReverseDecoder(BiIt first, BiIt last, Encoding encoding)
+            : m_First(first),
+              m_Last(last),
+              m_Encoding(encoding)
+        {}
+
+        bool next(uint32_t& ch)
+        {
+            return m_Encoding.prev(ch, m_First, m_Last);
+        }
+
+        bool skip(size_t n = 1)
+        {
+            return m_Encoding.skipPrev(m_First, m_Last, n);
+        }
+
+        const Encoding& getEncoding() const
+        {
+            return m_Encoding;
+        }
+
+        BiIt getLogicalBegin()
+        {
+            return m_Last;
+        }
+
+        void setLogicalBegin(BiIt first)
+        {
+            m_Last = first;
+        }
+
+        BiIt getLogicalEnd()
+        {
+            return m_First;
+        }
+
+        void setLogicalEnd(BiIt last)
+        {
+            m_First = last;
+        }
+
+        Generic::Range<BiIt> getRange() const
+        {
+            return Generic::makeRange(m_First, m_Last);
+        }
+
+        BiIt begin() const
+        {
+            return m_First;
+        }
+
+        BiIt end() const
+        {
+            return m_Last;
+        }
+
+    protected:
+        BiIt m_First;
+        BiIt m_Last;
+        Encoding m_Encoding;
+    };
+
+    template <typename BiIt, typename Encoding>
+    ReverseDecoder<BiIt, Encoding> makeReverseDecoder(
+            BiIt first,
+            BiIt last,
+            Encoding encoding)
+    {
+        return ReverseDecoder<BiIt, Encoding>(first, last, encoding);
     }
 
-    bool skip(size_t n = 1)
+    template <typename BiIt, typename Encoding>
+    ReverseDecoder<BiIt, Encoding> makeReverseDecoder(
+            Generic::Range<BiIt> range,
+            Encoding encoding)
     {
-        return m_Encoding.skipPrev(m_First, m_Last, n);
+        return ReverseDecoder<BiIt, Encoding>(range.begin(), range.end(),
+                                              encoding);
     }
 
-    const Encoding& getEncoding() const
+    template <typename BiIt, typename Encoding>
+    bool empty(const ReverseDecoder<BiIt, Encoding>& dec)
     {
-        return m_Encoding;
+        return dec.begin() == dec.end();
     }
-
-    BiIt getLogicalBegin()
-    {
-        return m_Last;
-    }
-
-    void setLogicalBegin(BiIt first)
-    {
-        m_Last = first;
-    }
-
-    BiIt getLogicalEnd()
-    {
-        return m_First;
-    }
-
-    void setLogicalEnd(BiIt last)
-    {
-        m_First = last;
-    }
-
-    Generic::Range<BiIt> getRange() const
-    {
-        return Generic::makeRange(m_First, m_Last);
-    }
-
-    BiIt begin() const
-    {
-        return m_First;
-    }
-
-    BiIt end() const
-    {
-        return m_Last;
-    }
-
-protected:
-    BiIt m_First;
-    BiIt m_Last;
-    Encoding m_Encoding;
-};
-
-template <typename BiIt, typename Encoding>
-ReverseDecoder<BiIt, Encoding> makeReverseDecoder(
-        BiIt first,
-        BiIt last,
-        Encoding encoding)
-{
-    return ReverseDecoder<BiIt, Encoding>(first, last, encoding);
-}
-
-template <typename BiIt, typename Encoding>
-ReverseDecoder<BiIt, Encoding> makeReverseDecoder(
-        Generic::Range<BiIt> range,
-        Encoding encoding)
-{
-    return ReverseDecoder<BiIt, Encoding>(range.begin(), range.end(),
-                                          encoding);
-}
-
-template <typename BiIt, typename Encoding>
-bool empty(const ReverseDecoder<BiIt, Encoding>& dec)
-{
-    return dec.begin() == dec.end();
-}
-
 }}

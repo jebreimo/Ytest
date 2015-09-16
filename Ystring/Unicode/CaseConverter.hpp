@@ -10,8 +10,7 @@
 #include <functional>
 #include "../YstringDefinitions.hpp"
 
-namespace Ystring { namespace Unicode {
-
-YSTRING_API uint32_t upper(uint32_t ch);
-
+namespace Ystring { namespace Unicode
+{
+    YSTRING_API uint32_t upper(uint32_t ch);
 }}

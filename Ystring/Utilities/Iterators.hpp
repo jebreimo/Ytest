@@ -12,105 +12,106 @@
 #include <stdexcept>
 #include <utility>
 
-namespace Ystring { namespace Utilities {
-
-template <typename FwdIt>
-bool advance(FwdIt& first, FwdIt last, size_t n, std::forward_iterator_tag)
+namespace Ystring { namespace Utilities
 {
-    for (; n != 0; n--)
+    template <typename FwdIt>
+    bool advance(FwdIt& first, FwdIt last, size_t n,
+                 std::forward_iterator_tag)
     {
-        if (first == last)
-            return false;
-        ++first;
+        for (; n != 0; n--)
+        {
+            if (first == last)
+                return false;
+            ++first;
+        }
+        return true;
     }
-    return true;
-}
 
-template <typename RndIt>
-bool advance(RndIt& first, RndIt last, size_t n,
-             std::random_access_iterator_tag)
-{
-    auto len = std::distance(first, last);
-    assert(len >= 0);
-    if ((size_t)len < n)
-        return false;
-    first += n;
-    return true;
-}
-
-template <typename It>
-bool advance(It& first, It last, size_t n = 1)
-{
-    return advance(first, last, n,
-            typename std::iterator_traits<It>::iterator_category());
-}
-
-template <typename It>
-It next(It first, It last, size_t n = 1)
-{
-    return advance(first, last, n) ? first : last;
-}
-
-template <typename FwdIt>
-bool recede(FwdIt first, FwdIt& last, size_t n, std::forward_iterator_tag)
-{
-    FwdIt it = first;
-    for (; n != 0; n--)
+    template <typename RndIt>
+    bool advance(RndIt& first, RndIt last, size_t n,
+                 std::random_access_iterator_tag)
     {
-        if (first == last)
+        auto len = std::distance(first, last);
+        assert(len >= 0);
+        if ((size_t)len < n)
             return false;
-        ++first;
+        first += n;
+        return true;
     }
-    for (; first != last; ++first)
-        ++it;
-    last = it;
-    return true;
-}
 
-template <typename BiIt>
-bool recede(BiIt first, BiIt& last, size_t n, std::bidirectional_iterator_tag)
-{
-    for (; n != 0; n--)
+    template <typename It>
+    bool advance(It& first, It last, size_t n = 1)
     {
-        if (first == last)
-            return false;
-        --last;
+        return advance(first, last, n,
+                typename std::iterator_traits<It>::iterator_category());
     }
-    return true;
-}
 
-template <typename RndIt>
-bool recede(RndIt first, RndIt& last, size_t n,
-            std::random_access_iterator_tag)
-{
-    auto len = std::distance(first, last);
-    assert(len >= 0);
-    if ((size_t)len < n)
-        return false;
-    last -= n;
-    return true;
-}
+    template <typename It>
+    It next(It first, It last, size_t n = 1)
+    {
+        return advance(first, last, n) ? first : last;
+    }
 
-template <typename It>
-bool recede(It first, It& last, size_t n = 1)
-{
-    return recede(first, last, n,
-           typename std::iterator_traits<It>::iterator_category());
-}
+    template <typename FwdIt>
+    bool recede(FwdIt first, FwdIt& last, size_t n, std::forward_iterator_tag)
+    {
+        FwdIt it = first;
+        for (; n != 0; n--)
+        {
+            if (first == last)
+                return false;
+            ++first;
+        }
+        for (; first != last; ++first)
+            ++it;
+        last = it;
+        return true;
+    }
 
-template <typename It>
-It prev(It first, It last, size_t n = 1)
-{
-    return recede(first, last, n) ? last : first;
-}
+    template <typename BiIt>
+    bool recede(BiIt first, BiIt& last, size_t n,
+                std::bidirectional_iterator_tag)
+    {
+        for (; n != 0; n--)
+        {
+            if (first == last)
+                return false;
+            --last;
+        }
+        return true;
+    }
 
-template <typename It>
-It nth(It first, It last, ptrdiff_t steps)
-{
-    if (steps >= 0)
-        return next(first, last, steps);
-    else
-        return prev(first, last, -steps);
-}
+    template <typename RndIt>
+    bool recede(RndIt first, RndIt& last, size_t n,
+                std::random_access_iterator_tag)
+    {
+        auto len = std::distance(first, last);
+        assert(len >= 0);
+        if ((size_t)len < n)
+            return false;
+        last -= n;
+        return true;
+    }
 
+    template <typename It>
+    bool recede(It first, It& last, size_t n = 1)
+    {
+        return recede(first, last, n,
+               typename std::iterator_traits<It>::iterator_category());
+    }
+
+    template <typename It>
+    It prev(It first, It last, size_t n = 1)
+    {
+        return recede(first, last, n) ? last : first;
+    }
+
+    template <typename It>
+    It nth(It first, It last, ptrdiff_t steps)
+    {
+        if (steps >= 0)
+            return next(first, last, steps);
+        else
+            return prev(first, last, -steps);
+    }
 }}

@@ -12,48 +12,47 @@
 #include <string>
 #include "CaseConverter.hpp"
 
-namespace Ystring { namespace Unicode {
-
-inline int32_t caseInsensitiveCompare(uint32_t lhs, uint32_t rhs)
+namespace Ystring { namespace Unicode
 {
-    return static_cast<int32_t>(upper(lhs) - upper(rhs));
-}
-
-inline bool caseInsensitiveEqual(uint32_t lhs, uint32_t rhs)
-{
-    return upper(lhs) == upper(rhs);
-}
-
-inline bool caseInsensitiveLess(uint32_t lhs, uint32_t rhs)
-{
-    return upper(lhs) < upper(rhs);
-}
-
-struct CaseInsensitiveCompare
-    : std::binary_function<uint32_t, uint32_t, int32_t>
-{
-    int32_t operator()(uint32_t a, uint32_t b) const
+    inline int32_t caseInsensitiveCompare(uint32_t lhs, uint32_t rhs)
     {
-        return caseInsensitiveCompare(a, b);
+        return static_cast<int32_t>(upper(lhs) - upper(rhs));
     }
-};
 
-struct CaseInsensitiveEqual
-    : std::binary_function<uint32_t, uint32_t, bool>
-{
-    bool operator()(uint32_t a, uint32_t b) const
+    inline bool caseInsensitiveEqual(uint32_t lhs, uint32_t rhs)
     {
-        return caseInsensitiveEqual(a, b);
+        return upper(lhs) == upper(rhs);
     }
-};
 
-struct CaseInsensitiveLess
-    : std::binary_function<uint32_t, uint32_t, bool>
-{
-    bool operator()(uint32_t a, uint32_t b) const
+    inline bool caseInsensitiveLess(uint32_t lhs, uint32_t rhs)
     {
-        return caseInsensitiveLess(a, b);
+        return upper(lhs) < upper(rhs);
     }
-};
 
+    struct CaseInsensitiveCompare
+        : std::binary_function<uint32_t, uint32_t, int32_t>
+    {
+        int32_t operator()(uint32_t a, uint32_t b) const
+        {
+            return caseInsensitiveCompare(a, b);
+        }
+    };
+
+    struct CaseInsensitiveEqual
+        : std::binary_function<uint32_t, uint32_t, bool>
+    {
+        bool operator()(uint32_t a, uint32_t b) const
+        {
+            return caseInsensitiveEqual(a, b);
+        }
+    };
+
+    struct CaseInsensitiveLess
+        : std::binary_function<uint32_t, uint32_t, bool>
+    {
+        bool operator()(uint32_t a, uint32_t b) const
+        {
+            return caseInsensitiveLess(a, b);
+        }
+    };
 }}

@@ -30,4 +30,13 @@ namespace Ystring
     /** @brief A value representing invalid code points.
       */
     static const uint32_t INVALID_CHAR = 0xFFFFFFFFul;
+
+    /** @brief The namespace for functions and types related
+      *     to unicode code-points.
+      */
+    namespace Unicode {}
+
+    /** @brief The namespace for all UTF-8 related classes and functions.
+      */
+    namespace Utf8 {}
 }

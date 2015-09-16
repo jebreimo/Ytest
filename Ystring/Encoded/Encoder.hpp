@@ -9,48 +9,47 @@
 
 #include <stdint.h>
 
-namespace Ystring { namespace Encoded {
-
-template <typename OutIt, typename Enc>
-class Encoder
+namespace Ystring { namespace Encoded
 {
-public:
-    typedef OutIt Iterator;
-    typedef Enc Encoding;
-
-    Encoder(OutIt dst, Encoding encoding)
-        : m_Destination(dst),
-          m_Encoding(encoding)
-    {}
-
-    void encode(uint32_t codePoint)
+    template <typename OutIt, typename Enc>
+    class Encoder
     {
-        m_Encoding.encode(m_Destination, codePoint);
-    }
+    public:
+        typedef OutIt Iterator;
+        typedef Enc Encoding;
 
-    void encodeAsBytes(uint32_t codePoint)
+        Encoder(OutIt dst, Encoding encoding)
+            : m_Destination(dst),
+              m_Encoding(encoding)
+        {}
+
+        void encode(uint32_t codePoint)
+        {
+            m_Encoding.encode(m_Destination, codePoint);
+        }
+
+        void encodeAsBytes(uint32_t codePoint)
+        {
+            m_Encoding.encodeAsBytes(m_Destination, codePoint);
+        }
+
+        Encoding getEncoding() const
+        {
+            return m_Encoding;
+        }
+
+        OutIt getIterator() const
+        {
+            return m_Destination;
+        }
+    private:
+        OutIt m_Destination;
+        Encoding m_Encoding;
+    };
+
+    template <typename OutIt, typename Enc>
+    Encoder<OutIt, Enc> makeEncoder(OutIt dst, Enc encoding)
     {
-        m_Encoding.encodeAsBytes(m_Destination, codePoint);
+        return Encoder<OutIt, Enc>(dst, encoding);
     }
-
-    Encoding getEncoding() const
-    {
-        return m_Encoding;
-    }
-
-    OutIt getIterator() const
-    {
-        return m_Destination;
-    }
-private:
-    OutIt m_Destination;
-    Encoding m_Encoding;
-};
-
-template <typename OutIt, typename Enc>
-Encoder<OutIt, Enc> makeEncoder(OutIt dst, Enc encoding)
-{
-    return Encoder<OutIt, Enc>(dst, encoding);
-}
-
 }}

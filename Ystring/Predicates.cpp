@@ -7,32 +7,31 @@
 //****************************************************************************
 #include "Predicates.hpp"
 
-namespace Ystring {
-
-#ifdef _WIN32
-
-bool isPathSeparator(uint32_t chr)
+namespace Ystring
 {
-    return isWindowsPathSeparator(chr);
-}
+    #ifdef _WIN32
 
-#else
+    bool isPathSeparator(uint32_t chr)
+    {
+        return isWindowsPathSeparator(chr);
+    }
 
-bool isPathSeparator(uint32_t chr)
-{
-    return isWindowsPathSeparator(chr);
-}
+    #else
 
-#endif
+    bool isPathSeparator(uint32_t chr)
+    {
+        return isWindowsPathSeparator(chr);
+    }
 
-bool isWindowsPathSeparator(uint32_t chr)
-{
-    return chr == '/' || chr == '\\';
-}
+    #endif
 
-bool isPosixPathSeparator(uint32_t chr)
-{
-    return chr == '/';
-}
+    bool isWindowsPathSeparator(uint32_t chr)
+    {
+        return chr == '/' || chr == '\\';
+    }
 
+    bool isPosixPathSeparator(uint32_t chr)
+    {
+        return chr == '/';
+    }
 }

@@ -18,29 +18,29 @@
   *     in the standard library's algorithm header.
   */
 
-namespace Ystring { namespace Utilities {
-
-template <typename RndIt, typename T, typename UnaryFunc>
-RndIt findLowerBound(RndIt beg, RndIt end, const T& value, UnaryFunc keyFunc)
+namespace Ystring { namespace Utilities
 {
-    while (beg != end)
+    template <typename RndIt, typename T, typename UnaryFunc>
+    RndIt findLowerBound(RndIt beg, RndIt end, const T& value,
+                         UnaryFunc keyFunc)
     {
-        RndIt mid = beg + std::distance(beg, end) / 2;
-        if (keyFunc(*mid) < value)
-            beg = mid + 1;
-        else
-            end = mid;
+        while (beg != end)
+        {
+            RndIt mid = beg + std::distance(beg, end) / 2;
+            if (keyFunc(*mid) < value)
+                beg = mid + 1;
+            else
+                end = mid;
+        }
+        return beg;
     }
-    return beg;
-}
 
-template <typename RndIt, typename T, typename UnaryFunc>
-RndIt binaryFind(RndIt beg, RndIt end, const T& value, UnaryFunc keyFunc)
-{
-    RndIt it = findLowerBound(beg, end, value, keyFunc);
-    if (it == end || value < keyFunc(*it))
-      return end;
-    return it;
-}
-
+    template <typename RndIt, typename T, typename UnaryFunc>
+    RndIt binaryFind(RndIt beg, RndIt end, const T& value, UnaryFunc keyFunc)
+    {
+        RndIt it = findLowerBound(beg, end, value, keyFunc);
+        if (it == end || value < keyFunc(*it))
+          return end;
+        return it;
+    }
 }}

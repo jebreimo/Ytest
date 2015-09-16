@@ -11,47 +11,48 @@
 #include "../Encoded/Appender.hpp"
 #include "../Encoded/Encoder.hpp"
 
-namespace Ystring { namespace Generic {
-
-template <typename String>
-class StringReference
+namespace Ystring { namespace Generic
 {
-public:
-    typedef typename String::value_type ValueType;
-    typedef std::back_insert_iterator<String> BackInsertIterator;
-
-    StringReference(String& str)
-        : m_String(str)
-    {}
-
-    Encoded::Appender<String> getAppender()
+    template <typename String>
+    class StringReference
     {
-        return Encoded::Appender<String>(m_String);
-    }
+    public:
+        typedef typename String::value_type ValueType;
+        typedef std::back_insert_iterator<String> BackInsertIterator;
 
-    template <typename Enc>
-    Encoded::Encoder<BackInsertIterator, Enc> getEncoder(Enc encoding)
+        StringReference(String& str)
+            : m_String(str)
+        {}
+
+        Encoded::Appender<String> getAppender()
+        {
+            return Encoded::Appender<String>(m_String);
+        }
+
+        template <typename Enc>
+        Encoded::Encoder<BackInsertIterator, Enc> getEncoder(Enc encoding)
+        {
+            return Encoded::makeEncoder(std::back_inserter(m_String),
+                                        encoding);
+        }
+
+        void reserve(size_t size)
+        {
+            if (size)
+                m_String.reserve(m_String.size() + size);
+        }
+
+        void terminate()
+        {}
+    private:
+        String& m_String;
+    };
+
+    template <typename T>
+    StringReference<T> makeStringReference(T& str)
     {
-        return Encoded::makeEncoder(std::back_inserter(m_String), encoding);
+        using namespace std;
+        return StringReference<T>(str);
     }
-
-    void reserve(size_t size)
-    {
-        if (size)
-            m_String.reserve(m_String.size() + size);
-    }
-
-    void terminate()
-    {}
-private:
-    String& m_String;
-};
-
-template <typename T>
-StringReference<T> makeStringReference(T& str)
-{
-    using namespace std;
-    return StringReference<T>(str);
-}
 
 }}

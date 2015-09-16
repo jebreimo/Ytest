@@ -7,19 +7,18 @@
 //****************************************************************************
 #pragma once
 
-namespace Ystring {
-
-struct DecoderResult
+namespace Ystring
 {
-    enum Type
+    struct DecoderResult
     {
-        OK = 0,
-        END_OF_STRING = 1,
-        INCOMPLETE = 2,
-        INVALID = 4,
+        enum Type
+        {
+            OK = 0,
+            END_OF_STRING = 1,
+            INCOMPLETE = 2,
+            INVALID = 4,
+        };
     };
-};
 
-typedef DecoderResult::Type DecoderResult_t;
-
+    typedef DecoderResult::Type DecoderResult_t;
 }

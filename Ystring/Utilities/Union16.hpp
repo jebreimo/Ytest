@@ -10,39 +10,38 @@
 #include <algorithm>
 #include <cstdint>
 
-namespace Ystring { namespace Utilities {
-
-union Union16
+namespace Ystring { namespace Utilities
 {
-    Union16() : u16(0)
-    {}
-
-    explicit Union16(uint16_t n) : u16(n)
-    {}
-
-    template <typename T>
-    explicit Union16(const T (&n)[2])
+    union Union16
     {
-        u8[0] = static_cast<uint8_t>(n[0]);
-        u8[1] = static_cast<uint8_t>(n[1]);
-    }
+        Union16() : u16(0)
+        {}
 
-    template <typename T>
-    Union16(T a, T b)
-    {
-        u8[0] = static_cast<uint8_t>(a);
-        u8[1] = static_cast<uint8_t>(b);
-    }
+        explicit Union16(uint16_t n) : u16(n)
+        {}
 
-    void reverse()
-    {
-        std::swap(u8[0], u8[1]);
-    }
+        template <typename T>
+        explicit Union16(const T (&n)[2])
+        {
+            u8[0] = static_cast<uint8_t>(n[0]);
+            u8[1] = static_cast<uint8_t>(n[1]);
+        }
 
-    uint16_t u16;
-    int16_t i16;
-    uint8_t u8[2];
-    int8_t i8[2];
-};
+        template <typename T>
+        Union16(T a, T b)
+        {
+            u8[0] = static_cast<uint8_t>(a);
+            u8[1] = static_cast<uint8_t>(b);
+        }
 
+        void reverse()
+        {
+            std::swap(u8[0], u8[1]);
+        }
+
+        uint16_t u16;
+        int16_t i16;
+        uint8_t u8[2];
+        int8_t i8[2];
+    };
 }}

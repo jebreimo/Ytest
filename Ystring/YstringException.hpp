@@ -19,22 +19,21 @@
 	#define _NOEXCEPT
 #endif
 
-namespace Ystring {
-
-class YSTRING_API YstringException : public std::logic_error
+namespace Ystring
 {
-public:
-    YstringException();
-    YstringException(const std::string& msg);
-    YstringException(const std::string& msg,
-                     const std::string& filename,
-                     int lineno,
-                     const std::string& funcname);
-    const char* what() const _NOEXCEPT;
-private:
-    std::string m_Message;
-};
-
+    class YSTRING_API YstringException : public std::logic_error
+    {
+    public:
+        YstringException();
+        YstringException(const std::string& msg);
+        YstringException(const std::string& msg,
+                         const std::string& filename,
+                         int lineno,
+                         const std::string& funcname);
+        const char* what() const _NOEXCEPT;
+    private:
+        std::string m_Message;
+    };
 }
 
 #define YSTRING_THROW(msg) \

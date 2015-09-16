@@ -11,20 +11,20 @@
 #include "CharMap.hpp"
 #include "StandardUpperCase.hpp"
 
-namespace Ystring { namespace Unicode {
-
-namespace
+namespace Ystring { namespace Unicode
 {
-    CharMap g_UpperMap(
-            CompactUpperCaseMappings,
-            std::extent<decltype(CompactUpperCaseMappings), 0>::value,
-            UpperCaseMappings,
-            std::extent<decltype(UpperCaseMappings), 0>::value);
-}
+    namespace
+    {
+        CharMap g_UpperMap(
+                CompactUpperCaseMappings,
+                std::extent<decltype(CompactUpperCaseMappings), 0>::value,
+                UpperCaseMappings,
+                std::extent<decltype(UpperCaseMappings), 0>::value);
+    }
 
-uint32_t upper(uint32_t ch)
-{
-    return g_UpperMap.get(ch);
-}
 
+    uint32_t upper(uint32_t ch)
+    {
+        return g_UpperMap.get(ch);
+    }
 }}

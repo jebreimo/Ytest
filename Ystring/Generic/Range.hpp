@@ -12,126 +12,126 @@
 #include <string>
 #include <utility>
 
-namespace Ystring { namespace Generic {
-
-template <typename IteratorT>
-class Range
+namespace Ystring { namespace Generic
 {
-public:
-    typedef IteratorT Iterator;
-    typedef std::iterator_traits<Iterator> IteratorTraits;
-    typedef typename IteratorTraits::value_type ValueType;
-
-    Range()
-    {}
-
-    Range(Iterator first, Iterator last)
-        : m_Range(first, last)
-    {}
-
-    Range(std::pair<Iterator, Iterator> range)
-        : m_Range(range)
-    {}
-
-    operator std::pair<Iterator, Iterator>()
+    template <typename IteratorT>
+    class Range
     {
-        return m_Range;
+    public:
+        typedef IteratorT Iterator;
+        typedef std::iterator_traits<Iterator> IteratorTraits;
+        typedef typename IteratorTraits::value_type ValueType;
+
+        Range()
+        {}
+
+        Range(Iterator first, Iterator last)
+            : m_Range(first, last)
+        {}
+
+        Range(std::pair<Iterator, Iterator> range)
+            : m_Range(range)
+        {}
+
+        operator std::pair<Iterator, Iterator>()
+        {
+            return m_Range;
+        }
+
+        Iterator& begin()
+        {
+            return m_Range.first;
+        }
+
+        Iterator begin() const
+        {
+            return m_Range.first;
+        }
+
+        Iterator& end()
+        {
+            return m_Range.second;
+        }
+
+        Iterator end() const
+        {
+            return m_Range.second;
+        }
+    private:
+        std::pair<Iterator, Iterator> m_Range;
+    };
+
+    template <typename Iterator>
+    Iterator begin(Range<Iterator> range)
+    {
+        return range.begin();
     }
 
-    Iterator& begin()
+    template <typename Iterator>
+    Iterator end(Range<Iterator> range)
     {
-        return m_Range.first;
+        return range.end();
     }
 
-    Iterator begin() const
+    template <typename Iterator>
+    bool empty(const Range<Iterator>& range)
     {
-        return m_Range.first;
+        return begin(range) == end(range);
     }
 
-    Iterator& end()
+    template <typename Iterator>
+    Range<Iterator> makeRange(Iterator first, Iterator last)
     {
-        return m_Range.second;
+        return Range<Iterator>(first, last);
     }
 
-    Iterator end() const
+    template <typename Container>
+    auto makeRange(const Container& c) -> Range<decltype(begin(c))>
     {
-        return m_Range.second;
+        return makeRange(begin(c), end(c));
     }
-private:
-    std::pair<Iterator, Iterator> m_Range;
-};
 
-template <typename Iterator>
-Iterator begin(Range<Iterator> range)
-{
-    return range.begin();
-}
+    template <typename Container>
+    auto makeRange(Container& c) -> Range<decltype(begin(c))>
+    {
+        return makeRange(begin(c), end(c));
+    }
 
-template <typename Iterator>
-Iterator end(Range<Iterator> range)
-{
-    return range.end();
-}
+    template <typename T, size_t N>
+    Range<T*> makeArrayRange(T (&a)[N])
+    {
+        return makeRange<T*>(a, a + N - (a[N - 1] ? 0 : 1));
+    }
 
-template <typename Iterator>
-bool empty(const Range<Iterator>& range)
-{
-    return begin(range) == end(range);
-}
+    template <typename T>
+    Range<T*> makeRange(T* s)
+    {
+        return makeRange(s, s + std::char_traits<T>::length(s));
+    }
 
-template <typename Iterator>
-Range<Iterator> makeRange(Iterator first, Iterator last)
-{
-    return Range<Iterator>(first, last);
-}
+    template <typename Iterator>
+    Range<Iterator> makeRange(std::pair<Iterator, Iterator> p)
+    {
+        return Range<Iterator>(p);
+    }
 
-template <typename Container>
-auto makeRange(const Container& c) -> Range<decltype(begin(c))>
-{
-    return makeRange(begin(c), end(c));
-}
+    template <typename Iterator>
+    Range<std::reverse_iterator<Iterator>>
+    makeReverseRange(Range<Iterator> range)
+    {
+        return makeRange(std::reverse_iterator<Iterator>(range.end()),
+                         std::reverse_iterator<Iterator>(range.begin()));
+    }
 
-template <typename Container>
-auto makeRange(Container& c) -> Range<decltype(begin(c))>
-{
-    return makeRange(begin(c), end(c));
-}
+    template <typename Iterator>
+    size_t getSize(const Range<Iterator>& range)
+    {
+        return static_cast<size_t>(std::distance(begin(range), end(range)));
+    }
 
-template <typename T, size_t N>
-Range<T*> makeArrayRange(T (&a)[N])
-{
-    return makeRange<T*>(a, a + N - (a[N - 1] ? 0 : 1));
-}
-
-template <typename T>
-Range<T*> makeRange(T* s)
-{
-    return makeRange(s, s + std::char_traits<T>::length(s));
-}
-
-template <typename Iterator>
-Range<Iterator> makeRange(std::pair<Iterator, Iterator> p)
-{
-    return Range<Iterator>(p);
-}
-
-template <typename Iterator>
-Range<std::reverse_iterator<Iterator>> makeReverseRange(Range<Iterator> range)
-{
-    return makeRange(std::reverse_iterator<Iterator>(range.end()),
-                     std::reverse_iterator<Iterator>(range.begin()));
-}
-
-template <typename Iterator>
-size_t getSize(const Range<Iterator>& range)
-{
-    return static_cast<size_t>(std::distance(begin(range), end(range)));
-}
-
-template <typename Container, typename Iterator>
-Container fromRange(Range<Iterator> range)
-{
-    return Container(begin(range), end(range));
-}
-
+    template <typename Container, typename Iterator>
+    Container fromRange(Range<Iterator> range)
+    {
+        return Container(begin(range), end(range));
+    }
 }}

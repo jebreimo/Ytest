@@ -14,12 +14,11 @@
   * @brief Defines character predicates.
   */
 
-namespace Ystring {
-
+namespace Ystring
+{
 YSTRING_API bool isPathSeparator(uint32_t chr);
 
 YSTRING_API bool isWindowsPathSeparator(uint32_t chr);
 
 YSTRING_API bool isPosixPathSeparator(uint32_t chr);
-
 }
