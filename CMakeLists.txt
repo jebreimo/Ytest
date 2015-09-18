@@ -73,4 +73,9 @@ add_library(
     $<TARGET_OBJECTS:Ytest_Ystring>
     )
 
+set_target_properties(
+    ${PROJECT_NAME}
+    PROPERTIES
+    DEBUG_OUTPUT_NAME "${PROJECT_NAME}.debug")
+
 add_subdirectory(Examples)
