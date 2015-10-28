@@ -25,6 +25,7 @@ set(SOURCE_FILES
     Ytest/AutoTestRunner.cpp
     Ytest/Error.cpp
     Ytest/Exceptions.cpp
+    Ytest/Formatters.cpp
     Ytest/Indentation.cpp
     Ytest/JUnitReport.cpp
     Ytest/MacroUtilities.cpp

@@ -13,6 +13,18 @@
 
 namespace Ytest
 {
+    std::ostream& operator<<(std::ostream& os, const std::wstring& s);
+
+    std::ostream& operator<<(std::ostream& os, const wchar_t* s);
+
+    std::ostream& operator<<(std::ostream& os, const std::u16string& s);
+
+    std::ostream& operator<<(std::ostream& os, const char16_t* s);
+
+    std::ostream& operator<<(std::ostream& os, const std::u32string& s);
+
+    std::ostream& operator<<(std::ostream& os, const char32_t* s);
+
     template<typename T, typename U>
     std::ostream& operator<<(std::ostream& os, const std::pair<T, U>& p)
     {
