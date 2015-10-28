@@ -11,13 +11,13 @@
     #pragma comment (lib, "Ytest.lib")
 #endif
 
-#include "AutoTest.hpp"
-#include "AutoTestRunner.hpp"
-#include "Macros.hpp"
-#include "Session.hpp"
+#include "Ytest/AutoTest.hpp"
+#include "Ytest/AutoTestRunner.hpp"
+#include "Ytest/Macros.hpp"
+#include "Ytest/Session.hpp"
 
 #ifdef Y_MAIN
 
-#include "YtestMain.hpp"
+#include "Ytest/YtestMain.hpp"
 
 #endif

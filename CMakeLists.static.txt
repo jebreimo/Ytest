@@ -8,8 +8,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(Ytest)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
-
 add_definitions(-DYstring=Ytest_Ystring)
 
 if(APPLE)
@@ -76,6 +74,4 @@ add_library(
 set_target_properties(
     ${PROJECT_NAME}
     PROPERTIES
-    DEBUG_OUTPUT_NAME "${PROJECT_NAME}.debug")
-
-add_subdirectory(Examples)
+        DEBUG_OUTPUT_NAME "${PROJECT_NAME}.debug")
