@@ -7,6 +7,7 @@
 //****************************************************************************
 #include "AutoTestRunner.hpp"
 
+#include <algorithm>
 #include "AutoTest.hpp"
 #include "Exceptions.hpp"
 #include "Session.hpp"
