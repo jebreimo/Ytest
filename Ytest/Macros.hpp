@@ -216,6 +216,18 @@
     Y_IMPL_THROWS(expr, exception, FatalFailure, __FILE__, __LINE__, \
                   #expr " didn't throw exception \"" #exception "\"")
 
+#define Y_NO_THROW(expr, exception) \
+    do { \
+        try { \
+            expr; \
+            ::JEBTest::Session::instance().assertPassed(); \
+        } catch (const exception&) { \
+            throw ::JEBTest::TestFailure( \
+                    __FILE__, __LINE__, \
+                    #expr " threw exception " #exception); \
+        } \
+    } while (false)
+
 #define Y_IMPL_EXPECT(cond, file, line, msg) \
     do { \
         if (cond) { \
