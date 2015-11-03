@@ -167,6 +167,7 @@
         try { \
             name(__VA_ARGS__); \
         } catch (const ::Ytest::AbstractFailure& ex) { \
+            ex.addContext(__FILE__, __LINE__, #name "(" #__VA_ARGS__ ")"); \
             ::Ytest::Session::instance().testFailed(ex.error()); \
             if (ex.error().type() != ::Ytest::Error::Failure) \
                 throw; \
