@@ -7,38 +7,20 @@
 //****************************************************************************
 #pragma once
 
+#include "../Endianness.hpp"
+#include "../PlatformDetails.hpp"
 #include "Union16.hpp"
 #include "Union32.hpp"
 
-#define JB_LITTLE_ENDIAN
-
 namespace Ystring { namespace Utilities
 {
-    #ifdef JB_LITTLE_ENDIAN
-
-    static const bool IsBigEndian = false;
-
-    #else
-
-    static const bool IsBigEndian = true;
-
-    #endif
-
-    static const bool IsLittleEndian = !IsBigEndian;
-
-    enum Endianness
-    {
-        UnknownEndianness,
-        BigEndian,
-        LittleEndian
-    };
-
     /** @brief Returns the system's endianness.
      */
-    inline Endianness systemEndianness()
+    inline Endianness_t systemEndianness()
     {
         Union16 u(1);
-        return u.u8[0] == 0 ? BigEndian : LittleEndian;
+        return u.u8[0] == 0 ? Endianness::BIG
+                            : Endianness::LITTLE;
     }
 
     inline uint8_t reverseBytes(uint8_t v)
@@ -47,6 +29,11 @@ namespace Ystring { namespace Utilities
     }
 
     inline int8_t reverseBytes(int8_t v)
+    {
+        return v;
+    }
+
+    inline char reverseBytes(char v)
     {
         return v;
     }
@@ -86,6 +73,24 @@ namespace Ystring { namespace Utilities
         value.reverse();
         return value;
     }
+
+#ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
+
+    inline char16_t reverseBytes(char16_t v)
+    {
+        Union16 u(v);
+        u.reverse();
+        return char16_t(u.u16);
+    }
+
+    inline char32_t reverseBytes(char32_t v)
+    {
+        Union32 u(v);
+        u.reverse();
+        return char32_t(u.u32);
+    }
+
+#endif
 
     template <bool SwapBytes, typename T>
     struct EndianSwapper

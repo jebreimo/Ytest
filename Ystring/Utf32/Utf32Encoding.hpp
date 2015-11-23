@@ -21,6 +21,14 @@ namespace Ystring { namespace Utf32
                                                : Encoding::UTF_32_LE;
         typedef uint32_t CanonicalType;
 
+        template<typename FwdIt>
+        bool next(FwdIt& it, FwdIt last)
+        {
+            uint32_t codePoint;
+            return nextUtf32CodePoint<SwapBytes>(codePoint, it, last) ==
+                   DecoderResult::OK;
+        }
+
         template <typename FwdIt>
         bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
         {
@@ -81,6 +89,6 @@ namespace Ystring { namespace Utf32
     };
 
     typedef Utf32EncodingImpl<false> Utf32Encoding;
-    typedef Utf32EncodingImpl<Utilities::IsBigEndian> Utf32LEEncoding;
-    typedef Utf32EncodingImpl<Utilities::IsLittleEndian> Utf32BEEncoding;
+    typedef Utf32EncodingImpl<IsBigEndian> Utf32LEEncoding;
+    typedef Utf32EncodingImpl<IsLittleEndian> Utf32BEEncoding;
 }}

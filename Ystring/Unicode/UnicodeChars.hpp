@@ -355,5 +355,6 @@ namespace Ystring { namespace Unicode
     static const uint32_t WORD_JOINER = 0x2060u;
     static const uint32_t IDEOGRAPHIC_SPACE = 0x3000u;
     static const uint32_t ZERO_WIDTH_NO_BREAK_SPACE = 0xFEFFu;
+    static const uint32_t REPLACEMENT_CHARACTER = 0xFFFDu;
     static const uint32_t INVALID = 0xFFFFFFFFu;
 }}

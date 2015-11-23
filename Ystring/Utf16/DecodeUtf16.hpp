@@ -15,9 +15,6 @@
 
 namespace Ystring { namespace Utf16
 {
-    using Utilities::IsBigEndian;
-    using Utilities::IsLittleEndian;
-
     template <bool SwapBytes, typename FwdIt>
     DecoderResult_t nextUtf16CodePoint(uint32_t& codePoint,
                                        FwdIt& it, FwdIt end);
@@ -55,31 +52,31 @@ namespace Ystring { namespace Utf16
     }
 
     template <bool SwapBytes, typename FwdIt>
-    bool skipNextUtf16CodePoint(FwdIt& it, FwdIt end, size_t count);
+    bool skipNextUtf16CodePoint(FwdIt& it, FwdIt end, size_t count = 1);
 
     template <typename FwdIt>
-    bool skipNextUtf16LECodePoint(FwdIt& it, FwdIt end, size_t count)
+    bool skipNextUtf16LECodePoint(FwdIt& it, FwdIt end, size_t count = 1)
     {
         return skipNextUtf16CodePoint<IsBigEndian>(it, end, count);
     }
 
     template <typename FwdIt>
-    bool skipNextUtf16BECodePoint(FwdIt& it, FwdIt end, size_t count)
+    bool skipNextUtf16BECodePoint(FwdIt& it, FwdIt end, size_t count = 1)
     {
         return skipNextUtf16CodePoint<IsLittleEndian>(it, end, count);
     }
 
     template <bool SwapBytes, typename BiIt>
-    bool skipPrevUtf16CodePoint(BiIt begin, BiIt& it, size_t count);
+    bool skipPrevUtf16CodePoint(BiIt begin, BiIt& it, size_t count = 1);
 
     template <typename BiIt>
-    bool skipPrevUtf16LECodePoint(BiIt begin, BiIt& it, size_t count)
+    bool skipPrevUtf16LECodePoint(BiIt begin, BiIt& it, size_t count = 1)
     {
         return skipPrevUtf16CodePoint<IsBigEndian>(begin, it, count);
     }
 
     template <typename BiIt>
-    bool skipPrevUtf16BECodePoint(BiIt begin, BiIt& it, size_t count)
+    bool skipPrevUtf16BECodePoint(BiIt begin, BiIt& it, size_t count = 1)
     {
         return skipPrevUtf16CodePoint<IsLittleEndian>(begin, it, count);
     }

@@ -11,8 +11,6 @@
 
 namespace Ystring { namespace Utf32
 {
-    using Ystring::Utilities::IsBigEndian;
-    using Ystring::Utilities::IsLittleEndian;
     using Ystring::Utilities::swapEndianness;
 
     namespace Detail

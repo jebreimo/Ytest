@@ -31,18 +31,29 @@ namespace Ystring {
               */
             UTF_8,
             /** @brief ASCII extended with most characters used in
-              *     Western Europe.
+              *     Western European languages.
               */
             ISO_8859_1,
             /** @brief An alias for ISO 8859-1.
               */
             LATIN_1 = ISO_8859_1,
+            /** @brief Same as ISO 8859-1 except 8 rarely used characters
+              *     have been replaced with more commonly used ones
+              *     (e.g. the euro symbol €).
+              */
+            ISO_8859_15,
+            /** @brief An alias for ISO 8859-15.
+              */
+            LATIN_9 = ISO_8859_15,
             /** @brief The Windows version of ISO 8859.
               */
             WINDOWS_1252,
             /** @brief The most common MS DOS encoding.
               */
             CP_437,
+            /** @brief The most common MS DOS encoding.
+              */
+            CP_850,
             /** @brief Big Endian UTF-16.
               */
             UTF_16_BE,

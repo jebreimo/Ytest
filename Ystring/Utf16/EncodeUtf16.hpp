@@ -25,6 +25,9 @@ namespace Ystring { namespace Utf16
     template <typename OutIt>
     OutIt addUtf16BE(OutIt out, uint32_t codePoint);
 
+    template <bool SwapBytes, typename OutIt>
+    OutIt addUtf16AsBytes(OutIt out, uint32_t codePoint);
+
     template <typename FwdIt>
     size_t encodeUtf16(FwdIt& begin, FwdIt end, uint32_t codePoint);
     template <typename FwdIt>

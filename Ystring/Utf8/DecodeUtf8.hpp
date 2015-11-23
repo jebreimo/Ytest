@@ -46,10 +46,10 @@ namespace Ystring { namespace Utf8
                                       BiIt begin, BiIt& it);
 
     template <typename FwdIt>
-    bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end, size_t count);
+    bool skipNextUtf8CodePoint(FwdIt& it, FwdIt end, size_t count = 1);
 
     template <typename BiIt>
-    bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it, size_t count);
+    bool skipPrevUtf8CodePoint(BiIt begin, BiIt& it, size_t count = 1);
 }}
 
 #include "DecodeUtf8-impl.hpp"

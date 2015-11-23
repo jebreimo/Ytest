@@ -348,3 +348,4 @@
 #define UTF8_WORD_JOINER                         "\xE2\x81\xA0"
 #define UTF8_IDEOGRAPHIC_SPACE                   "\xE3\x80\x80"
 #define UTF8_ZERO_WIDTH_NO_BREAK_SPACE           "\xEF\xBB\xBF"
+#define UTF8_REPLACEMENT_CHARACTER               "\xEF\xBF\xBD"

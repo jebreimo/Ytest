@@ -31,6 +31,11 @@ namespace Ystring
       */
     static const uint32_t INVALID_CHAR = 0xFFFFFFFFul;
 
+    /** @brief The namespace for everything specific to single byte
+      *     character sets.
+      */
+    namespace CodePage {}
+
     /** @brief The namespace for functions and types related
       *     to unicode code-points.
       */

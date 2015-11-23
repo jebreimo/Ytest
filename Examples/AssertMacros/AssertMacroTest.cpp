@@ -152,15 +152,20 @@ namespace {
 
     void stringTypes_u16()
     {
+#if (!defined(_MSC_VER) || _MSC_VER >= 1900)
         std::u16string s(u"FooBar");
         Y_EQUAL(s, u"Foozball");
+#endif
     }
 
     void stringTypes_u32()
     {
+#if (!defined(_MSC_VER) || _MSC_VER >= 1900)
         std::u32string s(U"FooBar");
         Y_EQUAL(s, U"Foozball");
+#endif
     }
+
 
     void stringTypes_w()
     {

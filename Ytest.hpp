@@ -7,10 +7,6 @@
 //****************************************************************************
 #pragma once
 
-#ifdef _WIN32
-    #pragma comment (lib, "Ytest.lib")
-#endif
-
 #include "Ytest/AutoTest.hpp"
 #include "Ytest/AutoTestRunner.hpp"
 #include "Ytest/Macros.hpp"
