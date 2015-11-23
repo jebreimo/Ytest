@@ -28,6 +28,9 @@ set(PRIVATE_HEADERS
     Encoded/ForwardDecoder.hpp
     Encoded/ReverseDecoder.hpp
     Generic/StringReference.hpp
+    Generic/GenericConvert.hpp
+    Generic/GenericJoin.hpp
+    Generic/GenericSplit.hpp
     Generic/GenericString.hpp
     Generic/GenericString-impl.hpp
     Generic/Range.hpp
