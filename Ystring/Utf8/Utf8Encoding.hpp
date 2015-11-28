@@ -20,6 +20,14 @@ namespace Ystring { namespace Utf8
         typedef char CanonicalType;
 
         template <typename FwdIt>
+        bool next(FwdIt& it, FwdIt last)
+        {
+            uint32_t codePoint;
+            return nextUtf8CodePoint(codePoint, it, last) ==
+                    DecoderResult::OK;
+        }
+
+        template <typename FwdIt>
         bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
         {
             switch (nextUtf8CodePoint(codePoint, it, last))

@@ -21,19 +21,62 @@ namespace Ystring { namespace Utf8
         {
             return  (c & 0x80) == 0;
         }
+
+        template<typename FwdIt>
+        FwdIt findEndOfCodePoint(FwdIt begin, FwdIt end)
+        {
+            while (begin != end && isContinuation(*begin))
+                ++begin;
+            return begin;
+        }
     }
 
-    template <typename FwdIt>
-    bool isValidUtf8(FwdIt begin, FwdIt end, bool acceptIncompleteAtEnd)
+    template<typename FwdIt>
+    std::tuple<FwdIt, FwdIt, DecoderResult_t> nextInvalidUtf8CodePoint(
+            FwdIt begin, FwdIt end)
     {
-        unsigned cp;
-        unsigned result;
-        while ((result = nextUtf8CodePoint(cp, begin, end)) == 0)
+        for (auto it = begin; it != end; ++it)
         {
+            if (Detail::isAscii(*it))
+                continue;
+
+            if (Detail::isContinuation(*it))
+            {
+                return std::make_tuple(
+                        it, Detail::findEndOfCodePoint(it, end),
+                        DecoderResult::INVALID);
+            }
+
+            auto first = it;
+            auto bits = *it;
+            auto bit = 0x40u;
+            while (bit & bits)
+            {
+                if (++it == end)
+                {
+                    return std::make_tuple(
+                            first, it, DecoderResult::INCOMPLETE);
+                }
+                if (!Detail::isContinuation(*it))
+                    return std::make_tuple(first, it, DecoderResult::INVALID);
+                bit >>= 1;
+            }
+            if (bits >= 0xFE)
+                return std::make_tuple(first, it, DecoderResult::INVALID);
         }
-        return (result == DecoderResult::END_OF_STRING) ||
-               (acceptIncompleteAtEnd &&
-                       (result & DecoderResult::END_OF_STRING));
+
+        return std::make_tuple(end, end, DecoderResult::OK);
+    }
+
+    template<typename FwdIt>
+    bool isValidUtf8(FwdIt begin, FwdIt end, bool acceptIncomplete)
+    {
+        auto tuple = nextInvalidUtf8CodePoint(begin, end);
+        auto result = std::get<2>(tuple);
+        if (result == DecoderResult::OK)
+            return true;
+        return result == DecoderResult::OK
+            || (result == DecoderResult::INCOMPLETE && acceptIncomplete);
     }
 
     template <typename FwdIt>
