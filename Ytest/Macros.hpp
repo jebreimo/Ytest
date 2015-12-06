@@ -221,9 +221,9 @@
     do { \
         try { \
             expr; \
-            ::JEBTest::Session::instance().assertPassed(); \
+            ::Ytest::Session::instance().assertPassed(); \
         } catch (const exception&) { \
-            throw ::JEBTest::TestFailure( \
+            throw ::Ytest::TestFailure( \
                     __FILE__, __LINE__, \
                     #expr " threw exception " #exception); \
         } \
