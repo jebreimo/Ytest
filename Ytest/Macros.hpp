@@ -378,6 +378,13 @@
                       resultYtest.second); \
     } while (false)
 
+#define Y_EQUIVALENT_RANGES(a, b, epsilon) \
+    do { \
+        auto resultYtest = ::Ytest::equivalentRanges(a, b, epsilon, #a, #b); \
+        Y_IMPL_ASSERT(resultYtest.first, TestFailure, __FILE__, __LINE__, \
+                      resultYtest.second); \
+    } while (false)
+
 /** @brief Verifies that number @a a is sufficiently close to @a b.
   */
 #define Y_EQUIVALENT(a, b, epsilon) \
