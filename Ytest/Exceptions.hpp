@@ -56,4 +56,14 @@ namespace Ytest
                      const std::string& message);
         ~FatalFailure();
     };
+
+    class UnhandledException : public AbstractFailure
+    {
+    public:
+        UnhandledException(const std::string& file,
+                           unsigned lineNo,
+                           const std::string& message);
+
+        ~UnhandledException();
+    };
 }
