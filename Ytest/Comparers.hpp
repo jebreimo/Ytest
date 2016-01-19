@@ -79,7 +79,8 @@ namespace Ytest
     template <typename T, typename U, typename V>
     bool equivalent(T a, U b, V epsilon)
     {
-        return std::abs(a - b) <= epsilon;
+        using namespace std;
+        return abs(a - b) <= epsilon;
     }
 
     template <typename T, typename U>
@@ -128,6 +129,46 @@ namespace Ytest
             ss << aName << " != " << bName << ": the former has " << i
                << " elements while the latter has "
                << i + std::distance(itB, end(b)) << " elements.";
+            return std::make_pair(false, ss.str());
+        }
+        return std::make_pair(true, std::string());
+    }
+
+
+    template <typename Range1, typename Range2, typename Epsilon>
+    inline std::pair<bool, std::string> equivalentRanges(
+            Range1&& a, Range2&& b, Epsilon epsilon,
+            const std::string& aName, const std::string& bName)
+    {
+        using namespace std;
+        auto itA = begin(a);
+        auto itB = begin(b);
+        size_t i = 0;
+        for (; itA != end(a) && itB != end(b); ++itA, ++itB)
+        {
+            if (!equivalent(*itA, *itB, epsilon))
+            {
+                std::stringstream ss;
+                ss << aName << "[" << i << "] != " << bName << "[" << i
+                << "]: \"" << *itA << "\" != \"" << *itB << "\".";
+                return std::make_pair(false, ss.str());
+            }
+            ++i;
+        }
+        if (itA != end(a))
+        {
+            std::stringstream ss;
+            ss << aName << " != " << bName << ": the former has "
+            << i + std::distance(itA, end(a))
+            << " elements while the latter has " << i << " elements.";
+            return std::make_pair(false, ss.str());
+        }
+        if (itB != end(b))
+        {
+            std::stringstream ss;
+            ss << aName << " != " << bName << ": the former has " << i
+            << " elements while the latter has "
+            << i + std::distance(itB, end(b)) << " elements.";
             return std::make_pair(false, ss.str());
         }
         return std::make_pair(true, std::string());

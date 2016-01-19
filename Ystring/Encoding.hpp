@@ -37,6 +37,13 @@ namespace Ystring {
             /** @brief An alias for ISO 8859-1.
               */
             LATIN_1 = ISO_8859_1,
+            /** @brief ASCII extended with the characters used in
+              *     Nordic languages.
+              */
+            ISO_8859_10,
+            /** @brief An alias for ISO 8859-10.
+              */
+            LATIN_6 = ISO_8859_10,
             /** @brief Same as ISO 8859-1 except 8 rarely used characters
               *     have been replaced with more commonly used ones
               *     (e.g. the euro symbol €).
@@ -50,10 +57,10 @@ namespace Ystring {
             WINDOWS_1252,
             /** @brief The most common MS DOS encoding.
               */
-            CP_437,
-            /** @brief The most common MS DOS encoding.
+            IBM_437,
+            /** @brief The MS DOS encoding used in Nordic countries.
               */
-            CP_850,
+            IBM_850,
             /** @brief Big Endian UTF-16.
               */
             UTF_16_BE,

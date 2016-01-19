@@ -80,6 +80,10 @@ namespace Ystring { namespace Utf16
     {
         return skipPrevUtf16CodePoint<IsLittleEndian>(begin, it, count);
     }
+
+    template<bool SwapBytes, typename FwdIt>
+    std::tuple<FwdIt, FwdIt, DecoderResult_t> nextInvalidUtf16CodePoint(
+            FwdIt it, FwdIt end);
 }}
 
 #include "DecodeUtf16-impl.hpp"

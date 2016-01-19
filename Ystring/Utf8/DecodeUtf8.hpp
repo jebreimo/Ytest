@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <iterator>
 #include <limits>
+#include <tuple>
 #include "../DecoderResult.hpp"
 
 /** @file
@@ -20,7 +21,11 @@ namespace Ystring { namespace Utf8
 {
     template <typename FwdIt>
     bool isValidUtf8(FwdIt begin, FwdIt end,
-                     bool acceptIncompleteAtEnd = false);
+                     bool acceptIncomplete = false);
+
+    template<typename FwdIt>
+    std::tuple<FwdIt, FwdIt, DecoderResult_t> nextInvalidUtf8CodePoint(
+            FwdIt begin, FwdIt end);
 
     /** @brief Assigns to @a codePoint the code point starting at @a it.
       *

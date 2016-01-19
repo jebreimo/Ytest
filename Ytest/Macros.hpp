@@ -31,7 +31,7 @@
 /** @brief Internal macro. Used by other macros to create unique
   *     variable names.
   */
-#define Y_PRIV_UNIQUE_NAME_EXPANDER2(a, b) a##b
+#define Y_PRIV_UNIQUE_NAME_EXPANDER2(a, b) YTest_##a##b
 
 /** @brief Internal macro. Used by other macros to create unique
   *     variable names.
@@ -105,8 +105,8 @@
 #define Y_SUBTEST(path, ...) \
     static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
+        std::function<void()> YTest_tests[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, YTest_tests); \
     } \
     static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
             (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_), (path))
@@ -114,8 +114,8 @@
 #define Y_PRIORITIZED_TEST(priority, ...) \
     static void Y_PRIV_UNIQUE_NAME(Y_suite_)() \
     { \
-        std::function<void()> tests_Y_[] = {__VA_ARGS__}; \
-        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, tests_Y_); \
+        std::function<void()> YTest_tests[] = {__VA_ARGS__}; \
+        ::Ytest::runTests(__FILE__, __LINE__, #__VA_ARGS__, YTest_tests); \
     } \
     static ::Ytest::AutoTest Y_PRIV_UNIQUE_NAME(Y_suite_instance_) \
             (__FILE__, Y_PRIV_UNIQUE_NAME(Y_suite_), "", (priority))
@@ -190,10 +190,14 @@
     do { \
         try { \
             expr; \
-            throw ::Ytest::failure(file, line, msg); \
         } catch (const exception&) { \
             ::Ytest::Session::instance().assertPassed(); \
+            break; \
+        } catch (...) { \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, \
+                                              "Unhandled exception."); \
         } \
+        throw ::Ytest::failure(file, line, msg); \
     } while (false)
 
 /** @brief Macro for verifying that an expression throws an exception.
@@ -217,26 +221,43 @@
     Y_IMPL_THROWS(expr, exception, FatalFailure, __FILE__, __LINE__, \
                   #expr " didn't throw exception \"" #exception "\"")
 
+#define YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
+    catch (::Ytest::AbstractFailure&) { \
+        throw; \
+    } catch (std::exception& YTest_ex) { \
+        std::ostringstream YTest_os; \
+        YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
+        throw ::Ytest::UnhandledException(file, line, YTest_os.str()); \
+    } catch (...) { \
+        throw ::Ytest::UnhandledException(file, line, \
+                                          "Unhandled exception."); \
+    }
+
 #define Y_NO_THROW(expr, exception) \
     do { \
         try { \
             expr; \
-            ::JEBTest::Session::instance().assertPassed(); \
+            ::Ytest::Session::instance().assertPassed(); \
         } catch (const exception&) { \
-            throw ::JEBTest::TestFailure( \
+            throw ::Ytest::TestFailure( \
                     __FILE__, __LINE__, \
                     #expr " threw exception " #exception); \
+        } catch (...) { \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, \
+                                              "Unhandled exception."); \
         } \
     } while (false)
 
 #define Y_IMPL_EXPECT(cond, file, line, msg) \
     do { \
-        if (cond) { \
-            ::Ytest::Session::instance().assertPassed(); \
-        } else { \
-            ::Ytest::Session::instance().testFailed(::Ytest::Error( \
-                    file, line, msg, ::Ytest::Error::Failure)); \
-        } \
+        try { \
+            if (cond) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                ::Ytest::Session::instance().testFailed(::Ytest::Error( \
+                        file, line, msg, ::Ytest::Error::Failure)); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
 #define Y_EXPECT(cond) \
@@ -252,24 +273,25 @@
         if (cond) { \
             ::Ytest::Session::instance().assertPassed(); \
         } else { \
-            std::ostringstream Y_os; \
-            Y_os << "Error: " #cond ". " << msg; \
+            std::ostringstream YTest_os; \
+            YTest_os << "Error: " #cond ". " << msg; \
             ::Ytest::Session::instance().testFailed(::Ytest::Error( \
-                    __FILE__, __LINE__, Y_os.str(), \
+                    __FILE__, __LINE__, YTest_os.str(), \
                     ::Ytest::Error::Failure)); \
         } \
     } while (false)
-
 
 /** @brief Internal macro. Used by other assert macros.
   */
 #define Y_IMPL_ASSERT(cond, failure, file, line, msg) \
     do { \
-        if (cond) { \
-            ::Ytest::Session::instance().assertPassed(); \
-        } else { \
-            throw ::Ytest::failure(file, line, msg); \
-        } \
+        try { \
+            if (cond) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                throw ::Ytest::failure(file, line, msg); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
 /** @brief Verifies that condition @a cond is true.
@@ -290,13 +312,15 @@
 
 #define Y_IMPL_ASSERT_MSG(cond, condStr, failure, file, line, msg) \
     do { \
-        if (cond) { \
-            ::Ytest::Session::instance().assertPassed(); \
-        } else { \
-            std::ostringstream Y_os; \
-            Y_os << "Assertion failed: " condStr ". " << msg; \
-            throw ::Ytest::failure(file, line, Y_os.str()); \
-        } \
+        try { \
+            if (cond) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                std::ostringstream Y_os; \
+                Y_os << "Assertion failed: " condStr ". " << msg; \
+                throw ::Ytest::failure(file, line, Y_os.str()); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
 /** @brief Verifies that condition @a cond is true.
@@ -319,27 +343,35 @@
 
 #define Y_IMPL_COMPARISON(test, a, b, failure, file, line, cmpStr) \
     do { \
-        auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
-        auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
-        Y_IMPL_ASSERT( \
-                test(Y_PRIV_UNIQUE_NAME(aa), Y_PRIV_UNIQUE_NAME(bb)), \
-                failure, file, line, \
-                ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
-                                          Y_PRIV_UNIQUE_NAME(bb), #b, \
-                                          cmpStr)); \
+        try { \
+            auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
+            auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
+            if (test(Y_PRIV_UNIQUE_NAME(aa), Y_PRIV_UNIQUE_NAME(bb))) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                throw ::Ytest::failure(file, line, \
+                    ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
+                                              Y_PRIV_UNIQUE_NAME(bb), #b, \
+                                              cmpStr)); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
 #define Y_IMPL_EQUIVALENT(a, b, epsilon, failure, file, line) \
     do { \
-        auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
-        auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
-        Y_IMPL_ASSERT( \
-                ::Ytest::equivalent(Y_PRIV_UNIQUE_NAME(aa), \
-                                    Y_PRIV_UNIQUE_NAME(bb), epsilon), \
-                failure, file, line, \
-                ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
-                                          Y_PRIV_UNIQUE_NAME(bb), #b, \
-                                          "!=")); \
+        try { \
+            auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
+            auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
+            if (::Ytest::equivalent(Y_PRIV_UNIQUE_NAME(aa), \
+                                    Y_PRIV_UNIQUE_NAME(bb), epsilon)) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                throw ::Ytest::failure(file, line, \
+                    ::Ytest::formatComparison(Y_PRIV_UNIQUE_NAME(aa), #a, \
+                                              Y_PRIV_UNIQUE_NAME(bb), #b, \
+                                              "!=")); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
 /** @brief Verifies that @a a equals @a b.
@@ -373,9 +405,29 @@
 
 #define Y_EQUAL_RANGES(a, b) \
     do { \
-        auto resultYtest = ::Ytest::equalRanges(a, b, #a, #b); \
-        Y_IMPL_ASSERT(resultYtest.first, TestFailure, __FILE__, __LINE__, \
-                      resultYtest.second); \
+        try { \
+            auto Y_PRIV_UNIQUE_NAME(r) = ::Ytest::equalRanges(a, b, #a, #b); \
+            if (Y_PRIV_UNIQUE_NAME(r).first) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                throw ::Ytest::TestFailure(__FILE__, __LINE__, \
+                                           Y_PRIV_UNIQUE_NAME(r).second); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(__FILE__, __LINE__) \
+    } while (false)
+
+#define Y_EQUIVALENT_RANGES(a, b, epsilon) \
+    do { \
+        try { \
+            auto Y_PRIV_UNIQUE_NAME(r) = ::Ytest::equivalentRanges(a, b, \
+                     epsilon, #a, #b); \
+            if (Y_PRIV_UNIQUE_NAME(r).first) { \
+                ::Ytest::Session::instance().assertPassed(); \
+            } else { \
+                throw ::Ytest::TestFailure(__FILE__, __LINE__, \
+                                           Y_PRIV_UNIQUE_NAME(r).second); \
+            } \
+        } YTEST_CATCH_UNEXPECTED_EXCEPTION(__FILE__, __LINE__) \
     } while (false)
 
 /** @brief Verifies that number @a a is sufficiently close to @a b.
@@ -436,10 +488,17 @@
         { \
             expr; \
         } \
-        catch (::Ytest::TestFailure& ex) \
+        catch (::Ytest::TestFailure& YTest_ex) \
         { \
-            ex.addContext(__FILE__, __LINE__, #expr); \
-            throw ex; \
+            YTest_ex.addContext(__FILE__, __LINE__, #expr); \
+            throw YTest_ex; \
+        } catch (std::exception& YTest_ex) { \
+            std::ostringstream YTest_os; \
+            YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, YTest_os.str()); \
+        } catch (...) { \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, \
+                                              "Unhandled exception."); \
         } \
     } while (false)
 
@@ -449,12 +508,19 @@
         { \
             expr; \
         } \
-        catch (::Ytest::TestFailure& ex) \
+        catch (::Ytest::TestFailure& YTest_ex) \
         { \
-            std::stringstream ss; \
-            ss << #expr " // " #arg1 "=" << arg1; \
-            ex.addContext(__FILE__, __LINE__, ss.str()); \
-            throw ex; \
+            std::stringstream YTest_ss; \
+            YTest_ss << #expr " // " #arg1 "=" << arg1; \
+            YTest_ex.addContext(__FILE__, __LINE__, YTest_ss.str()); \
+            throw YTest_ex; \
+        } catch (std::exception& YTest_ex) { \
+            std::ostringstream YTest_os; \
+            YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, YTest_os.str()); \
+        } catch (...) { \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, \
+                                              "Unhandled exception."); \
         } \
     } while (false)
 
@@ -464,11 +530,18 @@
         { \
             expr; \
         } \
-        catch (::Ytest::TestFailure& ex) \
+        catch (::Ytest::TestFailure& YTest_ex) \
         { \
-            std::stringstream ss; \
-            ss << #expr " // " #arg1 "=" << arg1 << ", " #arg2 "=" << arg2; \
-            ex.addContext(__FILE__, __LINE__, ss.str()); \
-            throw ex; \
+            std::stringstream YTest_ss; \
+            YTest_ss << #expr " // " #arg1 "=" << arg1 << ", " #arg2 "=" << arg2; \
+            YTest_ex.addContext(__FILE__, __LINE__, YTest_ss.str()); \
+            throw YTest_ex; \
+        } catch (std::exception& YTest_ex) { \
+            std::ostringstream YTest_os; \
+            YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, YTest_os.str()); \
+        } catch (...) { \
+            throw ::Ytest::UnhandledException(__FILE__, __LINE__, \
+                                              "Unhandled exception."); \
         } \
     } while (false)

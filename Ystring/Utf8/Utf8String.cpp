@@ -104,16 +104,6 @@ namespace Ystring { namespace Utf8
     {
         switch (encoding)
         {
-        case Encoding::UTF_16_BE:
-            return Generic::convert<String>(
-                    makeRange(str, str + length),
-                    Utf16::Utf16BEEncoding(),
-                    Enc());
-        case Encoding::UTF_16_LE:
-            return Generic::convert<String>(
-                    makeRange(str, str + length),
-                    Utf16::Utf16LEEncoding(),
-                    Enc());
         case Encoding::UTF_32_BE:
             return Generic::convert<String>(
                     makeRange(str, str + length),

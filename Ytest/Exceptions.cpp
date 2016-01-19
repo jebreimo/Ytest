@@ -60,4 +60,14 @@ namespace Ytest
 
     FatalFailure::~FatalFailure()
     {}
+
+    UnhandledException::UnhandledException(const std::string& file,
+                                           unsigned lineNo,
+                                           const std::string& message)
+        : AbstractFailure(Error(file, lineNo, message,
+                                Error::UnhandledException))
+    {}
+
+    UnhandledException::~UnhandledException()
+    {}
 }
