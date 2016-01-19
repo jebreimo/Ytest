@@ -118,7 +118,8 @@ namespace Ystring { namespace Generic
         }
         uint32_t chr;
         if (!encoding.next(chr, it, str.end()))
-            YSTRING_THROW("No character at position " + std::to_string(pos));
+            YSTRING_THROW("No character at position "
+                          + std::to_string(int64_t(pos)));
         return chr;
     }
 
