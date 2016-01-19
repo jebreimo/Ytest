@@ -80,3 +80,7 @@ set_target_properties(
     DEBUG_OUTPUT_NAME "${PROJECT_NAME}.debug")
 
 add_subdirectory(Examples)
+
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(FILES ${PUBLIC_HEADERS}
+        DESTINATION include/${PROJECT_NAME})
