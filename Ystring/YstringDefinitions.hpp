@@ -1,6 +1,6 @@
 //****************************************************************************
-// Copyright � 2015, Jan Erik Breimo.
-// Created 2015-07-10 by Jan Erik Breimo
+// Copyright © 2015 Jan Erik Breimo. All rights reserved.
+// Created by Jan Erik Breimo on 2015-07-10.
 //
 // This file is distributed under the Simplified BSD License.
 // License text is included with the source distribution.
@@ -10,7 +10,7 @@
 
 /** @file
   * @brief Defines constants and macros shared by all the other files
-  *     in @a JEBString.
+  *     in @a Ystring.
   */
 
 /// @cond
