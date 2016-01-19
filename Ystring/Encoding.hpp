@@ -52,7 +52,10 @@ namespace Ystring {
             /** @brief An alias for ISO 8859-15.
               */
             LATIN_9 = ISO_8859_15,
-            /** @brief The Windows version of ISO 8859.
+            /** @brief The Windows equivalent to ISO 8859-3.
+              */
+            WINDOWS_1250,
+            /** @brief The Windows equivalent to ISO 8859-1.
               */
             WINDOWS_1252,
             /** @brief The most common MS DOS encoding.
