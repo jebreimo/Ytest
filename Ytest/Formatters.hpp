@@ -9,7 +9,6 @@
 
 #include <sstream>
 #include <typeinfo>
-#include "../Ystring/Streaming/StreamOperators.hpp"
 
 namespace Ytest
 {
