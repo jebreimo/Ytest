@@ -166,12 +166,12 @@
         ::Ytest::TestScope scope(#name); \
         try { \
             name(__VA_ARGS__); \
-        } catch (const ::Ytest::AbstractFailure& ex) { \
+        } catch (::Ytest::AbstractFailure& ex) { \
             ex.addContext(__FILE__, __LINE__, #name "(" #__VA_ARGS__ ")"); \
             ::Ytest::Session::instance().testFailed(ex.error()); \
             if (ex.error().type() != ::Ytest::Error::Failure) \
                 throw; \
-        } catch (const std::exception& ex) { \
+        } catch (std::exception& ex) { \
             ::Ytest::Session::instance().testFailed(::Ytest::Error( \
                     __FILE__, __LINE__, \
                     std::string("Unhandled exception: \"") + ex.what() \
