@@ -23,6 +23,9 @@ set(PRIVATE_HEADERS
     YstringException.hpp
     Conversion/AbstractDecoder.hpp
     Conversion/AbstractEncoder.hpp
+    Conversion/Convert.hpp
+    Conversion/Converter.hpp
+    Conversion/ErrorHandlingPolicy.hpp
     Conversion/Utf16Decoder.hpp
     Conversion/Utf16Encoder.hpp
     Conversion/Utf32Decoder.hpp
@@ -42,7 +45,11 @@ set(PRIVATE_HEADERS
     Encodings/EncodeUtf8-impl.hpp
     Encodings/EncodeUtf8.hpp
     Generic/Appender.hpp
+    Generic/DecoderAlgorithms.hpp
+    Generic/DecoderStringFunctions-impl.hpp
+    Generic/DecoderStringFunctions.hpp
     Generic/Encoder.hpp
+    Generic/ForwardDecoder.hpp
     Generic/GenericConvert.hpp
     Generic/GenericJoin.hpp
     Generic/GenericSplit.hpp
@@ -50,6 +57,7 @@ set(PRIVATE_HEADERS
     Generic/GenericString-impl.hpp
     Generic/Range.hpp
     Generic/RangeAlgorithms.hpp
+    Generic/ReverseDecoder.hpp
     Generic/StringReference.hpp
     Generic/StringTypeTraits.hpp
     Streaming/StreamOperators.hpp
