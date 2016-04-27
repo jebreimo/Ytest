@@ -8,8 +8,8 @@
 #pragma once
 
 #include "../Encoding.hpp"
-#include "DecodeUtf8.hpp"
-#include "EncodeUtf8.hpp"
+#include "../Encodings/DecodeUtf8.hpp"
+#include "../Encodings/EncodeUtf8.hpp"
 
 namespace Ystring { namespace Utf8
 {
@@ -22,15 +22,15 @@ namespace Ystring { namespace Utf8
         template <typename FwdIt>
         bool next(FwdIt& it, FwdIt last)
         {
-            uint32_t codePoint;
-            return nextUtf8CodePoint(codePoint, it, last) ==
+            char32_t codePoint;
+            return Encodings::nextUtf8CodePoint(codePoint, it, last) ==
                     DecoderResult::OK;
         }
 
         template <typename FwdIt>
-        bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
+        bool next(char32_t& codePoint, FwdIt& it, FwdIt last)
         {
-            switch (nextUtf8CodePoint(codePoint, it, last))
+            switch (Encodings::nextUtf8CodePoint(codePoint, it, last))
             {
                 case DecoderResult::END_OF_STRING:
                     return false;
@@ -47,13 +47,13 @@ namespace Ystring { namespace Utf8
         template <typename FwdIt>
         bool skipNext(FwdIt& it, FwdIt last, size_t count)
         {
-            return skipNextUtf8CodePoint(it, last, count);
+            return Encodings::skipNextUtf8CodePoint(it, last, count);
         }
 
         template <typename BiIt>
-        bool prev(uint32_t& codePoint, BiIt first, BiIt& it)
+        bool prev(char32_t& codePoint, BiIt first, BiIt& it)
         {
-            switch (prevUtf8CodePoint(codePoint, first, it))
+            switch (Encodings::prevUtf8CodePoint(codePoint, first, it))
             {
                 case DecoderResult::END_OF_STRING:
                     return false;
@@ -70,19 +70,19 @@ namespace Ystring { namespace Utf8
         template <typename BiIt>
         bool skipPrev(BiIt first, BiIt& it, size_t count)
         {
-            return skipPrevUtf8CodePoint(first, it, count);
+            return Encodings::skipPrevUtf8CodePoint(first, it, count);
         }
 
         template <typename OutIt>
-        OutIt encode(OutIt dst, uint32_t codePoint)
+        OutIt encode(OutIt dst, char32_t codePoint)
         {
-            return addUtf8(dst, codePoint);
+            return Encodings::addUtf8(dst, codePoint);
         }
 
         template <typename OutIt>
-        OutIt encodeAsBytes(OutIt dst, uint32_t codePoint)
+        OutIt encodeAsBytes(OutIt dst, char32_t codePoint)
         {
-            return addUtf8(dst, codePoint);
+            return Encodings::addUtf8(dst, codePoint);
         }
     };
 }}

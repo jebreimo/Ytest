@@ -11,7 +11,7 @@
 
 namespace Ystring { namespace Utilities
 {
-    inline int countHexDigits(uint32_t c)
+    inline int countHexDigits(char32_t c)
     {
         auto count = 1;
         while (c >>= 4)
@@ -20,10 +20,10 @@ namespace Ystring { namespace Utilities
     }
 
     template <typename FwdIt>
-    uint32_t fromOct(FwdIt& first, FwdIt last,
+    char32_t fromOct(FwdIt& first, FwdIt last,
                      size_t minLength = 1, size_t maxLength = SIZE_MAX)
     {
-        uint32_t result = 0;
+        char32_t result = 0;
         for (size_t i = 0; i < maxLength; ++i)
         {
             if (first == last && i < minLength)
@@ -43,15 +43,15 @@ namespace Ystring { namespace Utilities
     }
 
     template <typename FwdIt>
-    uint32_t fromHex(FwdIt& first, FwdIt last,
+    char32_t fromHex(FwdIt& first, FwdIt last,
                      size_t minLength = 1, size_t maxLength = SIZE_MAX)
     {
-        uint32_t result = 0;
+        char32_t result = 0;
         for (size_t i = 0; i < maxLength; ++i)
         {
             if (first == last && i < minLength)
                 YSTRING_THROW("Hexadecimal sequence is too short.");
-            uint32_t tmp = *first;
+            char32_t tmp = *first;
             if ('0' <= tmp && tmp <= '9')
                 result = result * 16 + tmp - '0';
             else if ('A' <= tmp && tmp <= 'F')

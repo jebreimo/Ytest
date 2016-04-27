@@ -19,20 +19,16 @@
 #ifdef _MSC_VER
     #define YSTRING_WCHAR_IS_2_BYTES
     #if _MSC_VER >= 1900
-        static_assert(!std::is_same<char16_t, uint16_t>::value,
-                      "char16_t and uint16_t can't be the same type.");
-        static_assert(!std::is_same<char32_t, uint32_t>::value,
-                      "char16_t and uint16_t can't be the same type.");
+        static_assert(!std::is_same<wchar_t, char16_t>::value,
+                      "wchar_t and char16_t can't be the same type.");
         #define YSTRING_CPP11_CHAR_TYPES_SUPPORTED
     #endif
 #else
     static_assert(sizeof(wchar_t) == 4, "Size of wchar_t isn't 4 bytes.");
     #define YSTRING_WCHAR_IS_4_BYTES
 
-    static_assert(!std::is_same<char16_t, uint16_t>::value,
-                  "char16_t and uint16_t can't be the same type.");
-    static_assert(!std::is_same<char32_t, uint32_t>::value,
-                  "char16_t and uint16_t can't be the same type.");
+    static_assert(!std::is_same<wchar_t, char32_t>::value,
+                  "wchar_t and char32_t can't be the same type.");
     #define YSTRING_CPP11_CHAR_TYPES_SUPPORTED
 #endif
 

@@ -9,7 +9,7 @@
 
 #include "../FindFlags.hpp"
 
-namespace Ystring { namespace Encoded {
+namespace Ystring { namespace EncodedString {
     template <typename Decoder>
     bool advanceCharacter(Decoder& it);
 

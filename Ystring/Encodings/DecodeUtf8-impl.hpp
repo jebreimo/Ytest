@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <cassert>
 
-namespace Ystring { namespace Utf8
+namespace Ystring { namespace Encodings
 {
     namespace Detail
     {
@@ -17,7 +17,7 @@ namespace Ystring { namespace Utf8
             return (c & 0xC0) == 0x80;
         }
 
-        static inline bool isAscii(uint32_t c)
+        static inline bool isAscii(char32_t c)
         {
             return  (c & 0x80) == 0;
         }
@@ -61,7 +61,7 @@ namespace Ystring { namespace Utf8
                     return std::make_tuple(first, it, DecoderResult::INVALID);
                 bit >>= 1;
             }
-            if (bits >= 0xFE)
+            if (((bits & 0xFC) ^ 0xFC) < 0xC)
                 return std::make_tuple(first, it, DecoderResult::INVALID);
         }
 
@@ -80,7 +80,7 @@ namespace Ystring { namespace Utf8
     }
 
     template <typename FwdIt>
-    DecoderResult_t nextUtf8CodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf8CodePoint(char32_t& codePoint,
                                       FwdIt& it, FwdIt end)
     {
         if (it == end)
@@ -126,7 +126,7 @@ namespace Ystring { namespace Utf8
     }
 
     template <typename BiIt>
-    DecoderResult_t prevUtf8CodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf8CodePoint(char32_t& codePoint,
                                       BiIt begin, BiIt& it)
     {
         if (it == begin)
@@ -143,7 +143,7 @@ namespace Ystring { namespace Utf8
         codePoint = 0;
         uint8_t mask = 0xC0;
         uint8_t bit = 0x20;
-        uint32_t shift = 0;
+        char32_t shift = 0;
         while (Detail::isContinuation(*it))
         {
             if (bit == 1 || it == begin)
@@ -153,7 +153,7 @@ namespace Ystring { namespace Utf8
             }
             mask |= bit;
             bit >>= 1;
-            codePoint |= uint32_t(*it & 0x3F) << shift;
+            codePoint |= char32_t(*it & 0x3F) << shift;
             shift += 6;
             --it;
         }

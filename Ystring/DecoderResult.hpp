@@ -16,7 +16,7 @@ namespace Ystring
             OK = 0,
             END_OF_STRING = 1,
             INCOMPLETE = 2,
-            INVALID = 4,
+            INVALID = 4
         };
     };
 

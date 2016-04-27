@@ -8,8 +8,8 @@
 #pragma once
 
 #include "../Encoding.hpp"
-#include "DecodeUtf16.hpp"
-#include "EncodeUtf16.hpp"
+#include "../Encodings/DecodeUtf16.hpp"
+#include "../Encodings/EncodeUtf16.hpp"
 
 namespace Ystring { namespace Utf16
 {
@@ -24,15 +24,15 @@ namespace Ystring { namespace Utf16
         template<typename FwdIt>
         bool next(FwdIt& it, FwdIt last)
         {
-            uint32_t codePoint;
-            return nextUtf16CodePoint<SwapBytes>(codePoint, it, last) ==
-                    DecoderResult::OK;
+            char32_t codePoint;
+            return Encodings::nextUtf16CodePoint<SwapBytes>(codePoint, it, last)
+                   == DecoderResult::OK;
         }
 
         template <typename FwdIt>
-        bool next(uint32_t& codePoint, FwdIt& it, FwdIt last)
+        bool next(char32_t& codePoint, FwdIt& it, FwdIt last)
         {
-            switch (nextUtf16CodePoint<SwapBytes>(codePoint, it, last))
+            switch (Encodings::nextUtf16CodePoint<SwapBytes>(codePoint, it, last))
             {
                 case DecoderResult::END_OF_STRING:
                     return false;
@@ -47,9 +47,9 @@ namespace Ystring { namespace Utf16
         }
 
         template <typename BiIt>
-        bool prev(uint32_t& codePoint, BiIt first, BiIt& it)
+        bool prev(char32_t& codePoint, BiIt first, BiIt& it)
         {
-            switch (prevUtf16CodePoint<SwapBytes>(codePoint, first, it))
+            switch (Encodings::prevUtf16CodePoint<SwapBytes>(codePoint, first, it))
             {
                 case DecoderResult::END_OF_STRING:
                     return false;
@@ -66,25 +66,25 @@ namespace Ystring { namespace Utf16
         template <typename FwdIt>
         bool skipNext(FwdIt& it, FwdIt last, size_t count)
         {
-            return skipNextUtf16CodePoint<SwapBytes>(it, last, count);
+            return Encodings::skipNextUtf16CodePoint<SwapBytes>(it, last, count);
         }
 
         template <typename BiIt>
         bool skipPrev(BiIt first, BiIt& it, size_t count)
         {
-            return skipPrevUtf16CodePoint<SwapBytes>(first, it, count);
+            return Encodings::skipPrevUtf16CodePoint<SwapBytes>(first, it, count);
         }
 
         template <typename OutIt>
-        OutIt encode(OutIt dst, uint32_t codePoint)
+        OutIt encode(OutIt dst, char32_t codePoint)
         {
-            return addUtf16(dst, codePoint);
+            return Encodings::addUtf16(dst, codePoint);
         }
 
         template <typename OutIt>
-        OutIt encodeAsBytes(OutIt dst, uint32_t codePoint)
+        OutIt encodeAsBytes(OutIt dst, char32_t codePoint)
         {
-            return addUtf16AsBytes<SwapBytes>(dst, codePoint);
+            return Encodings::addUtf16AsBytes<SwapBytes>(dst, codePoint);
         }
     };
 

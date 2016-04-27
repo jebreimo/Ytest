@@ -13,39 +13,39 @@
 #include "../DecoderResult.hpp"
 #include "../Utilities/Endian.hpp"
 
-namespace Ystring { namespace Utf32
+namespace Ystring { namespace Encodings
 {
     template <bool SwapBytes, typename FwdIt>
-    DecoderResult_t nextUtf32CodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf32CodePoint(char32_t& codePoint,
                                        FwdIt& it, FwdIt end);
 
     template <typename FwdIt>
-    DecoderResult_t nextUtf32LECodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf32LECodePoint(char32_t& codePoint,
                                          FwdIt& it, FwdIt end)
     {
         return nextUtf32CodePoint<IsBigEndian>(codePoint, it, end);
     }
 
     template <typename FwdIt>
-    DecoderResult_t nextUtf32BECodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf32BECodePoint(char32_t& codePoint,
                                          FwdIt& it, FwdIt end)
     {
         return nextUtf32CodePoint<IsLittleEndian>(codePoint, it, end);
     }
 
     template <bool SwapBytes, typename BiIt>
-    DecoderResult_t prevUtf32CodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf32CodePoint(char32_t& codePoint,
                                        BiIt begin, BiIt& it);
 
     template <typename BiIt>
-    DecoderResult_t prevUtf32LECodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf32LECodePoint(char32_t& codePoint,
                                          BiIt begin, BiIt& it)
     {
         return prevUtf32CodePoint<IsBigEndian>(codePoint, begin, it);
     }
 
     template <typename BiIt>
-    DecoderResult_t prevUtf32BECodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf32BECodePoint(char32_t& codePoint,
                                          BiIt begin, BiIt& it)
     {
         return prevUtf32CodePoint<IsLittleEndian>(codePoint, begin, it);

@@ -27,18 +27,18 @@ namespace Ystring
 
     YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int8_t, char);
     YSTRING_DEFINE_INTERNAL_CHAR_TYPE(uint8_t, char);
-    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int16_t, uint16_t);
-    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int32_t, uint32_t);
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int16_t, char16_t);
+    YSTRING_DEFINE_INTERNAL_CHAR_TYPE(int32_t, char32_t);
 
     #ifdef YSTRING_WCHAR_IS_2_BYTES
-        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint16_t);
+        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, char16_t);
     #else
-        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, uint32_t);
+        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(wchar_t, char32_t);
     #endif
 
     #ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
-        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(char16_t, uint16_t);
-        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(char32_t, uint32_t);
+        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(uint16_t, char16_t);
+        YSTRING_DEFINE_INTERNAL_CHAR_TYPE(uint32_t, char32_t);
     #endif
 
     template <typename T>

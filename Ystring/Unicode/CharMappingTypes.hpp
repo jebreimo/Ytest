@@ -15,17 +15,17 @@ namespace Ystring { namespace Unicode
 {
     struct YSTRING_API CompactCharMapping
     {
-        uint32_t segment;
-        uint32_t offset;
-        uint32_t affected;
-        uint32_t ignorable;
+        char32_t segment;
+        char32_t offset;
+        char32_t affected;
+        char32_t ignorable;
 
-        bool get(uint32_t chr, uint32_t& mappedChr) const;
+        bool get(char32_t chr, char32_t& mappedChr) const;
     };
 
     struct CharMapping
     {
-        uint32_t chr;
-        uint32_t mappedChr;
+        char32_t chr;
+        char32_t mappedChr;
     };
 }}

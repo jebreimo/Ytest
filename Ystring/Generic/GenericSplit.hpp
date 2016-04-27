@@ -8,9 +8,9 @@
 #pragma once
 #include <vector>
 #include "../SplitFlags.hpp"
-#include "../Encoded/DecoderStringFunctions.hpp"
-#include "../Encoded/ForwardDecoder.hpp"
-#include "../Encoded/ReverseDecoder.hpp"
+#include "DecoderStringFunctions.hpp"
+#include "ForwardDecoder.hpp"
+#include "ReverseDecoder.hpp"
 #include "RangeAlgorithms.hpp"
 #include "StringTypeTraits.hpp"
 
@@ -51,16 +51,16 @@ namespace Ystring { namespace Generic {
     {
         if (maxSplits >= 0)
             return Detail::splitImpl<Str>(
-                    Encoded::makeForwardDecoder(str, encoding),
-                    [&](Encoded::ForwardDecoder<It, Enc>& d)
+                    EncodedString::makeForwardDecoder(str, encoding),
+                    [&](EncodedString::ForwardDecoder<It, Enc>& d)
                     {
                         return nextToken(d, predicate);
                     },
                     maxSplits, flags);
         else
             return Detail::splitImpl<Str>(
-                    Encoded::makeReverseDecoder(str, encoding),
-                    [&](Encoded::ReverseDecoder<It, Enc>& d)
+                    EncodedString::makeReverseDecoder(str, encoding),
+                    [&](EncodedString::ReverseDecoder<It, Enc>& d)
                     {
                         return nextToken(d, predicate);
                     },
@@ -101,16 +101,16 @@ namespace Ystring { namespace Generic {
     {
         if (maxSplits >= 0)
             return Detail::splitImpl<Str>(
-                    Encoded::makeForwardDecoder(str, encoding),
-                    [&](Encoded::ForwardDecoder<It, Enc>& d)
+                    EncodedString::makeForwardDecoder(str, encoding),
+                    [&](EncodedString::ForwardDecoder<It, Enc>& d)
                     {
                         return nextLine(d);
                     },
                     maxSplits, flags);
         else
             return Detail::splitImpl<Str>(
-                    Encoded::makeReverseDecoder(str, encoding),
-                    [&](Encoded::ReverseDecoder<It, Enc>& d)
+                    EncodedString::makeReverseDecoder(str, encoding),
+                    [&](EncodedString::ReverseDecoder<It, Enc>& d)
                     {
                         return nextLine(d);
                     },
@@ -258,10 +258,10 @@ namespace Ystring { namespace Generic {
             auto findFlags = SplitFlags::toFindFlags(flags);
             if (maxSplits >= 0)
             {
-                auto cmpDec = Encoded::makeForwardDecoder(cmp, encoding);
+                auto cmpDec = EncodedString::makeForwardDecoder(cmp, encoding);
                 return splitImpl<Str>(
-                        Encoded::makeForwardDecoder(str, encoding),
-                        [=](Encoded::ForwardDecoder<It1, Enc>& d)
+                        EncodedString::makeForwardDecoder(str, encoding),
+                        [=](EncodedString::ForwardDecoder<It1, Enc>& d)
                         {
                             return nextToken(d, cmpDec, findFlags);
                         },
@@ -269,10 +269,10 @@ namespace Ystring { namespace Generic {
             }
             else
             {
-                auto cmpDec = Encoded::makeReverseDecoder(cmp, encoding);
+                auto cmpDec = EncodedString::makeReverseDecoder(cmp, encoding);
                 return splitImpl<Str>(
-                        Encoded::makeReverseDecoder(str, encoding),
-                        [=](Encoded::ReverseDecoder<It1, Enc>& d)
+                        EncodedString::makeReverseDecoder(str, encoding),
+                        [=](EncodedString::ReverseDecoder<It1, Enc>& d)
                         {
                             return nextToken(d, cmpDec, findFlags);
                         },

@@ -7,8 +7,8 @@
 //****************************************************************************
 #pragma once
 
-#include "../Encoded/DecoderStringFunctions.hpp"
-#include "../Encoded/ForwardDecoder.hpp"
+#include "DecoderStringFunctions.hpp"
+#include "ForwardDecoder.hpp"
 #include "StringReference.hpp"
 #include "StringTypeTraits.hpp"
 
@@ -83,7 +83,7 @@ namespace Ystring { namespace Generic {
                                std::true_type)
         {
             appendBytes(dst.getEncoder(dstEncoding),
-                        Encoded::makeForwardDecoder(src, srcEncoding));
+                        EncodedString::makeForwardDecoder(src, srcEncoding));
             dst.terminate();
         }
 
@@ -93,7 +93,7 @@ namespace Ystring { namespace Generic {
                                std::false_type)
         {
             append(dst.getEncoder(dstEncoding),
-                   Encoded::makeForwardDecoder(src, srcEncoding));
+                   EncodedString::makeForwardDecoder(src, srcEncoding));
             dst.terminate();
         }
     }

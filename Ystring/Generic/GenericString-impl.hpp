@@ -7,10 +7,10 @@
 //****************************************************************************
 #pragma once
 
-#include "../Encoded/DecoderStringFunctions.hpp"
-#include "../Encoded/Encoder.hpp"
-#include "../Encoded/ForwardDecoder.hpp"
-#include "../Encoded/ReverseDecoder.hpp"
+#include "DecoderStringFunctions.hpp"
+#include "Encoder.hpp"
+#include "ForwardDecoder.hpp"
+#include "ReverseDecoder.hpp"
 #include "GenericConvert.hpp"
 #include "GenericJoin.hpp"
 #include "GenericSplit.hpp"
@@ -57,8 +57,8 @@ namespace Ystring { namespace Generic
                                    Enc encoding)
     {
         return caseInsensitiveCompare(
-                Encoded::makeForwardDecoder(str, encoding),
-                Encoded::makeForwardDecoder(cmp, encoding));
+                EncodedString::makeForwardDecoder(str, encoding),
+                EncodedString::makeForwardDecoder(cmp, encoding));
     }
 
     template <typename It1, typename It2, typename Enc>
@@ -67,8 +67,8 @@ namespace Ystring { namespace Generic
                               Enc encoding)
     {
         return caseInsensitiveEqual(
-                Encoded::makeForwardDecoder(str, encoding),
-                Encoded::makeForwardDecoder(cmp, encoding));
+                EncodedString::makeForwardDecoder(str, encoding),
+                EncodedString::makeForwardDecoder(cmp, encoding));
     }
 
     template <typename It1, typename It2, typename Enc>
@@ -77,14 +77,14 @@ namespace Ystring { namespace Generic
                              Enc encoding)
     {
         return caseInsensitiveLess(
-                Encoded::makeForwardDecoder(str, encoding),
-                Encoded::makeForwardDecoder(cmp, encoding));
+                EncodedString::makeForwardDecoder(str, encoding),
+                EncodedString::makeForwardDecoder(cmp, encoding));
     }
 
     template <typename It, typename Enc>
     size_t countCharacters(Range<It> str, Enc encoding)
     {
-        auto dec = Encoded::makeForwardDecoder(str, encoding);
+        auto dec = EncodedString::makeForwardDecoder(str, encoding);
         return advanceCharacters(dec, SIZE_MAX);
     }
 
@@ -104,7 +104,7 @@ namespace Ystring { namespace Generic
     }
 
     template <typename It, typename Enc>
-    uint32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding)
+    char32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding)
     {
         auto it = str.begin();
         if (pos > 0)
@@ -116,10 +116,9 @@ namespace Ystring { namespace Generic
             it = str.end();
             encoding.skipPrev(str.begin(), it, static_cast<size_t>(-pos));
         }
-        uint32_t chr;
+        char32_t chr;
         if (!encoding.next(chr, it, str.end()))
-            YSTRING_THROW("No character at position "
-                          + std::to_string(int64_t(pos)));
+            YSTRING_THROW("No character at position " + std::to_string(pos));
         return chr;
     }
 
@@ -137,7 +136,7 @@ namespace Ystring { namespace Generic
                       Enc encoding,
                       UnaryPred trimChar)
     {
-        auto dec = Encoded::makeReverseDecoder(str, encoding);
+        auto dec = EncodedString::makeReverseDecoder(str, encoding);
         advanceWhile(dec, trimChar);
         return dec.getRange();
     }
@@ -147,7 +146,7 @@ namespace Ystring { namespace Generic
                         Enc encoding,
                         UnaryPred trimChar)
     {
-        auto dec = Encoded::makeForwardDecoder(str, encoding);
+        auto dec = EncodedString::makeForwardDecoder(str, encoding);
         advanceWhile(dec, trimChar);
         return dec.getRange();
     }
@@ -173,9 +172,9 @@ namespace Ystring { namespace Generic
                           FindFlags_t flags,
                           std::false_type)
         {
-            return Encoded::startsWith(
-                    Encoded::makeReverseDecoder(str, encoding),
-                    Encoded::makeReverseDecoder(cmp, encoding),
+            return EncodedString::startsWith(
+                    EncodedString::makeReverseDecoder(str, encoding),
+                    EncodedString::makeReverseDecoder(cmp, encoding),
                     flags);
         }
     }

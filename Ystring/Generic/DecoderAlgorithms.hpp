@@ -10,13 +10,13 @@
 #include <cstdint>
 #include <utility>
 
-namespace Ystring { namespace Encoded
+namespace Ystring { namespace EncodedString
 {
     template <typename Decoder, typename UnaryPred>
     bool advanceIf(Decoder& str, UnaryPred pred)
     {
         auto pos = str.getLogicalBegin();
-        uint32_t ch;
+        char32_t ch;
         if (!str.next(ch) || !pred(ch))
         {
             str.setLogicalBegin(pos);
@@ -29,7 +29,7 @@ namespace Ystring { namespace Encoded
     bool advanceIfNot(Decoder& str, UnaryPred pred)
     {
         auto pos = str.getLogicalBegin();
-        uint32_t ch;
+        char32_t ch;
         if (!str.next(ch) || pred(ch))
         {
             str.setLogicalBegin(pos);
@@ -43,7 +43,7 @@ namespace Ystring { namespace Encoded
     {
         auto aPos = a.getLogicalBegin();
         auto bPos = b.getLogicalBegin();
-        uint32_t aCh, bCh;
+        char32_t aCh, bCh;
         bool aNext = a.next(aCh);
         bool bNext = b.next(bCh);
         if (!aNext && !bNext)
@@ -85,7 +85,7 @@ namespace Ystring { namespace Encoded
     bool advanceWhileEqual(Decoder1& str, Decoder2& cmp)
     {
         return advanceWhileEqual(str, cmp,
-                                 [](uint32_t a, uint32_t b){return a == b;});
+                                 [](char32_t a, char32_t b){return a == b;});
     }
 
     template <typename Decoder1, typename Decoder2, typename BinaryPred>
@@ -110,6 +110,6 @@ namespace Ystring { namespace Encoded
     template <typename Decoder1, typename Decoder2>
     Decoder1 search(Decoder1& str, Decoder2& cmp)
     {
-        return search(str, cmp, [](uint32_t a, uint32_t b){return a == b;});
+        return search(str, cmp, [](char32_t a, char32_t b){return a == b;});
     }
 }}

@@ -10,9 +10,9 @@
 #include <string>
 #include "../YstringException.hpp"
 #include "../Utilities/Algorithms.hpp"
-#include "../Generic/Range.hpp"
+#include "Range.hpp"
 
-namespace Ystring { namespace Encoded
+namespace Ystring { namespace EncodedString
 {
     template <typename StringT>
     class Appender
@@ -63,8 +63,7 @@ namespace Ystring { namespace Encoded
             if (its.second == &m_String[m_Capacity])
             {
                 m_String[m_Capacity - 1] = 0;
-                YSTRING_THROW(
-                        "Attempt to write beyond the end of string.");
+                YSTRING_THROW("Attempt to write beyond the end of string.");
             }
             *m_Size = its.second - m_String;
             return *this;
@@ -74,8 +73,7 @@ namespace Ystring { namespace Encoded
         {
             if (*m_Size + 1 >= m_Capacity)
             {
-                YSTRING_THROW(
-                        "Attempt to write beyond the end of string.");
+                YSTRING_THROW("Attempt to write beyond the end of string.");
             }
             *m_Size++ = c;
             return *this;

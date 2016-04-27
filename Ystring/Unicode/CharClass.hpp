@@ -110,5 +110,5 @@ namespace Ystring { namespace Unicode
 
     /** @brief Returns the unicode character class of character @a ch.
       */
-    YSTRING_API CharClass_t getCharClass(uint32_t ch);
+    YSTRING_API CharClass_t getCharClass(char32_t ch);
 }}

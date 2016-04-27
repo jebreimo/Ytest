@@ -7,12 +7,12 @@
 //****************************************************************************
 #include <algorithm>
 
-namespace Ystring { namespace Utf8
+namespace Ystring { namespace Encodings
 {
     namespace Detail
     {
         template <typename OutputIt>
-        OutputIt addUtf8(OutputIt it, uint32_t c, size_t length)
+        OutputIt addUtf8(OutputIt it, char32_t c, size_t length)
         {
             if (length == 1)
             {
@@ -36,13 +36,13 @@ namespace Ystring { namespace Utf8
     }
 
     template <typename OutputIt>
-    OutputIt addUtf8(OutputIt it, uint32_t c)
+    OutputIt addUtf8(OutputIt it, char32_t c)
     {
         return Detail::addUtf8(it, c, utf8EncodedLength(c));
     }
 
     template <typename RndIt>
-    size_t encodeUtf8(RndIt& begin, RndIt end, uint32_t c)
+    size_t encodeUtf8(RndIt& begin, RndIt end, char32_t c)
     {
         size_t length = utf8EncodedLength(c);
         if (length > (size_t)std::distance(begin, end))

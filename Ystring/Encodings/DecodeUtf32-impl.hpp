@@ -11,7 +11,7 @@
 #include "../Utilities/Iterators.hpp"
 #include "../Utilities/Union32.hpp"
 
-namespace Ystring { namespace Utf32
+namespace Ystring { namespace Encodings
 {
     typedef std::make_unsigned<wchar_t>::type UnsignedWChar;
 
@@ -32,21 +32,21 @@ namespace Ystring { namespace Utf32
 
         YSTRING_DEFINE_UTF32_CHAR_TYPE(char, uint8_t);
         YSTRING_DEFINE_UTF32_CHAR_TYPE(int8_t, uint8_t);
-        YSTRING_DEFINE_UTF32_CHAR_TYPE(int16_t, uint16_t);
-        YSTRING_DEFINE_UTF32_CHAR_TYPE(char16_t, uint16_t);
-        YSTRING_DEFINE_UTF32_CHAR_TYPE(char32_t, uint32_t);
-        YSTRING_DEFINE_UTF32_CHAR_TYPE(int32_t, uint32_t);
+        YSTRING_DEFINE_UTF32_CHAR_TYPE(int16_t, char16_t);
+        YSTRING_DEFINE_UTF32_CHAR_TYPE(char16_t, char16_t);
+        YSTRING_DEFINE_UTF32_CHAR_TYPE(char32_t, char32_t);
+        YSTRING_DEFINE_UTF32_CHAR_TYPE(int32_t, char32_t);
 
         #ifdef YSTRING_WCHAR_IS_2_BYTES
-            YSTRING_DEFINE_UTF32_CHAR_TYPE(wchar_t, uint16_t);
+            YSTRING_DEFINE_UTF32_CHAR_TYPE(wchar_t, char16_t);
         #else
-            YSTRING_DEFINE_UTF32_CHAR_TYPE(wchar_t, uint32_t);
+            YSTRING_DEFINE_UTF32_CHAR_TYPE(wchar_t, char32_t);
         #endif
 
         using Utilities::swapEndianness;
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint32_t& word, FwdIt& it, FwdIt end,
+        DecoderResult_t nextWord(char32_t& word, FwdIt& it, FwdIt end,
                                  uint8_t)
         {
             if (it == end)
@@ -70,8 +70,8 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint32_t& word, FwdIt& it, FwdIt end,
-                                 uint32_t)
+        DecoderResult_t nextWord(char32_t& word, FwdIt& it, FwdIt end,
+                                 char32_t)
         {
             if (it == end)
                 return DecoderResult::END_OF_STRING;
@@ -83,20 +83,20 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint32_t& word, FwdIt& it, FwdIt end, char)
+        DecoderResult_t nextWord(char32_t& word, FwdIt& it, FwdIt end, char)
         {
             return nextWord<SwapBytes>(word, it, end, uint8_t());
         }
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint32_t& word, FwdIt& it, FwdIt end,
+        DecoderResult_t nextWord(char32_t& word, FwdIt& it, FwdIt end,
                                  wchar_t)
         {
-            return nextWord<SwapBytes>(word, it, end, uint32_t());
+            return nextWord<SwapBytes>(word, it, end, char32_t());
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint32_t& word, BiIt begin, BiIt& it,
+        DecoderResult_t prevWord(char32_t& word, BiIt begin, BiIt& it,
                                  uint8_t)
         {
             if (it == begin)
@@ -120,8 +120,8 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint32_t& word, BiIt begin, BiIt& it,
-                                 uint32_t)
+        DecoderResult_t prevWord(char32_t& word, BiIt begin, BiIt& it,
+                                 char32_t)
         {
             if (it == begin)
                 return DecoderResult::END_OF_STRING;
@@ -133,13 +133,13 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint32_t& word, BiIt begin, BiIt& it, char)
+        DecoderResult_t prevWord(char32_t& word, BiIt begin, BiIt& it, char)
         {
             return prevWord<SwapBytes>(word, begin, it, uint8_t());
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint32_t& word, BiIt begin, BiIt& it,
+        DecoderResult_t prevWord(char32_t& word, BiIt begin, BiIt& it,
                                  wchar_t)
         {
             return prevWord<SwapBytes>(word, begin, it, UnsignedWChar());
@@ -183,7 +183,7 @@ namespace Ystring { namespace Utf32
     }
 
     template <bool SwapBytes, typename FwdIt>
-    DecoderResult_t nextUtf32CodePoint(uint32_t& codePoint, FwdIt& it,
+    DecoderResult_t nextUtf32CodePoint(char32_t& codePoint, FwdIt& it,
                                        FwdIt end)
     {
         typedef typename std::iterator_traits<FwdIt>::value_type CharType;
@@ -192,7 +192,7 @@ namespace Ystring { namespace Utf32
     }
 
     template<bool SwapBytes, typename BiIt>
-    DecoderResult_t prevUtf32CodePoint(uint32_t& codePoint, BiIt begin,
+    DecoderResult_t prevUtf32CodePoint(char32_t& codePoint, BiIt begin,
                                        BiIt& it)
     {
         typedef typename std::iterator_traits<BiIt>::value_type CharType;

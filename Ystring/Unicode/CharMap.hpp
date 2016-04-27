@@ -14,11 +14,11 @@
 
 namespace Ystring { namespace Unicode
 {
-    static const uint16_t FAST_MAPPING_SIZE = 1024;
+    static const char16_t FAST_MAPPING_SIZE = 1024;
     // The max code point is 63 greater than the array size and not 1 less
     // because the first 64 code points are non-letters and can therefore
     // be ignored.
-    static const uint16_t FAST_MAPPING_MAX = FAST_MAPPING_SIZE + 64 - 1;
+    static const char16_t FAST_MAPPING_MAX = FAST_MAPPING_SIZE + 64 - 1;
 
     class YSTRING_API CharMap
     {
@@ -28,16 +28,16 @@ namespace Ystring { namespace Unicode
                 const CharMapping* mappings,
                 size_t mappingsSize);
 
-        uint32_t get(uint32_t chr) const;
-        bool has(uint32_t chr) const;
+        char32_t get(char32_t chr) const;
+        bool has(char32_t chr) const;
     private:
-        bool findInCompactMapping(uint32_t chr, uint32_t& mappedChr) const;
-        bool findInMapping(uint32_t chr, uint32_t& mappedChr) const;
+        bool findInCompactMapping(char32_t chr, char32_t& mappedChr) const;
+        bool findInMapping(char32_t chr, char32_t& mappedChr) const;
         void initializeFastMapping();
 
         const CompactCharMapping* m_CompactMappings;
         const CharMapping* m_Mappings;
-        std::array<uint16_t, FAST_MAPPING_SIZE> m_FastMapping;
+        std::array<char16_t, FAST_MAPPING_SIZE> m_FastMapping;
         size_t m_CompactMappingsSize;
         size_t m_MappingsSize;
     };

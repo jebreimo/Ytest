@@ -9,7 +9,7 @@
 #include "../Utilities/Union16.hpp"
 #include "../DecoderResult.hpp"
 
-namespace Ystring { namespace Utf16
+namespace Ystring { namespace Encodings
 {
 
     namespace Detail
@@ -29,21 +29,21 @@ namespace Ystring { namespace Utf16
 
         YSTRING_DEFINE_UTF16_CHAR_TYPE(char, uint8_t);
         YSTRING_DEFINE_UTF16_CHAR_TYPE(int8_t, uint8_t);
-        YSTRING_DEFINE_UTF16_CHAR_TYPE(int16_t, uint16_t);
-        YSTRING_DEFINE_UTF16_CHAR_TYPE(char16_t, uint16_t);
-        YSTRING_DEFINE_UTF16_CHAR_TYPE(char32_t, uint32_t);
-        YSTRING_DEFINE_UTF16_CHAR_TYPE(int32_t, uint32_t);
+        YSTRING_DEFINE_UTF16_CHAR_TYPE(int16_t, char16_t);
+        YSTRING_DEFINE_UTF16_CHAR_TYPE(char16_t, char16_t);
+        YSTRING_DEFINE_UTF16_CHAR_TYPE(char32_t, char32_t);
+        YSTRING_DEFINE_UTF16_CHAR_TYPE(int32_t, char32_t);
 
         #ifdef YSTRING_WCHAR_IS_2_BYTES
-            YSTRING_DEFINE_UTF16_CHAR_TYPE(wchar_t, uint16_t);
+            YSTRING_DEFINE_UTF16_CHAR_TYPE(wchar_t, char16_t);
         #else
-            YSTRING_DEFINE_UTF16_CHAR_TYPE(wchar_t, uint32_t);
+            YSTRING_DEFINE_UTF16_CHAR_TYPE(wchar_t, char32_t);
         #endif
 
         using Utilities::swapEndianness;
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint16_t& word, FwdIt& it, FwdIt end,
+        DecoderResult_t nextWord(char16_t& word, FwdIt& it, FwdIt end,
                                  uint8_t)
         {
             if (it == end)
@@ -62,8 +62,8 @@ namespace Ystring { namespace Utf16
         }
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint16_t& word, FwdIt& it, FwdIt end,
-                                 uint16_t)
+        DecoderResult_t nextWord(char16_t& word, FwdIt& it, FwdIt end,
+                                 char16_t)
         {
             if (it == end)
                 return DecoderResult::END_OF_STRING;
@@ -75,8 +75,8 @@ namespace Ystring { namespace Utf16
         }
 
         template <bool SwapBytes, typename FwdIt>
-        DecoderResult_t nextWord(uint16_t& word, FwdIt& it, FwdIt end,
-                                 uint32_t)
+        DecoderResult_t nextWord(char16_t& word, FwdIt& it, FwdIt end,
+                                 char32_t)
         {
             if (it == end)
                 return DecoderResult::END_OF_STRING;
@@ -85,14 +85,14 @@ namespace Ystring { namespace Utf16
             if (word32 > 0xFFFFu)
                 return DecoderResult::INVALID;
 
-            word = static_cast<uint16_t>(word32);
+            word = static_cast<char16_t>(word32);
             swapEndianness<SwapBytes>(word);
 
             return DecoderResult::OK;
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint16_t& word, BiIt begin, BiIt& it,
+        DecoderResult_t prevWord(char16_t& word, BiIt begin, BiIt& it,
                                  uint8_t)
         {
             if (it == begin)
@@ -111,8 +111,8 @@ namespace Ystring { namespace Utf16
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint16_t& word, BiIt begin, BiIt& it,
-                                 uint16_t)
+        DecoderResult_t prevWord(char16_t& word, BiIt begin, BiIt& it,
+                                 char16_t)
         {
             if (it == begin)
                 return DecoderResult::END_OF_STRING;
@@ -124,8 +124,8 @@ namespace Ystring { namespace Utf16
         }
 
         template <bool SwapBytes, typename BiIt>
-        DecoderResult_t prevWord(uint16_t& word, BiIt begin, BiIt& it,
-                                 uint32_t)
+        DecoderResult_t prevWord(char16_t& word, BiIt begin, BiIt& it,
+                                 char32_t)
         {
             if (it == begin)
                 return DecoderResult::END_OF_STRING;
@@ -134,7 +134,7 @@ namespace Ystring { namespace Utf16
             if (word32 > 0xFFFFu)
                 return DecoderResult::INVALID;
 
-            word = static_cast<uint16_t>(word32);
+            word = static_cast<char16_t>(word32);
             swapEndianness<SwapBytes>(word);
 
             return DecoderResult::OK;
@@ -142,13 +142,13 @@ namespace Ystring { namespace Utf16
     }
 
     template <bool SwapBytes, typename FwdIt>
-    DecoderResult_t nextUtf16CodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf16CodePoint(char32_t& codePoint,
                                        FwdIt& it, FwdIt end)
     {
         typedef typename std::iterator_traits<FwdIt>::value_type CharType;
         typedef typename Detail::Utf16CharType<CharType>::Type Utf16Type;
 
-        uint16_t chr;
+        char16_t chr;
         auto first = it;
         auto res = Detail::nextWord<SwapBytes>(chr, it, end, Utf16Type());
         if (res != DecoderResult::OK)
@@ -169,7 +169,7 @@ namespace Ystring { namespace Utf16
             return DecoderResult::INVALID;
         }
 
-        codePoint = uint32_t(chr & 0x3FF) << 10;
+        codePoint = char32_t(chr & 0x3FF) << 10;
 
         res = Detail::nextWord<SwapBytes>(chr, it, end, Utf16Type());
 
@@ -194,13 +194,13 @@ namespace Ystring { namespace Utf16
     }
 
     template <bool SwapBytes, typename BiIt>
-    DecoderResult_t prevUtf16CodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf16CodePoint(char32_t& codePoint,
                                        BiIt begin, BiIt& it)
     {
         typedef typename std::iterator_traits<BiIt>::value_type CharType;
         typedef typename Detail::Utf16CharType<CharType>::Type Utf16Type;
 
-        uint16_t chr;
+        char16_t chr;
         auto last = it;
         auto res = Detail::prevWord<SwapBytes>(chr, begin, it, Utf16Type());
         if (res != DecoderResult::OK)
@@ -221,7 +221,7 @@ namespace Ystring { namespace Utf16
             return DecoderResult::INVALID;
         }
 
-        codePoint = uint32_t(chr) & 0x3FF;
+        codePoint = char32_t(chr) & 0x3FF;
 
         res = Detail::prevWord<SwapBytes>(chr, begin, it, Utf16Type());
         if (res != DecoderResult::OK)
@@ -252,7 +252,7 @@ namespace Ystring { namespace Utf16
 
         for (auto i = 0u; i < count; ++i)
         {
-            uint16_t chr;
+            char16_t chr;
             auto res = Detail::nextWord<SwapBytes>(chr, it, end, Utf16Type());
             if (res != DecoderResult::OK)
             {
@@ -274,7 +274,7 @@ namespace Ystring { namespace Utf16
 
         for (auto i = 0u; i < count; ++i)
         {
-            uint16_t chr;
+            char16_t chr;
             auto res = Detail::prevWord<SwapBytes>(chr, begin, it,
                                                    Utf16Type());
             if (res != DecoderResult::OK)
@@ -297,7 +297,7 @@ namespace Ystring { namespace Utf16
         typedef typename Detail::Utf16CharType<CharType>::Type Utf16Type;
         while (begin != end)
         {
-            uint16_t word;
+            char16_t word;
             auto first = begin;
             auto res = Detail::nextWord<SwapBytes>(word, begin, end,
                                                    Utf16Type());

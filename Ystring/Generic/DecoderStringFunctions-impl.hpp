@@ -12,12 +12,12 @@
 #include "../Unicode/UnicodePredicates.hpp"
 #include "DecoderAlgorithms.hpp"
 
-namespace Ystring { namespace Encoded
+namespace Ystring { namespace EncodedString
 {
     template <typename Decoder>
     bool advanceCharacter(Decoder& it)
     {
-        uint32_t ch;
+        char32_t ch;
         if (!it.next(ch))
             return false;
         auto prevIt = it.getLogicalBegin();
@@ -55,7 +55,7 @@ namespace Ystring { namespace Encoded
     template <typename Encoder, typename Decoder>
     void append(Encoder&& dst, Decoder&& src)
     {
-        uint32_t ch;
+        char32_t ch;
         while (src.next(ch))
             dst.encode(ch);
     }
@@ -63,7 +63,7 @@ namespace Ystring { namespace Encoded
     template <typename Encoder, typename Decoder>
     void appendBytes(Encoder&& dst, Decoder&& src)
     {
-        uint32_t ch;
+        char32_t ch;
         while (src.next(ch))
             dst.encodeAsBytes(ch);
     }
@@ -71,7 +71,7 @@ namespace Ystring { namespace Encoded
     template <typename Encoder, typename Decoder>
     void appendUpper(Encoder&& dst, Decoder&& src)
     {
-        uint32_t ch;
+        char32_t ch;
         while (src.next(ch))
             dst.encode(Unicode::upper(ch));
     }
@@ -86,7 +86,7 @@ namespace Ystring { namespace Encoded
             return -1;
         else if (cmp.begin() == cmp.end())
             return 1;
-        uint32_t strCh, cmpCh;
+        char32_t strCh, cmpCh;
         str.next(strCh);
         cmp.next(cmpCh);
         return Unicode::caseInsensitiveCompare(strCh, cmpCh);
@@ -105,7 +105,7 @@ namespace Ystring { namespace Encoded
         advanceWhileEqual(str, cmp, Unicode::CaseInsensitiveEqual());
         if (str.begin() == str.end() || cmp.begin() == cmp.end())
             return str.begin() == str.end() && cmp.begin() != cmp.end();
-        uint32_t strCh, cmpCh;
+        char32_t strCh, cmpCh;
         str.next(strCh);
         cmp.next(cmpCh);
         return Unicode::caseInsensitiveLess(strCh, cmpCh);
@@ -123,7 +123,7 @@ namespace Ystring { namespace Encoded
     template <typename Decoder>
     bool isAlphaNumeric(Decoder dec)
     {
-        uint32_t ch;
+        char32_t ch;
         if (!dec.next(ch) || !Unicode::isAlphaNumeric(ch))
             return false;
 
@@ -148,7 +148,7 @@ namespace Ystring { namespace Encoded
     Decoder nextNewline(Decoder& str)
     {
         auto newline = str;
-        uint32_t ch;
+        char32_t ch;
         while (str.next(ch))
         {
             switch (ch)
@@ -191,7 +191,7 @@ namespace Ystring { namespace Encoded
     {
         auto token = str;
         token.setLogicalEnd(str.getLogicalBegin());
-        uint32_t ch;
+        char32_t ch;
         while (str.next(ch) && !predicate(ch))
             token.setLogicalEnd(str.getLogicalBegin());
         return token;
@@ -201,7 +201,7 @@ namespace Ystring { namespace Encoded
     Decoder1 nextToken(Decoder1& str, Decoder2 cmp, FindFlags_t flags)
     {
         auto token = str;
-        auto delimiter = Encoded::find(str, cmp, flags);
+        auto delimiter = EncodedString::find(str, cmp, flags);
         token.setLogicalEnd(delimiter.getLogicalBegin());
         return token;
     }

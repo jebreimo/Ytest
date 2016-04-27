@@ -11,6 +11,7 @@
 #include "../Generic/GenericString.hpp"
 #include "../Utf16/Utf16Encoding.hpp"
 #include "../Utf32/Utf32Encoding.hpp"
+#include "../Conversion/Converter.hpp"
 #include "Utf8Encoding.hpp"
 
 namespace Ystring { namespace Utf8
@@ -21,6 +22,13 @@ namespace Ystring { namespace Utf8
     typedef std::string String;
     typedef Utf8Encoding Enc;
 
+
+    bool caseInsensitiveEqual(const String& str, const String& cmp)
+    {
+        return Generic::caseInsensitiveEqual(makeRange(str),
+                                             makeRange(cmp),
+                                             Enc());
+    }
     size_t countCharacters(const String& str)
     {
         return Generic::countCharacters(makeRange(str), Enc());
@@ -38,7 +46,7 @@ namespace Ystring { namespace Utf8
                 makeRange(str), makeRange(cmp), Enc(), flags);
     }
 
-    uint32_t getCodePoint(const String& str, ptrdiff_t n)
+    char32_t getCodePoint(const String& str, ptrdiff_t n)
     {
         return Generic::getCodePoint(makeRange(str), n, Enc());
     }
@@ -67,7 +75,7 @@ namespace Ystring { namespace Utf8
     }
 
     std::vector<String> splitIf(const String& str,
-                                std::function<bool(uint32_t)> predicate,
+                                std::function<bool(char32_t)> predicate,
                                 ptrdiff_t maxSplits,
                                 SplitFlags_t flags)
     {
@@ -75,39 +83,41 @@ namespace Ystring { namespace Utf8
                 makeRange(str), Enc(), predicate, maxSplits, flags);
     }
 
+    template <typename CharT>
+    String toUtf8Impl(const CharT* str, size_t length, Encoding_t encoding)
+    {
+        Conversion::Converter converter(encoding, Encoding::UTF_8);
+        String result;
+        converter.convert(str, length, result);
+        return result;
+    }
+
     String toUtf8(const std::wstring& str, Encoding_t encoding)
     {
         return toUtf8(str.data(), str.size(), encoding);
     }
 
-    #define CASE_ENCODING(enumName, encodingName) \
-        case enumName: \
-            return Generic::convert<String>( \
-                    makeRange(str, str + length), \
-                    encodingName(), \
-                    Enc())
-
-    String toUtf8(const uint16_t* str, size_t length, Encoding_t encoding)
+    String toUtf8(const char16_t* str, size_t length, Encoding_t encoding)
     {
         switch (encoding)
         {
-        CASE_ENCODING(Encoding::UTF_16_BE, Utf16::Utf16BEEncoding);
-        CASE_ENCODING(Encoding::UTF_16_LE, Utf16::Utf16LEEncoding);
+        case Encoding::UTF_16:
+            return Generic::convert<String>(makeRange(str, str + length),
+                                            Utf16::Utf16Encoding(), Enc());
         default:
-            YSTRING_THROW("toUtf8: unsupported encoding " +
-                          std::to_string(int64_t(encoding)));
+            return toUtf8Impl(str, length, encoding);
         }
     }
 
-    String toUtf8(const uint32_t* str, size_t length, Encoding_t encoding)
+    String toUtf8(const char32_t* str, size_t length, Encoding_t encoding)
     {
         switch (encoding)
         {
-        CASE_ENCODING(Encoding::UTF_32_BE, Utf32::Utf32BEEncoding);
-        CASE_ENCODING(Encoding::UTF_32_LE, Utf32::Utf32LEEncoding);
+        case Encoding::UTF_32:
+            return Generic::convert<String>(makeRange(str, str + length),
+                                            Utf32::Utf32Encoding(), Enc());
         default:
-            YSTRING_THROW("toUtf8: unsupported encoding " +
-                          std::to_string(int64_t(encoding)));
+            return toUtf8Impl(str, length, encoding);
         }
     }
 
@@ -125,20 +135,6 @@ namespace Ystring { namespace Utf8
     {
         return toUtf8(internal_char_type_cast(str), length, encoding);
     }
-
-    #ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
-
-    String toUtf8(const char16_t* str, size_t length, Encoding_t encoding)
-    {
-        return toUtf8(internal_char_type_cast(str), length, encoding);
-    }
-
-    String toUtf8(const char32_t* str, size_t length, Encoding_t encoding)
-    {
-        return toUtf8(internal_char_type_cast(str), length, encoding);
-    }
-
-    #endif
 
     String trim(const String& str)
     {

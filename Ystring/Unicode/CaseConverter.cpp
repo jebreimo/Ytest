@@ -22,8 +22,7 @@ namespace Ystring { namespace Unicode
                 std::extent<decltype(UpperCaseMappings), 0>::value);
     }
 
-
-    uint32_t upper(uint32_t ch)
+    char32_t upper(char32_t ch)
     {
         return g_UpperMap.get(ch);
     }

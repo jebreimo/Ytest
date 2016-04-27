@@ -8,8 +8,8 @@
 #pragma once
 
 #include <iterator>
-#include "../Encoded/Appender.hpp"
-#include "../Encoded/Encoder.hpp"
+#include "Appender.hpp"
+#include "Encoder.hpp"
 
 namespace Ystring { namespace Generic
 {
@@ -24,16 +24,16 @@ namespace Ystring { namespace Generic
             : m_String(str)
         {}
 
-        Encoded::Appender<String> getAppender()
+        EncodedString::Appender<String> getAppender()
         {
-            return Encoded::Appender<String>(m_String);
+            return EncodedString::Appender<String>(m_String);
         }
 
         template <typename Enc>
-        Encoded::Encoder<BackInsertIterator, Enc> getEncoder(Enc encoding)
+        EncodedString::Encoder<BackInsertIterator, Enc> getEncoder(Enc encoding)
         {
-            return Encoded::makeEncoder(std::back_inserter(m_String),
-                                        encoding);
+            return EncodedString::makeEncoder(std::back_inserter(m_String),
+                                              encoding);
         }
 
         void reserve(size_t size)

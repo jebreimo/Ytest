@@ -11,26 +11,26 @@ namespace Ystring
 {
     #ifdef _WIN32
 
-    bool isPathSeparator(uint32_t chr)
+    bool isPathSeparator(char32_t chr)
     {
         return isWindowsPathSeparator(chr);
     }
 
     #else
 
-    bool isPathSeparator(uint32_t chr)
+    bool isPathSeparator(char32_t chr)
     {
         return isWindowsPathSeparator(chr);
     }
 
     #endif
 
-    bool isWindowsPathSeparator(uint32_t chr)
+    bool isWindowsPathSeparator(char32_t chr)
     {
         return chr == '/' || chr == '\\';
     }
 
-    bool isPosixPathSeparator(uint32_t chr)
+    bool isPosixPathSeparator(char32_t chr)
     {
         return chr == '/';
     }

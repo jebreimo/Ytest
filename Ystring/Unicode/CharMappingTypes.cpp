@@ -11,10 +11,10 @@
 
 namespace Ystring { namespace Unicode
 {
-    bool CompactCharMapping::get(uint32_t chr, uint32_t& mappedChr) const
+    bool CompactCharMapping::get(char32_t chr, char32_t& mappedChr) const
     {
         assert(chr - segment < 32);
-        size_t mask = (uint32_t)1 << (chr - segment);
+        size_t mask = (char32_t)1 << (chr - segment);
         if (mask & affected)
         {
             mappedChr =  chr + offset;

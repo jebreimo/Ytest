@@ -15,7 +15,7 @@
   * @brief Defines functions for working with UTF-8 encoded strings.
   */
 
-namespace Ystring { namespace Utf8
+namespace Ystring { namespace Encodings
 {
     /** @brief The maximum length of an UTF-8-encoded code point.
       */
@@ -26,7 +26,7 @@ namespace Ystring { namespace Utf8
      *  @return the new iterator position.
      */
     template <typename OutputIt>
-    OutputIt addUtf8(OutputIt it, uint32_t codePoint);
+    OutputIt addUtf8(OutputIt it, char32_t codePoint);
 
     /** @brief Encodes a unicode code point as UTF-8.
       *
@@ -40,15 +40,15 @@ namespace Ystring { namespace Utf8
       *     too small.
       */
     template <typename RndIt>
-    size_t encodeUtf8(RndIt& begin, RndIt end, uint32_t c);
+    size_t encodeUtf8(RndIt& begin, RndIt end, char32_t c);
 
     /** @brief Encodes a unicode code point as UTF-8.
      *  @return the length of the encoded code point.
      */
     YSTRING_API size_t encodeUtf8(char (&buffer)[MAX_ENCODED_UTF8_LENGTH],
-                                  uint32_t chr);
+                                  char32_t chr);
 
-    YSTRING_API size_t utf8EncodedLength(uint32_t c);
+    YSTRING_API size_t utf8EncodedLength(char32_t c);
 }}
 
 #include "EncodeUtf8-impl.hpp"

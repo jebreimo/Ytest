@@ -31,7 +31,7 @@ namespace Ystring { namespace Unicode
         0x01, 0x01, 0x01, 0x0D, 0x12, 0x0E, 0x12, 0x19
     };
 
-    static uint32_t CompleteCharClasses[] =
+    static char32_t CompleteCharClasses[] =
     {
         0x00001F19, 0x00002016, 0x00002311, 0x00002413, 0x00002711,
         0x0000280D, 0x0000290E, 0x00002A11, 0x00002B12, 0x00002C11,
@@ -749,14 +749,14 @@ namespace Ystring { namespace Unicode
         0x0EFFFF1D, 0x0FFFFD1C, 0x0FFFFF1D, 0x10FFFD1C
     };
 
-    CharClass_t getCharClass(uint32_t ch)
+    CharClass_t getCharClass(char32_t ch)
     {
         if (ch < 128)
             return CharClass_t(1 << AsciiCharClasses[ch]);
         else if (ch > 0xFFFFFFul)
             return CharClass::UNASSIGNED;
-        uint32_t key = ch << 8;
-        uint32_t keyValue = *std::lower_bound(
+        char32_t key = ch << 8;
+        char32_t keyValue = *std::lower_bound(
                 std::begin(CompleteCharClasses),
                 std::end(CompleteCharClasses),
                 key);

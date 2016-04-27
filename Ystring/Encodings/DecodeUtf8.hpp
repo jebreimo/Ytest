@@ -17,7 +17,7 @@
   * @brief Defines functions for working with UTF-8 encoded strings.
   */
 
-namespace Ystring { namespace Utf8
+namespace Ystring { namespace Encodings
 {
     template <typename FwdIt>
     bool isValidUtf8(FwdIt begin, FwdIt end,
@@ -41,13 +41,13 @@ namespace Ystring { namespace Utf8
       * @param end  the end of the string.
       */
     template <typename FwdIt>
-    DecoderResult_t nextUtf8CodePoint(uint32_t& codePoint,
+    DecoderResult_t nextUtf8CodePoint(char32_t& codePoint,
                                       FwdIt& it, FwdIt end);
 
     /** @brief Assigns the code point ending at @a it to @a codePoint.
       */
     template <typename BiIt>
-    DecoderResult_t prevUtf8CodePoint(uint32_t& codePoint,
+    DecoderResult_t prevUtf8CodePoint(char32_t& codePoint,
                                       BiIt begin, BiIt& it);
 
     template <typename FwdIt>

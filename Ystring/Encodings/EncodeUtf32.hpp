@@ -1,6 +1,6 @@
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
-// Created by Jan Erik Breimo on 2015-07-08
+// Created by Jan Erik Breimo on 2015-07-11
 //
 // This file is distributed under the Simplified BSD License.
 // License text is included with the source distribution.
@@ -11,29 +11,31 @@
 #include <limits>
 #include <string>
 
-namespace Ystring { namespace Utf16
+namespace Ystring { namespace Encodings
 {
     template <bool SwapBytes, typename OutIt>
-    OutIt addUtf16(OutIt out, uint32_t codePoint);
+    OutIt addUtf32(OutIt out, char32_t codePoint);
 
     template <typename OutIt>
-    OutIt addUtf16(OutIt out, uint32_t codePoint);
+    OutIt addUtf32(OutIt out, char32_t codePoint);
 
     template <typename OutIt>
-    OutIt addUtf16LE(OutIt out, uint32_t codePoint);
+    OutIt addUtf32LE(OutIt out, char32_t codePoint);
 
     template <typename OutIt>
-    OutIt addUtf16BE(OutIt out, uint32_t codePoint);
+    OutIt addUtf32BE(OutIt out, char32_t codePoint);
 
-    template <bool SwapBytes, typename OutIt>
-    OutIt addUtf16AsBytes(OutIt out, uint32_t codePoint);
+    template<bool SwapBytes, typename OutIt>
+    OutIt addUtf32AsBytes(OutIt out, char32_t codePoint);
 
     template <typename FwdIt>
-    size_t encodeUtf16(FwdIt& begin, FwdIt end, uint32_t codePoint);
+    size_t encodeUtf32(FwdIt& begin, FwdIt end, char32_t codePoint);
+
     template <typename FwdIt>
-    size_t encodeUtf16LE(FwdIt& begin, FwdIt end, uint32_t codePoint);
+    size_t encodeUtf32LE(FwdIt& begin, FwdIt end, char32_t codePoint);
+
     template <typename FwdIt>
-    size_t encodeUtf16BE(FwdIt& begin, FwdIt end, uint32_t codePoint);
+    size_t encodeUtf32BE(FwdIt& begin, FwdIt end, char32_t codePoint);
 }}
 
-#include "EncodeUtf16-impl.hpp"
+#include "EncodeUtf32-impl.hpp"

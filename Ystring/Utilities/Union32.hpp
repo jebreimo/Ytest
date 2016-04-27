@@ -17,14 +17,14 @@ namespace Ystring { namespace Utilities
         Union32() : u32(0)
         {}
 
-        explicit Union32(uint32_t n) : u32(n)
+        explicit Union32(char32_t n) : u32(n)
         {}
 
         template <typename T>
         explicit Union32(const T (&n)[2])
         {
-            u16[0] = static_cast<uint16_t>(n[0]);
-            u16[1] = static_cast<uint16_t>(n[1]);
+            u16[0] = static_cast<char16_t>(n[0]);
+            u16[1] = static_cast<char16_t>(n[1]);
         }
 
         template <typename T>
@@ -39,8 +39,8 @@ namespace Ystring { namespace Utilities
         template <typename T>
         Union32(T a, T b)
         {
-            u16[0] = static_cast<uint16_t>(a);
-            u16[1] = static_cast<uint16_t>(b);
+            u16[0] = static_cast<char16_t>(a);
+            u16[1] = static_cast<char16_t>(b);
         }
 
         template <typename T>
@@ -59,9 +59,9 @@ namespace Ystring { namespace Utilities
         }
 
         int32_t i32;
-        uint32_t u32;
+        char32_t u32;
         int16_t i16[2];
-        uint16_t u16[2];
+        char16_t u16[2];
         int8_t i8[4];
         uint8_t u8[4];
     };

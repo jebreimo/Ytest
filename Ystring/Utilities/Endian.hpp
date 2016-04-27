@@ -38,7 +38,7 @@ namespace Ystring { namespace Utilities
         return v;
     }
 
-    inline uint16_t reverseBytes(uint16_t v)
+    inline char16_t reverseBytes(char16_t v)
     {
         Union16 u(v);
         u.reverse();
@@ -47,10 +47,10 @@ namespace Ystring { namespace Utilities
 
     inline int16_t reverseBytes(int16_t v)
     {
-        return (int16_t)reverseBytes((uint16_t)v);
+        return (int16_t)reverseBytes((char16_t)v);
     }
 
-    inline uint32_t reverseBytes(uint32_t v)
+    inline char32_t reverseBytes(char32_t v)
     {
         Union32 u(v);
         u.reverse();
@@ -59,7 +59,7 @@ namespace Ystring { namespace Utilities
 
     inline int32_t reverseBytes(int32_t v)
     {
-        return (int32_t)reverseBytes((uint32_t)v);
+        return (int32_t)reverseBytes((char32_t)v);
     }
 
     inline Union16 reverseBytes(Union16 value)
@@ -73,24 +73,6 @@ namespace Ystring { namespace Utilities
         value.reverse();
         return value;
     }
-
-#ifdef YSTRING_CPP11_CHAR_TYPES_SUPPORTED
-
-    inline char16_t reverseBytes(char16_t v)
-    {
-        Union16 u(v);
-        u.reverse();
-        return char16_t(u.u16);
-    }
-
-    inline char32_t reverseBytes(char32_t v)
-    {
-        Union32 u(v);
-        u.reverse();
-        return char32_t(u.u32);
-    }
-
-#endif
 
     template <bool SwapBytes, typename T>
     struct EndianSwapper
@@ -140,21 +122,21 @@ namespace Ystring { namespace Utilities
         return u.i16;
     }
 
-    inline uint16_t bigU16(uint8_t a, uint8_t b)
+    inline char16_t bigU16(uint8_t a, uint8_t b)
     {
         Union16 u(a, b);
         swapEndianness<IsBigEndian>(u);
         return u.u16;
     }
 
-    inline uint32_t bigI32(int8_t a, int8_t b, int8_t c, int8_t d)
+    inline char32_t bigI32(int8_t a, int8_t b, int8_t c, int8_t d)
     {
         Union32 u(a, b, c, d);
         swapEndianness<IsBigEndian>(u);
         return u.i32;
     }
 
-    inline uint32_t bigU32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
+    inline char32_t bigU32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
     {
         Union32 u(a, b, c, d);
         swapEndianness<IsBigEndian>(u);
@@ -168,21 +150,21 @@ namespace Ystring { namespace Utilities
         return u.i16;
     }
 
-    inline uint16_t littleU16(uint8_t a, uint8_t b)
+    inline char16_t littleU16(uint8_t a, uint8_t b)
     {
         Union16 u(b, a);
         swapEndianness<IsBigEndian>(u);
         return u.u16;
     }
 
-    inline uint32_t littleI32(int8_t a, int8_t b, int8_t c, int8_t d)
+    inline char32_t littleI32(int8_t a, int8_t b, int8_t c, int8_t d)
     {
         Union32 u(d, c, b, a);
         swapEndianness<IsBigEndian>(u);
         return u.i32;
     }
 
-    inline uint32_t littleU32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
+    inline char32_t littleU32(uint8_t a, uint8_t b, uint8_t c, uint8_t d)
     {
         Union32 u(d, c, b, a);
         swapEndianness<IsBigEndian>(u);

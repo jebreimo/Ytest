@@ -9,14 +9,14 @@
 #include "../Utilities/Endian.hpp"
 #include "../Utilities/Union32.hpp"
 
-namespace Ystring { namespace Utf32
+namespace Ystring { namespace Encodings
 {
     using Ystring::Utilities::swapEndianness;
 
     namespace Detail
     {
         template <bool SwapBytes, typename FwdIt, typename ChrType>
-        size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint,
+        size_t encodeUtf32(FwdIt& begin, FwdIt end, char32_t codePoint,
                            ChrType)
         {
             if (begin == end)
@@ -27,7 +27,7 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename FwdIt>
-        size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint,
+        size_t encodeUtf32(FwdIt& begin, FwdIt end, char32_t codePoint,
                            uint8_t)
         {
             if (std::distance(begin, end) < 4)
@@ -42,14 +42,14 @@ namespace Ystring { namespace Utf32
         }
 
         template <bool SwapBytes, typename FwdIt>
-        size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint, char)
+        size_t encodeUtf32(FwdIt& begin, FwdIt end, char32_t codePoint, char)
         {
             return encodeUtf32<SwapBytes>(begin, end, codePoint, uint8_t());
         }
     }
 
     template <bool SwapBytes, typename OutIt>
-    OutIt addUtf32(OutIt out, uint32_t codePoint)
+    OutIt addUtf32(OutIt out, char32_t codePoint)
     {
         swapEndianness<SwapBytes>(codePoint);
         *out = codePoint;
@@ -57,25 +57,25 @@ namespace Ystring { namespace Utf32
     }
 
     template <typename OutIt>
-    OutIt addUtf32(OutIt out, uint32_t codePoint)
+    OutIt addUtf32(OutIt out, char32_t codePoint)
     {
         return addUtf32<false>(out, codePoint);
     }
 
     template <typename OutIt>
-    OutIt addUtf32LE(OutIt out, uint32_t codePoint)
+    OutIt addUtf32LE(OutIt out, char32_t codePoint)
     {
         return addUtf32<IsBigEndian>(out, codePoint);
     }
 
     template <typename OutIt>
-    OutIt addUtf32BE(OutIt out, uint32_t codePoint)
+    OutIt addUtf32BE(OutIt out, char32_t codePoint)
     {
         return addUtf32<IsLittleEndian>(out, codePoint);
     }
 
     template<bool SwapBytes, typename OutIt>
-    OutIt addUtf32AsBytes(OutIt out, uint32_t codePoint)
+    OutIt addUtf32AsBytes(OutIt out, char32_t codePoint)
     {
         Ystring::Utilities::Union32 word(codePoint);
         swapEndianness<SwapBytes>(word);
@@ -87,7 +87,7 @@ namespace Ystring { namespace Utf32
     }
 
     template <typename FwdIt>
-    size_t encodeUtf32(FwdIt& begin, FwdIt end, uint32_t codePoint)
+    size_t encodeUtf32(FwdIt& begin, FwdIt end, char32_t codePoint)
     {
         return Detail::encodeUtf32<false>(
                 begin, end, codePoint,
@@ -95,7 +95,7 @@ namespace Ystring { namespace Utf32
     }
 
     template <typename FwdIt>
-    size_t encodeUtf32LE(FwdIt& begin, FwdIt end, uint32_t codePoint)
+    size_t encodeUtf32LE(FwdIt& begin, FwdIt end, char32_t codePoint)
     {
         return Detail::encodeUtf32<IsBigEndian>(
                 begin, end, codePoint,
@@ -103,7 +103,7 @@ namespace Ystring { namespace Utf32
     }
 
     template <typename FwdIt>
-    size_t encodeUtf32BE(FwdIt& begin, FwdIt end, uint32_t codePoint)
+    size_t encodeUtf32BE(FwdIt& begin, FwdIt end, char32_t codePoint)
     {
         return Detail::encodeUtf32<IsLittleEndian>(
                 begin, end, codePoint,

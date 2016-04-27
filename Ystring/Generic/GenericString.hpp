@@ -16,10 +16,10 @@
 namespace Ystring { namespace Generic
 {
     template <typename Str, typename Enc>
-    void append(StringReference<Str>& dst, uint32_t chr, Enc encoding);
+    void append(StringReference<Str>& dst, char32_t chr, Enc encoding);
 
     template <typename Str, typename Enc>
-    void append(StringReference<Str>&& dst, uint32_t chr, Enc encoding);
+    void append(StringReference<Str>&& dst, char32_t chr, Enc encoding);
 
     template <typename Str, typename It, typename Enc1, typename Enc2>
     Str convert(Range<It> str, Enc1 fromEncoding, Enc2 toEncoding);
@@ -34,7 +34,7 @@ namespace Ystring { namespace Generic
                   FindFlags_t flags = FindFlags::DEFAULTS);
 
     template <typename It, typename Enc>
-    uint32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding);
+    char32_t getCodePoint(Range<It> str, ptrdiff_t pos, Enc encoding);
 
     template <typename It, typename Enc, typename UnaryPred>
     Range<It> trim(Range<It> str,

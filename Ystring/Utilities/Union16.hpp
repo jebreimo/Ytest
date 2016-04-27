@@ -17,7 +17,7 @@ namespace Ystring { namespace Utilities
         Union16() : u16(0)
         {}
 
-        explicit Union16(uint16_t n) : u16(n)
+        explicit Union16(char16_t n) : u16(n)
         {}
 
         template <typename T>
@@ -39,7 +39,7 @@ namespace Ystring { namespace Utilities
             std::swap(u8[0], u8[1]);
         }
 
-        uint16_t u16;
+        char16_t u16;
         int16_t i16;
         uint8_t u8[2];
         int8_t i8[2];

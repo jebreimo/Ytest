@@ -7,9 +7,9 @@
 //****************************************************************************
 #include "EncodeUtf8.hpp"
 
-namespace Ystring { namespace Utf8
+namespace Ystring { namespace Encodings
 {
-    size_t encodeUtf8(char (&buffer)[MAX_ENCODED_UTF8_LENGTH], uint32_t chr)
+    size_t encodeUtf8(char (&buffer)[MAX_ENCODED_UTF8_LENGTH], char32_t chr)
     {
         char* begin = buffer;
         char* end = buffer + MAX_ENCODED_UTF8_LENGTH;
@@ -17,7 +17,7 @@ namespace Ystring { namespace Utf8
         return (size_t)(begin - buffer);
     }
 
-    size_t utf8EncodedLength(uint32_t c)
+    size_t utf8EncodedLength(char32_t c)
     {
         if (!(c >> 7))
             return 1;

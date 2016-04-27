@@ -12,17 +12,17 @@
 
 namespace Ystring { namespace Unicode
 {
-    uint32_t segment(const CompactCharMapping& ccs)
+    char32_t segment(const CompactCharMapping& ccs)
     {
         return ccs.segment;
     }
 
-    uint32_t key(const CharMapping& mapping)
+    char32_t key(const CharMapping& mapping)
     {
         return mapping.chr;
     }
 
-    static const uint32_t SegMask = ~(uint32_t)0x1F;
+    static const char32_t SegMask = ~(char32_t)0x1F;
 
     CharMap::CharMap(const CompactCharMapping* compactMappings,
                      size_t compactMappingsSize,
@@ -42,14 +42,14 @@ namespace Ystring { namespace Unicode
         initializeFastMapping();
     }
 
-    uint32_t CharMap::get(uint32_t chr) const
+    char32_t CharMap::get(char32_t chr) const
     {
         if (chr < 64)
             return chr;
         if (chr < FAST_MAPPING_MAX)
             return m_FastMapping[chr - 64];
 
-        uint32_t mappedChr = chr;
+        char32_t mappedChr = chr;
         if (findInCompactMapping(chr, mappedChr) ||
                 findInMapping(chr, mappedChr))
         {
@@ -59,15 +59,15 @@ namespace Ystring { namespace Unicode
         return chr;
     }
 
-    bool CharMap::has(uint32_t chr) const
+    bool CharMap::has(char32_t chr) const
     {
-        uint32_t mappedChr = chr;
+        char32_t mappedChr = chr;
         return findInCompactMapping(chr, mappedChr) ||
                findInMapping(chr, mappedChr);
     }
 
-    bool CharMap::findInCompactMapping(uint32_t chr,
-                                       uint32_t& mappedChr) const
+    bool CharMap::findInCompactMapping(char32_t chr,
+                                       char32_t& mappedChr) const
     {
         const CompactCharMapping* set = Utilities::findLowerBound(
                     m_CompactMappings,
@@ -81,7 +81,7 @@ namespace Ystring { namespace Unicode
         return set->get(chr, mappedChr);
     }
 
-    bool CharMap::findInMapping(uint32_t chr, uint32_t& mappedChr) const
+    bool CharMap::findInMapping(char32_t chr, char32_t& mappedChr) const
     {
         const CharMapping* mapping = Utilities::findLowerBound(
                     m_Mappings,
@@ -97,7 +97,7 @@ namespace Ystring { namespace Unicode
 
     void CharMap::initializeFastMapping()
     {
-        for (uint16_t i = 0; i < FAST_MAPPING_SIZE; ++i)
+        for (char16_t i = 0; i < FAST_MAPPING_SIZE; ++i)
             m_FastMapping[i] = i + 64;
         for (size_t i = 0; i < m_CompactMappingsSize; ++i)
         {
@@ -109,7 +109,7 @@ namespace Ystring { namespace Unicode
             while (j < FAST_MAPPING_SIZE && mask)
             {
                 if (mask & 1)
-                    m_FastMapping[j] += uint16_t(mapping.offset);
+                    m_FastMapping[j] += char16_t(mapping.offset);
                 mask >>= 1;
                 ++j;
             }
@@ -119,7 +119,7 @@ namespace Ystring { namespace Unicode
             if (m_Mappings[i].chr > FAST_MAPPING_MAX)
                 break;
             m_FastMapping[m_Mappings[i].chr - 64] =
-                    uint16_t(m_Mappings[i].mappedChr);
+                    char16_t(m_Mappings[i].mappedChr);
         }
     }
 }}
