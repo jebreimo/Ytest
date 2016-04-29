@@ -11,7 +11,6 @@ project(Ytest_Ystring)
 set(PRIVATE_HEADERS
     DecoderResult.hpp
     Encoding.hpp
-    EncodingInfo.hpp
     Endianness.hpp
     FindFlags.hpp
     PlatformDetails.hpp
@@ -21,17 +20,6 @@ set(PRIVATE_HEADERS
     Utf8.hpp
     YstringDefinitions.hpp
     YstringException.hpp
-    Conversion/AbstractDecoder.hpp
-    Conversion/AbstractEncoder.hpp
-    Conversion/Convert.hpp
-    Conversion/Converter.hpp
-    Conversion/ErrorHandlingPolicy.hpp
-    Conversion/Utf16Decoder.hpp
-    Conversion/Utf16Encoder.hpp
-    Conversion/Utf32Decoder.hpp
-    Conversion/Utf32Encoder.hpp
-    Conversion/Utf8Decoder.hpp
-    Conversion/Utf8Encoder.hpp
     Encodings/DecodeUtf16-impl.hpp
     Encodings/DecodeUtf16.hpp
     Encodings/DecodeUtf32-impl.hpp
@@ -84,14 +72,8 @@ set(PRIVATE_HEADERS
     )
 
 set(SOURCE_FILES
-    EncodingInfo.cpp
     Predicates.cpp
     YstringException.cpp
-    Conversion/AbstractDecoder.cpp
-    Conversion/AbstractEncoder.cpp
-    Conversion/Converter.cpp
-    Conversion/Utf8Decoder.cpp
-    Conversion/Utf8Encoder.cpp
     Encodings/EncodeUtf8.cpp
     Streaming/StreamOperators.cpp
     Unicode/CaseConverter.cpp

@@ -7,11 +7,10 @@
 //****************************************************************************
 #include "Utf8String.hpp"
 
-#include "../PrivatePlatformDetails.hpp"
 #include "../Generic/GenericString.hpp"
+#include "../PrivatePlatformDetails.hpp"
 #include "../Utf16/Utf16Encoding.hpp"
 #include "../Utf32/Utf32Encoding.hpp"
-#include "../Conversion/Converter.hpp"
 #include "Utf8Encoding.hpp"
 
 namespace Ystring { namespace Utf8
@@ -21,7 +20,6 @@ namespace Ystring { namespace Utf8
     using Generic::fromRange;
     typedef std::string String;
     typedef Utf8Encoding Enc;
-
 
     bool caseInsensitiveEqual(const String& str, const String& cmp)
     {
@@ -83,15 +81,6 @@ namespace Ystring { namespace Utf8
                 makeRange(str), Enc(), predicate, maxSplits, flags);
     }
 
-    template <typename CharT>
-    String toUtf8Impl(const CharT* str, size_t length, Encoding_t encoding)
-    {
-        Conversion::Converter converter(encoding, Encoding::UTF_8);
-        String result;
-        converter.convert(str, length, result);
-        return result;
-    }
-
     String toUtf8(const std::wstring& str, Encoding_t encoding)
     {
         return toUtf8(str.data(), str.size(), encoding);
@@ -105,7 +94,7 @@ namespace Ystring { namespace Utf8
             return Generic::convert<String>(makeRange(str, str + length),
                                             Utf16::Utf16Encoding(), Enc());
         default:
-            return toUtf8Impl(str, length, encoding);
+            YSTRING_THROW("Unsupported encoding:" + std::to_string(encoding));
         }
     }
 
@@ -117,7 +106,7 @@ namespace Ystring { namespace Utf8
             return Generic::convert<String>(makeRange(str, str + length),
                                             Utf32::Utf32Encoding(), Enc());
         default:
-            return toUtf8Impl(str, length, encoding);
+            YSTRING_THROW("Unsupported encoding:" + std::to_string(encoding));
         }
     }
 

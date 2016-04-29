@@ -134,7 +134,6 @@ namespace Ytest
         return std::make_pair(true, std::string());
     }
 
-
     template <typename Range1, typename Range2, typename Epsilon>
     inline std::pair<bool, std::string> equivalentRanges(
             Range1&& a, Range2&& b, Epsilon epsilon,
