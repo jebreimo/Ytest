@@ -70,8 +70,8 @@ namespace Ystring { namespace Utilities
     }
 
     template <typename Char>
-    Char toCharDigit(Char c)
+    char toCharDigit(Char c)
     {
-        return c + (c < 0xA ? '0' : 'A' - 10);
+        return static_cast<char>(c + (c < 0xA ? '0' : 'A' - 10));
     }
 }}
