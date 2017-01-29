@@ -81,6 +81,8 @@ set_target_properties(
 
 add_subdirectory(Examples)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib)
-install(FILES ${PUBLIC_HEADERS}
-        DESTINATION include/${PROJECT_NAME})
+if (INSTALL_YTEST)
+    install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+    install(FILES ${PUBLIC_HEADERS}
+            DESTINATION include/${PROJECT_NAME})
+endif(INSTALL_YTEST)
