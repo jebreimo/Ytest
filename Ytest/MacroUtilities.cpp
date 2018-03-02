@@ -44,7 +44,7 @@ namespace Ytest
             {
                 testFuncs[i]();
             }
-            catch (const AbstractFailure& ex)
+            catch (const Failure& ex)
             {
                 Session::instance().testFailed(ex.error());
                 if (ex.error().type() != Error::Failure)

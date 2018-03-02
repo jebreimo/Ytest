@@ -13,57 +13,80 @@
 
 namespace Ytest
 {
-    class AbstractFailure
+    class Failure
     {
     public:
-        virtual ~AbstractFailure();
-        const Error& error() const;
-        std::string what() const;
+        Failure(const Failure&) = default;
+
+        Failure(Failure&&) = default;
+
+        Failure& operator=(const Failure&) = default;
+
+        Failure& operator=(Failure&&) = default;
+
+        const Error& error() const
+        {
+            return m_Error;
+        }
+
+        std::string what() const
+        {
+            return m_Error.text();
+        }
+
         void addContext(const std::string& file,
                         unsigned lineNo,
-                        const std::string& message);
+                        const std::string& message)
+        {
+            m_Error.addContext(file, lineNo, message);
+        }
     protected:
-        AbstractFailure(const Error& error);
+        Failure(const Error& error)
+            : m_Error(error)
+        {}
     private:
         Error m_Error;
         std::string m_What;
         std::vector<Error> m_Context;
     };
 
-    class TestFailure : public AbstractFailure
+    class TestFailure : public Failure
     {
     public:
         TestFailure(const std::string& file,
                     unsigned lineNo,
-                    const std::string& message);
-        ~TestFailure();
+                    const std::string& message)
+            : Failure(Error(file, lineNo, message, Error::Failure))
+        {}
     };
 
-    class CriticalFailure : public AbstractFailure
+    class CriticalFailure : public Failure
     {
     public:
         CriticalFailure(const std::string& file,
                         unsigned lineNo,
-                        const std::string& message);
-        ~CriticalFailure();
+                        const std::string& message)
+            : Failure(Error(file, lineNo, message, Error::CriticalFailure))
+        {}
     };
 
-    class FatalFailure : public AbstractFailure
+    class FatalFailure : public Failure
     {
     public:
         FatalFailure(const std::string& file,
                      unsigned lineNo,
-                     const std::string& message);
-        ~FatalFailure();
+                     const std::string& message)
+            : Failure(Error(file, lineNo, message, Error::FatalFailure))
+        {}
     };
 
-    class UnhandledException : public AbstractFailure
+    class UnhandledException : public Failure
     {
     public:
         UnhandledException(const std::string& file,
                            unsigned lineNo,
-                           const std::string& message);
-
-        ~UnhandledException();
+                           const std::string& message)
+            : Failure(Error(file, lineNo, message, Error::UnhandledException))
+        {}
     };
 }

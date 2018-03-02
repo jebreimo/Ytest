@@ -166,7 +166,7 @@
         ::Ytest::TestScope scope(#name); \
         try { \
             name(__VA_ARGS__); \
-        } catch (::Ytest::AbstractFailure& ex) { \
+        } catch (::Ytest::Failure& ex) { \
             ex.addContext(__FILE__, __LINE__, #name "(" #__VA_ARGS__ ")"); \
             ::Ytest::Session::instance().testFailed(ex.error()); \
             if (ex.error().type() != ::Ytest::Error::Failure) \
@@ -222,7 +222,7 @@
                   #expr " didn't throw exception \"" #exception "\"")
 
 #define YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
-    catch (::Ytest::AbstractFailure&) { \
+    catch (::Ytest::Failure&) { \
         throw; \
     } catch (std::exception& YTest_ex) { \
         std::ostringstream YTest_os; \

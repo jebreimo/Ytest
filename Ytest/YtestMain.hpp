@@ -7,7 +7,7 @@
 //****************************************************************************
 #pragma once
 
-#include "Macros.hpp"
+#include "Ytest.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -25,5 +25,5 @@ int main(int argc, char* argv[])
         std::cerr << "EXCEPTION: " << ex.what() << std::endl;
         return 1;
     }
-    return (int)Session::instance().numberOfFailedTests();
+    return int(Session::instance().numberOfFailedTests());
 }

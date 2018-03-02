@@ -24,7 +24,6 @@ set(SOURCE_FILES
     Ytest/AutoTest.cpp
     Ytest/AutoTestRunner.cpp
     Ytest/Error.cpp
-    Ytest/Exceptions.cpp
     Ytest/Formatters.cpp
     Ytest/Indentation.cpp
     Ytest/JUnitReport.cpp
@@ -40,6 +39,8 @@ set(SOURCE_FILES
     )
 
 set(PRIVATE_HEADERS
+    Ytest.hpp
+    YtestMain.hpp
     Ytest/Indentation.hpp
     Ytest/JUnitReport.hpp
     Ytest/PathFilter.hpp
@@ -47,11 +48,10 @@ set(PRIVATE_HEADERS
     Ytest/Test.hpp
     Ytest/TextReport.hpp
     Ytest/VisualStudioReport.hpp
-    Ytest/XmlWriter.hpp
-    )
+    Ytest/XmlWriter.hpp)
 
 set(PUBLIC_HEADERS
-    Ytest.hpp
+    Ytest/Ytest.hpp
     Ytest/AutoTest.hpp
     Ytest/AutoTestRunner.hpp
     Ytest/Comparers.hpp
