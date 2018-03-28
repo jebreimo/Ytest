@@ -8,6 +8,7 @@
 #pragma once
 
 #include <exception>
+#include <utility>
 #include <vector>
 #include "Error.hpp"
 
@@ -18,11 +19,11 @@ namespace Ytest
     public:
         Failure(const Failure&) = default;
 
-        Failure(Failure&&) = default;
+        Failure(Failure&&) noexcept = default;
 
         Failure& operator=(const Failure&) = default;
 
-        Failure& operator=(Failure&&) = default;
+        Failure& operator=(Failure&&) noexcept = default;
 
         const Error& error() const
         {
@@ -41,8 +42,8 @@ namespace Ytest
             m_Error.addContext(file, lineNo, message);
         }
     protected:
-        Failure(const Error& error)
-            : m_Error(error)
+        Failure(Error error) noexcept
+            : m_Error(std::move(error))
         {}
     private:
         Error m_Error;
@@ -55,7 +56,7 @@ namespace Ytest
     public:
         TestFailure(const std::string& file,
                     unsigned lineNo,
-                    const std::string& message)
+                    const std::string& message) noexcept
             : Failure(Error(file, lineNo, message, Error::Failure))
         {}
     };
@@ -65,7 +66,7 @@ namespace Ytest
     public:
         CriticalFailure(const std::string& file,
                         unsigned lineNo,
-                        const std::string& message)
+                        const std::string& message) noexcept
             : Failure(Error(file, lineNo, message, Error::CriticalFailure))
         {}
     };
@@ -75,7 +76,7 @@ namespace Ytest
     public:
         FatalFailure(const std::string& file,
                      unsigned lineNo,
-                     const std::string& message)
+                     const std::string& message) noexcept
             : Failure(Error(file, lineNo, message, Error::FatalFailure))
         {}
     };
@@ -85,7 +86,7 @@ namespace Ytest
     public:
         UnhandledException(const std::string& file,
                            unsigned lineNo,
-                           const std::string& message)
+                           const std::string& message) noexcept
             : Failure(Error(file, lineNo, message, Error::UnhandledException))
         {}
     };
