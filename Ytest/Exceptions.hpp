@@ -21,6 +21,8 @@ namespace Ytest
 
         Failure(Failure&&) noexcept = default;
 
+        virtual ~Failure() = default;
+
         Failure& operator=(const Failure&) = default;
 
         Failure& operator=(Failure&&) noexcept = default;
