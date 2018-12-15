@@ -491,7 +491,7 @@
         catch (::Ytest::TestFailure& YTest_ex) \
         { \
             YTest_ex.addContext(__FILE__, __LINE__, #expr); \
-            throw YTest_ex; \
+            throw; \
         } catch (std::exception& YTest_ex) { \
             std::ostringstream YTest_os; \
             YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
