@@ -28,7 +28,7 @@ namespace Ytest
     }
 
     AutoTest::AutoTest(const std::string& fileName, Func func,
-                       const std::string& path)
+                       const std::string& path) noexcept
         : m_Function(func),
           m_Name(fileName),
           m_Priority(std::numeric_limits<int>::max())
@@ -39,7 +39,7 @@ namespace Ytest
     }
 
     AutoTest::AutoTest(const std::string& fileName, Func func,
-                       const std::string& path, int priority)
+                       const std::string& path, int priority) noexcept
         : m_Function(func),
           m_Name(fileName),
           m_Priority(priority)
@@ -49,8 +49,7 @@ namespace Ytest
         AutoTestRunner::instance().addTest(this);
     }
 
-    AutoTest::~AutoTest()
-    {}
+    AutoTest::~AutoTest() = default;
 
     const AutoTest::Func& AutoTest::function() const
     {

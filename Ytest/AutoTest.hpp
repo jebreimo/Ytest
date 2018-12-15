@@ -19,9 +19,9 @@ namespace Ytest
         typedef std::function<void()> Func;
 
         AutoTest(const std::string& fileName, Func func,
-                 const std::string& path = std::string());
+                 const std::string& path = std::string()) noexcept;
         AutoTest(const std::string& fileName, Func func,
-                 const std::string& path, int priority);
+                 const std::string& path, int priority) noexcept;
         ~AutoTest();
 
         const Func& function() const;
