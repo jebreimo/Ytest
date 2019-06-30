@@ -1,0 +1,90 @@
+##****************************************************************************
+## Copyright © 2015 Jan Erik Breimo. All rights reserved.
+## Created by Jan Erik Breimo on 2015-05-31.
+##
+## This file is distributed under the Simplified BSD License.
+## License text is included with the source distribution.
+##****************************************************************************
+cmake_minimum_required(VERSION 3.7)
+project(Ytest_Ystring)
+
+set(PRIVATE_HEADERS
+    DecoderResult.hpp
+    Encoding.hpp
+    Endianness.hpp
+    FindFlags.hpp
+    PlatformDetails.hpp
+    Predicates.hpp
+    PrivatePlatformDetails.hpp
+    SplitFlags.hpp
+    Utf8.hpp
+    YstringDefinitions.hpp
+    YstringException.hpp
+    Encodings/DecodeUtf16-impl.hpp
+    Encodings/DecodeUtf16.hpp
+    Encodings/DecodeUtf32-impl.hpp
+    Encodings/DecodeUtf32.hpp
+    Encodings/DecodeUtf8-impl.hpp
+    Encodings/DecodeUtf8.hpp
+    Encodings/EncodeUtf16-impl.hpp
+    Encodings/EncodeUtf16.hpp
+    Encodings/EncodeUtf32-impl.hpp
+    Encodings/EncodeUtf32.hpp
+    Encodings/EncodeUtf8-impl.hpp
+    Encodings/EncodeUtf8.hpp
+    Generic/Appender.hpp
+    Generic/DecoderAlgorithms.hpp
+    Generic/DecoderStringFunctions-impl.hpp
+    Generic/DecoderStringFunctions.hpp
+    Generic/Encoder.hpp
+    Generic/ForwardDecoder.hpp
+    Generic/GenericConvert.hpp
+    Generic/GenericJoin.hpp
+    Generic/GenericSplit.hpp
+    Generic/GenericString.hpp
+    Generic/GenericString-impl.hpp
+    Generic/Range.hpp
+    Generic/RangeAlgorithms.hpp
+    Generic/ReverseDecoder.hpp
+    Generic/StringReference.hpp
+    Generic/StringTypeTraits.hpp
+    Streaming/StreamOperators.hpp
+    Unicode/CaseConverter.hpp
+    Unicode/CaseInsensitive.hpp
+    Unicode/CharClass.hpp
+    Unicode/CharMap.hpp
+    Unicode/CharMappingTypes.hpp
+    Unicode/StandardUpperCase.hpp
+    Unicode/UnicodeChars.hpp
+    Unicode/UnicodePredicates.hpp
+    Utf8/Utf8Chars.hpp
+    Utf8/Utf8Encoding.hpp
+    Utf8/Utf8String.hpp
+    Utf16/Utf16Encoding.hpp
+    Utf32/Utf32Encoding.hpp
+    Utilities/Algorithms.hpp
+    Utilities/Endian.hpp
+    Utilities/Iterators.hpp
+    Utilities/KeyFunctionAlgorithms.hpp
+    Utilities/Union16.hpp
+    Utilities/Union32.hpp
+    Utilities/Utilities.hpp
+    )
+
+set(SOURCE_FILES
+    Predicates.cpp
+    YstringException.cpp
+    Encodings/EncodeUtf8.cpp
+    Streaming/StreamOperators.cpp
+    Unicode/CaseConverter.cpp
+    Unicode/CharClass.cpp
+    Unicode/CharMap.cpp
+    Unicode/CharMappingTypes.cpp
+    Utf8/Utf8String.cpp
+    )
+
+add_library(
+    ${PROJECT_NAME} OBJECT
+    ${PRIVATE_HEADERS}
+    ${SOURCE_FILES}
+    )

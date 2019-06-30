@@ -5,79 +5,84 @@
 ## This file is distributed under the Simplified BSD License.
 ## License text is included with the source distribution.
 ##****************************************************************************
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.13)
 project(Ytest)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_CXX_STANDARD 14)
 
 add_definitions(-DYstring=Ytest_Ystring)
-
-if(APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
-elseif(WIN32)
-    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-endif(APPLE)
-
-add_subdirectory(Ystring)
+add_subdirectory(src/Ystring)
 
 set(SOURCE_FILES
-    Ytest/AutoTest.cpp
-    Ytest/AutoTestRunner.cpp
-    Ytest/Error.cpp
-    Ytest/Formatters.cpp
-    Ytest/Indentation.cpp
-    Ytest/JUnitReport.cpp
-    Ytest/MacroUtilities.cpp
-    Ytest/ParseArguments.cpp
-    Ytest/PathFilter.cpp
-    Ytest/Session.cpp
-    Ytest/StreamRedirection.cpp
-    Ytest/Test.cpp
-    Ytest/TextReport.cpp
-    Ytest/VisualStudioReport.cpp
-    Ytest/XmlWriter.cpp
+    src/Ytest/AutoTest.cpp
+    src/Ytest/AutoTestRunner.cpp
+    src/Ytest/Error.cpp
+    src/Ytest/Exceptions.cpp
+    src/Ytest/Formatters.cpp
+    src/Ytest/Indentation.cpp
+    src/Ytest/JUnitReport.cpp
+    src/Ytest/MacroUtilities.cpp
+    src/Ytest/ParseArguments.cpp
+    src/Ytest/PathFilter.cpp
+    src/Ytest/Session.cpp
+    src/Ytest/StreamRedirection.cpp
+    src/Ytest/Test.cpp
+    src/Ytest/TextReport.cpp
+    src/Ytest/VisualStudioReport.cpp
+    src/Ytest/XmlWriter.cpp
     )
 
 set(PRIVATE_HEADERS
-    Ytest.hpp
-    YtestMain.hpp
-    Ytest/Indentation.hpp
-    Ytest/JUnitReport.hpp
-    Ytest/PathFilter.hpp
-    Ytest/StreamRedirection.hpp
-    Ytest/Test.hpp
-    Ytest/TextReport.hpp
-    Ytest/VisualStudioReport.hpp
-    Ytest/XmlWriter.hpp)
+    src/Ytest/Indentation.hpp
+    src/Ytest/JUnitReport.hpp
+    src/Ytest/ParseArguments.hpp
+    src/Ytest/PathFilter.hpp
+    src/Ytest/StreamRedirection.hpp
+    src/Ytest/Test.hpp
+    src/Ytest/TextReport.hpp
+    src/Ytest/VisualStudioReport.hpp
+    src/Ytest/XmlWriter.hpp
+    )
 
 set(PUBLIC_HEADERS
-    Ytest/Ytest.hpp
-    Ytest/AutoTest.hpp
-    Ytest/AutoTestRunner.hpp
-    Ytest/Comparers.hpp
-    Ytest/Error.hpp
-    Ytest/Exceptions.hpp
-    Ytest/Formatters.hpp
-    Ytest/Macros.hpp
-    Ytest/MacroUtilities.hpp
-    Ytest/ParseArguments.hpp
-    Ytest/Session.hpp
-    Ytest/TestScope.hpp
-    Ytest/YtestMain.hpp
+    include/Ytest/Ytest.hpp
+    include/Ytest/AutoTest.hpp
+    include/Ytest/AutoTestRunner.hpp
+    include/Ytest/Comparers.hpp
+    include/Ytest/Error.hpp
+    include/Ytest/Exceptions.hpp
+    include/Ytest/Formatters.hpp
+    include/Ytest/Macros.hpp
+    include/Ytest/MacroUtilities.hpp
+    include/Ytest/Session.hpp
+    include/Ytest/TestScope.hpp
+    include/Ytest/YtestMain.hpp
     )
 
 add_library(
-    ${PROJECT_NAME} STATIC
+    Ytest STATIC
     ${PUBLIC_HEADERS}
     ${PRIVATE_HEADERS}
     ${SOURCE_FILES}
     $<TARGET_OBJECTS:Ytest_Ystring>
     )
 
-set_target_properties(
-    ${PROJECT_NAME}
+target_compile_definitions(Ytest
+    PRIVATE
+        _SCL_SECURE_NO_WARNINGS
+)
+
+set_target_properties(Ytest
     PROPERTIES
-    DEBUG_OUTPUT_NAME "${PROJECT_NAME}.debug")
+        DEBUG_OUTPUT_NAME "Ytest.debug")
+
+target_include_directories(Ytest
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+    )
 
 add_subdirectory(Examples)
 

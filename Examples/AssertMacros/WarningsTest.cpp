@@ -5,7 +5,7 @@
  * This file is distributed under the BSD License.
  * License text is included with the source distribution.
  */
-#include "../../Ytest.hpp"
+#include "Ytest/Ytest.hpp"
 #include <stdexcept>
 #include <vector>
 

@@ -1,4 +1,4 @@
-#include "../../Ytest.hpp"
+#include "Ytest/Ytest.hpp"
 
 static void testFatalError()
 {
