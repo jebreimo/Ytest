@@ -17,7 +17,6 @@ set(SOURCE_FILES
     src/Ytest/AutoTest.cpp
     src/Ytest/AutoTestRunner.cpp
     src/Ytest/Error.cpp
-    src/Ytest/Exceptions.cpp
     src/Ytest/Formatters.cpp
     src/Ytest/Indentation.cpp
     src/Ytest/JUnitReport.cpp
