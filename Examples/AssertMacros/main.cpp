@@ -1,3 +1,3 @@
 #define Y_MAIN
 
-#include "../../YtestMain.hpp"
+#include "Ytest/Ytest.hpp"
