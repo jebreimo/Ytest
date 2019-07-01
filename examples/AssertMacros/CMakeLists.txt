@@ -10,6 +10,6 @@ set(SRC
     WarningsTest.cpp
     )
 
-add_executable(${PROJECT_NAME} ${SRC})
+add_executable(AssertMacros ${SRC})
 
-target_link_libraries(${PROJECT_NAME} Ytest)
+target_link_libraries(AssertMacros Ytest::Ytest)

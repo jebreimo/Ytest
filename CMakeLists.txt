@@ -90,6 +90,5 @@ add_subdirectory(examples)
 if (INSTALL_YTEST)
     include(GNUInstallDirs)
     install(TARGETS Ytest DESTINATION ${LIBDIR})
-    install(FILES ${PUBLIC_HEADERS}
-            DESTINATION ${INCLUDEDIR}/Ytest)
+    install(DIRECTORY include/ DESTINATION ${INCLUDEDIR})
 endif(INSTALL_YTEST)
