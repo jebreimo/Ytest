@@ -10,7 +10,6 @@ project(Ytest)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_definitions(-DYstring=Ytest_Ystring)
 add_subdirectory(src/Ystring)
 
 set(SOURCE_FILES
@@ -68,8 +67,9 @@ add_library(
 
 target_compile_definitions(Ytest
     PRIVATE
-        _SCL_SECURE_NO_WARNINGS
-)
+        $<$<BOOL:${MSVC}>:_SCL_SECURE_NO_WARNINGS>
+        Ystring=Ytest_Ystring
+    )
 
 set_target_properties(Ytest
     PROPERTIES
@@ -83,10 +83,13 @@ target_include_directories(Ytest
         ${CMAKE_CURRENT_SOURCE_DIR}/src
     )
 
-add_subdirectory(Examples)
+add_library(Ytest::Ytest ALIAS Ytest)
+
+add_subdirectory(examples)
 
 if (INSTALL_YTEST)
-    install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+    include(GNUInstallDirs)
+    install(TARGETS Ytest DESTINATION ${LIBDIR})
     install(FILES ${PUBLIC_HEADERS}
-            DESTINATION include/${PROJECT_NAME})
+            DESTINATION ${INCLUDEDIR}/Ytest)
 endif(INSTALL_YTEST)

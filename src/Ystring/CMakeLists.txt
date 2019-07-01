@@ -83,8 +83,13 @@ set(SOURCE_FILES
     Utf8/Utf8String.cpp
     )
 
-add_library(
-    ${PROJECT_NAME} OBJECT
+add_library(Ytest_Ystring OBJECT
     ${PRIVATE_HEADERS}
     ${SOURCE_FILES}
+    )
+
+target_compile_definitions(Ytest_Ystring
+    PRIVATE
+        $<$<BOOL:${MSVC}>:_SCL_SECURE_NO_WARNINGS>
+        Ystring=Ytest_Ystring
     )
