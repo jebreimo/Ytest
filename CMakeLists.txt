@@ -43,7 +43,6 @@ set(PRIVATE_HEADERS
     )
 
 set(PUBLIC_HEADERS
-    include/Ytest/Ytest.hpp
     include/Ytest/AutoTest.hpp
     include/Ytest/AutoTestRunner.hpp
     include/Ytest/Comparers.hpp
@@ -54,6 +53,7 @@ set(PUBLIC_HEADERS
     include/Ytest/MacroUtilities.hpp
     include/Ytest/Session.hpp
     include/Ytest/TestScope.hpp
+    include/Ytest/Ytest.hpp
     include/Ytest/YtestMain.hpp
     )
 
@@ -73,7 +73,8 @@ target_compile_definitions(Ytest
 
 set_target_properties(Ytest
     PROPERTIES
-        DEBUG_OUTPUT_NAME "Ytest.debug")
+        DEBUG_OUTPUT_NAME "Ytest.debug"
+    )
 
 target_include_directories(Ytest
     PUBLIC
@@ -87,8 +88,30 @@ add_library(Ytest::Ytest ALIAS Ytest)
 
 add_subdirectory(examples)
 
-if (INSTALL_YTEST)
-    include(GNUInstallDirs)
-    install(TARGETS Ytest DESTINATION ${LIBDIR})
-    install(DIRECTORY include/ DESTINATION ${INCLUDEDIR})
-endif(INSTALL_YTEST)
+export(TARGETS Ytest
+    NAMESPACE Ytest::
+    FILE YtestTargets.cmake)
+
+include(GNUInstallDirs)
+
+install(TARGETS Ytest
+    EXPORT YtestTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+install(EXPORT YtestTargets
+    FILE
+        YtestTargets.cmake
+    NAMESPACE
+        Ytest::
+    DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}/cmake/Ytest
+    )
+
+install(
+    DIRECTORY
+        include/
+    DESTINATION
+        ${CMAKE_INSTALL_INCLUDEDIR}
+    )
