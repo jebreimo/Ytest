@@ -10,7 +10,7 @@ project(Ytest)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_subdirectory(src/Ystring)
+add_subdirectory(external/Ystring)
 
 set(SOURCE_FILES
     src/Ytest/AutoTest.cpp
@@ -62,7 +62,7 @@ add_library(
     ${PUBLIC_HEADERS}
     ${PRIVATE_HEADERS}
     ${SOURCE_FILES}
-    $<TARGET_OBJECTS:Ytest_Ystring>
+    $<TARGET_OBJECTS:Ytest::Ystring>
     )
 
 target_compile_definitions(Ytest
@@ -82,6 +82,7 @@ target_include_directories(Ytest
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/Ystring/include
     )
 
 add_library(Ytest::Ytest ALIAS Ytest)
