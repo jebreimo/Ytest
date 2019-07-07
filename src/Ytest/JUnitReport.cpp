@@ -15,7 +15,7 @@
 namespace Ytest
 {
     void addTestCases(std::map<std::string, std::vector<TestPtr>>& testCases,
-                      std::string path, TestPtr test)
+                      std::string path, const TestPtr& test)
     {
         if (test->assertions() > 0)
             testCases[path].push_back(test);
@@ -24,7 +24,6 @@ namespace Ytest
         {
             path += "/";
             path += test->name();
-            auto subtests = test->tests();
             for (auto it = begin(subtests); it != end(subtests); ++it)
                 addTestCases(testCases, path, *it);
         }

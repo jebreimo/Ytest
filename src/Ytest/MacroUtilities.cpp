@@ -23,8 +23,8 @@ namespace Ytest
         {
             auto result = Utf8::split(names, ",", 0,
                                       SplitFlags::IGNORE_EMPTY);
-            for (auto it = result.begin(); it != result.end(); ++it)
-              *it = Utf8::trim(*it);
+            for (auto & it : result)
+              it = Utf8::trim(it);
             return result;
         }
     }

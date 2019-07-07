@@ -14,14 +14,14 @@
 
 namespace Ytest
 {
-    class Failure
+    class Failure : public std::exception
     {
     public:
         Failure(const Failure&) = default;
 
         Failure(Failure&&) noexcept = default;
 
-        virtual ~Failure() = default;
+        ~Failure() override = default;
 
         Failure& operator=(const Failure&) = default;
 
@@ -32,9 +32,11 @@ namespace Ytest
             return m_Error;
         }
 
-        std::string what() const
+        const char* what() const noexcept override
         {
-            return m_Error.text();
+            if (m_What.empty())
+                m_What = m_Error.text();
+            return m_What.c_str();
         }
 
         void addContext(const std::string& file,
@@ -44,13 +46,12 @@ namespace Ytest
             m_Error.addContext(file, lineNo, message);
         }
     protected:
-        Failure(Error error) noexcept
+        explicit Failure(Error error) noexcept
             : m_Error(std::move(error))
         {}
     private:
         Error m_Error;
-        std::string m_What;
-        std::vector<Error> m_Context;
+        mutable std::string m_What;
     };
 
     class TestFailure : public Failure

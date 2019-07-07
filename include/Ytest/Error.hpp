@@ -26,22 +26,28 @@ namespace Ytest
         };
 
         Error();
-        Error(const std::string& file,
+
+        Error(std::string  file,
               unsigned lineNo,
-              const std::string& message,
+              std::string  message,
               Type level = None);
 
         /** @brief The file where the error occurred.
           */
         const std::string& file() const;
+
         Type type() const;
+
         unsigned lineNo() const;
+
         const std::string& message() const;
+
         std::string text() const;
 
         void addContext(const std::string& file,
                         unsigned lineNo,
                         const std::string& message);
+
         const std::vector<Error>& context() const;
 
         static const char* levelName(Type level);

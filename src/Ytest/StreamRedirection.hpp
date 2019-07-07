@@ -16,7 +16,7 @@ namespace Ytest
     public:
         StreamRedirection(std::ios& stream, std::ios& replacement);
         StreamRedirection(std::ios& stream, std::streambuf* replacement);
-        StreamRedirection(StreamRedirection&& other);
+        StreamRedirection(StreamRedirection&& other) noexcept;
         ~StreamRedirection();
     private:
         std::ios& m_Stream;

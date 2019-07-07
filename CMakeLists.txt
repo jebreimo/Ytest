@@ -91,7 +91,9 @@ add_subdirectory(examples)
 
 export(TARGETS Ytest
     NAMESPACE Ytest::
-    FILE YtestTargets.cmake)
+    FILE YtestConfig.cmake)
+
+export(PACKAGE Ytest)
 
 include(GNUInstallDirs)
 
@@ -103,7 +105,7 @@ install(TARGETS Ytest
 
 install(EXPORT YtestTargets
     FILE
-        YtestTargets.cmake
+        YtestConfig.cmake
     NAMESPACE
         Ytest::
     DESTINATION

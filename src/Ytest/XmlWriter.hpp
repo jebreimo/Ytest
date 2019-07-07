@@ -41,14 +41,18 @@ namespace Ytest
           *  constructed instance, unless setStream is used to select
           *  a different stream.
           */
-        XmlWriter(std::ostream& stream);
-        XmlWriter(std::unique_ptr<std::ostream> stream);
-        XmlWriter(XmlWriter&& rhs);
+        explicit XmlWriter(std::ostream& stream);
+
+        explicit XmlWriter(std::unique_ptr<std::ostream> stream);
+
+        XmlWriter(XmlWriter&& rhs) noexcept;
+
         ~XmlWriter();
 
-        XmlWriter& operator=(XmlWriter&& rhs);
+        XmlWriter& operator=(XmlWriter&& rhs) noexcept;
 
         bool open(const std::string& filename);
+
         void close();
 
         /** @brief Write the XML declaration tag.

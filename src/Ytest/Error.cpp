@@ -1,3 +1,5 @@
+#include <utility>
+
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -15,14 +17,14 @@ namespace Ytest
           m_LineNo(0)
     {}
 
-    Error::Error(const std::string& file,
+    Error::Error(std::string  file,
                  unsigned lineNo,
-                 const std::string& message,
+                 std::string  message,
                  Type type)
-        : m_File(file),
+        : m_File(std::move(file)),
           m_Type(type),
           m_LineNo(lineNo),
-          m_Message(message)
+          m_Message(std::move(message))
     {}
 
     const std::string& Error::file() const
@@ -61,7 +63,7 @@ namespace Ytest
                            unsigned lineNo,
                            const std::string& message)
     {
-        m_Context.push_back(Error(file, lineNo, message));
+        m_Context.emplace_back(file, lineNo, message);
     }
 
     const std::vector<Error>& Error::context() const

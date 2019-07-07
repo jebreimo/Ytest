@@ -107,7 +107,7 @@ namespace Ytest
             m_PrevStreamPos = (size_t)stream->tellp();
     }
 
-    XmlWriter::XmlWriter(XmlWriter&& rhs)
+    XmlWriter::XmlWriter(XmlWriter&& rhs) noexcept
         : m_Context(std::move(rhs.m_Context)),
           m_Formatting(rhs.m_Formatting),
           m_FormattingState(rhs.m_FormattingState),
@@ -121,10 +121,9 @@ namespace Ytest
         rhs.m_Stream = nullptr;
     }
 
-    XmlWriter::~XmlWriter()
-    {}
+    XmlWriter::~XmlWriter() = default;
 
-    XmlWriter& XmlWriter::operator=(XmlWriter&& rhs)
+    XmlWriter& XmlWriter::operator=(XmlWriter&& rhs) noexcept
     {
         m_Formatting = rhs.m_Formatting;
         m_FormattingState = rhs.m_FormattingState;

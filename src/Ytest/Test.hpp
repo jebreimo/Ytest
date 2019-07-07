@@ -19,7 +19,7 @@ namespace Ytest
     class Test
     {
     public:
-        Test(const std::string& name);
+        Test(std::string  name);
 
         size_t assertions() const;
         void incrementAssertions();
@@ -53,7 +53,7 @@ namespace Ytest
 
         double elapsedTime() const;
 
-        void addTest(TestPtr test);
+        void addTest(const TestPtr& test);
         std::vector<TestPtr>& tests();
         const std::vector<TestPtr>& tests() const;
         TestPtr findTest(const std::string& name) const;

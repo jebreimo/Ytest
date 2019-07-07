@@ -1,3 +1,5 @@
+#include <utility>
+
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -11,9 +13,9 @@
 
 namespace Ytest
 {
-    Test::Test(const std::string& name)
+    Test::Test(std::string  name)
         : m_Assertions(0),
-          m_Name(name),
+          m_Name(std::move(name)),
           m_StartTime(0),
           m_EndTime(0)
     {}
@@ -37,9 +39,9 @@ namespace Ytest
     {
         if (failed())
             return true;
-        for (auto it = m_Tests.begin(); it != m_Tests.end(); ++it)
+        for (const auto & m_Test : m_Tests)
         {
-            if ((*it)->failed())
+            if (m_Test->failed())
                 return true;
         }
         return false;
@@ -98,7 +100,7 @@ namespace Ytest
         return double(m_EndTime - m_StartTime) / CLOCKS_PER_SEC;
     }
 
-    void Test::addTest(TestPtr test)
+    void Test::addTest(const TestPtr& test)
     {
         m_Tests.push_back(test);
     }

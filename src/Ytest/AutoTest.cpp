@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -27,10 +31,10 @@ namespace Ytest
         }
     }
 
-    AutoTest::AutoTest(const std::string& fileName, Func func,
+    AutoTest::AutoTest(std::string fileName, Func func,
                        const std::string& path) noexcept
-        : m_Function(func),
-          m_Name(fileName),
+        : m_Function(std::move(func)),
+          m_Name(std::move(fileName)),
           m_Priority(std::numeric_limits<int>::max())
     {
         if (!path.empty())
@@ -38,10 +42,10 @@ namespace Ytest
         AutoTestRunner::instance().addTest(this);
     }
 
-    AutoTest::AutoTest(const std::string& fileName, Func func,
+    AutoTest::AutoTest(std::string  fileName, Func func,
                        const std::string& path, int priority) noexcept
-        : m_Function(func),
-          m_Name(fileName),
+        : m_Function(std::move(func)),
+          m_Name(std::move(fileName)),
           m_Priority(priority)
     {
         if (!path.empty())

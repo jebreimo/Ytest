@@ -15,8 +15,7 @@
 
 namespace Ytest
 {
-    AutoTestRunner::AutoTestRunner()
-    {}
+    AutoTestRunner::AutoTestRunner() = default;
 
     AutoTestRunner& AutoTestRunner::instance()
     {
@@ -40,23 +39,23 @@ namespace Ytest
     void AutoTestRunner::run()
     {
         std::sort(m_Tests.begin(), m_Tests.end(), hasHigherPriority);
-        for (auto test = m_Tests.begin(); test != m_Tests.end(); ++test)
+        for (auto & m_Test : m_Tests)
         {
             TestScope scope;
             auto& session = Session::instance();
-            auto& path = (*test)->path();
+            auto& path = m_Test->path();
             auto name = begin(path);
             for (; name != end(path); ++name)
             {
                 if (session.isTestEnabled(*name))
                     scope.push(*name, true);
             }
-            if (name == end(path) && session.isTestEnabled((*test)->name()))
+            if (name == end(path) && session.isTestEnabled(m_Test->name()))
             {
-                scope.push((*test)->name());
+                scope.push(m_Test->name());
                 try
                 {
-                    (*test)->function()();
+                    m_Test->function()();
                 }
                 catch (const TestFailure&)
                 {}

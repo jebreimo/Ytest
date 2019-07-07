@@ -15,40 +15,9 @@ using namespace std;
 
 namespace Ytest
 {
-    std::string Indentation::s_DefaultIndentationString("  ");
-
-    Indentation::Indentation()
-        : m_IndentationString(s_DefaultIndentationString)
+    Indentation::Indentation() noexcept
+        : m_IndentationString("  ")
     {}
-
-    Indentation::Indentation(const Indentation& rhs)
-        : m_IndentationString(rhs.m_IndentationString),
-          m_Indents(rhs.m_Indents)
-    {}
-
-    Indentation::Indentation(Indentation&& rhs)
-        : m_IndentationString(std::move(rhs.m_IndentationString)),
-          m_Indents(std::move(rhs.m_Indents))
-    {}
-
-    Indentation::~Indentation()
-    {}
-
-    Indentation& Indentation::operator=(const Indentation& rhs)
-    {
-        m_IndentationString = rhs.m_IndentationString;
-        m_Indents = rhs.m_Indents;
-        return *this;
-    }
-
-    Indentation& Indentation::operator=(Indentation&& rhs)
-    {
-        m_IndentationString.clear();
-        m_IndentationString.swap(rhs.m_IndentationString);
-        m_Indents.clear();
-        m_Indents.swap(rhs.m_Indents);
-        return *this;
-    }
 
     const std::string& Indentation::indentationString() const
     {
@@ -86,28 +55,18 @@ namespace Ytest
 
     void Indentation::write(ostream& os) const
     {
-        for (auto it = m_Indents.begin(); it != m_Indents.end(); it++)
+        for (int m_Indent : m_Indents)
         {
-            if (*it == -1)
+            if (m_Indent == -1)
             {
                 os << m_IndentationString;
             }
             else
             {
-                for (int i = 0; i < *it; i++)
+                for (int i = 0; i < m_Indent; i++)
                     os.put(' ');
             }
         }
-    }
-
-    const std::string& Indentation::defaultIndentationString()
-    {
-        return s_DefaultIndentationString;
-    }
-
-    void Indentation::setDefaultIndentationString(const std::string& str)
-    {
-        s_DefaultIndentationString = str;
     }
 
     std::ostream& operator<<(std::ostream& os, const Indentation& i)

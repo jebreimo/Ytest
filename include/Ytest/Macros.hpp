@@ -492,6 +492,8 @@
         { \
             YTest_ex.addContext(__FILE__, __LINE__, #expr); \
             throw; \
+        } catch (::Ytest::Failure&) { \
+            throw; \
         } catch (std::exception& YTest_ex) { \
             std::ostringstream YTest_os; \
             YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
@@ -514,6 +516,8 @@
             YTest_ss << #expr " // " #arg1 "=" << arg1; \
             YTest_ex.addContext(__FILE__, __LINE__, YTest_ss.str()); \
             throw YTest_ex; \
+        } catch (::Ytest::Failure&) { \
+            throw; \
         } catch (std::exception& YTest_ex) { \
             std::ostringstream YTest_os; \
             YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \
@@ -536,6 +540,8 @@
             YTest_ss << #expr " // " #arg1 "=" << arg1 << ", " #arg2 "=" << arg2; \
             YTest_ex.addContext(__FILE__, __LINE__, YTest_ss.str()); \
             throw YTest_ex; \
+        } catch (::Ytest::Failure&) { \
+            throw; \
         } catch (std::exception& YTest_ex) { \
             std::ostringstream YTest_os; \
             YTest_os << "Uhandled std-exception: " << YTest_ex.what(); \

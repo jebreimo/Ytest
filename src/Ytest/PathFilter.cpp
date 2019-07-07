@@ -1,3 +1,5 @@
+#include <utility>
+
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -23,7 +25,7 @@ namespace Ytest
     class FilterState
     {
     public:
-        FilterState(const std::string& name = std::string());
+        explicit FilterState(std::string  name = {});
 
         FilterState descend(const std::string& name);
         bool shouldDescend(const std::string& name);
@@ -40,8 +42,8 @@ namespace Ytest
         PathFilterType m_Type;
     };
 
-    FilterState::FilterState(const std::string& name)
-        : m_Name(name),
+    FilterState::FilterState(std::string  name)
+        : m_Name(std::move(name)),
           m_Type(InclusiveFilter)
     {}
 
@@ -93,8 +95,7 @@ namespace Ytest
         : m_States(1)
     {}
 
-    PathFilter::~PathFilter()
-    {}
+    PathFilter::~PathFilter() = default;
 
     bool PathFilter::descend(const std::string& name)
     {
@@ -168,8 +169,7 @@ namespace Ytest
                 if (its.second == end(*it))
                     result = true;
                 else if (*its.second == '/')
-                    next.push_back(
-                            std::string(std::next(its.second), end(*it)));
+                    next.emplace_back(std::next(its.second), end(*it));
             }
             return result;
         }

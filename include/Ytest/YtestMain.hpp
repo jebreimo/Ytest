@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception& ex)
     {
-        std::cerr << "EXCEPTION: " << ex.what() << std::endl;
+        std::cerr << "EXCEPTION: " << ex.what() << "\n";
         return 1;
     }
     return int(Session::instance().numberOfFailedTests());

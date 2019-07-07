@@ -33,8 +33,7 @@ namespace Ytest
           m_Verbose(true)
     {}
 
-    Session::~Session()
-    {}
+    Session::~Session() = default;
 
     Session& Session::instance()
     {
@@ -107,7 +106,7 @@ namespace Ytest
     {
         if (fileName.empty())
         {
-            if (isRunnningInVisualStudio())
+            if (isRunningInVisualStudio())
                 writeVisualStudioReport(func, session);
             else
                 func(std::cout, session);
@@ -300,8 +299,8 @@ namespace Ytest
     {
         m_LogFile.open(fileName);
         m_Log = &m_LogFile;
-        m_Redirections.push_back(StreamRedirection(std::cout, m_LogFile));
-        m_Redirections.push_back(StreamRedirection(std::cerr, m_LogFile));
-        m_Redirections.push_back(StreamRedirection(std::clog, m_LogFile));
+        m_Redirections.emplace_back(std::cout, m_LogFile);
+        m_Redirections.emplace_back(std::cerr, m_LogFile);
+        m_Redirections.emplace_back(std::clog, m_LogFile);
     }
 }

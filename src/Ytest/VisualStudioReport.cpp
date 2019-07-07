@@ -14,7 +14,7 @@
 
 namespace Ytest {
 
-bool isRunnningInVisualStudio()
+bool isRunningInVisualStudio()
 {
     return IsDebuggerPresent() != 0;
 }
@@ -34,14 +34,14 @@ void writeVisualStudioReport(
 
 namespace Ytest
 {
-    bool isRunnningInVisualStudio()
+    bool isRunningInVisualStudio()
     {
         return false;
     }
 
     void writeVisualStudioReport(
-            void (*reportFunc)(std::ostream&, const Session&),
-            const Session& session)
+            void (*)(std::ostream&, const Session&),
+            const Session&)
     {}
 }
 

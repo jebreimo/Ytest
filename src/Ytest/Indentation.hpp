@@ -16,13 +16,7 @@ namespace Ytest
     class Indentation
     {
     public:
-        Indentation();
-        Indentation(const Indentation& rhs);
-        Indentation(Indentation&& rhs);
-        ~Indentation();
-
-        Indentation& operator=(const Indentation& rhs);
-        Indentation& operator=(Indentation&& rhs);
+        Indentation() noexcept;
 
         const std::string& indentationString() const;
         void setIndentationString(const std::string& str);
@@ -33,13 +27,9 @@ namespace Ytest
         void pop();
 
         void write(std::ostream& os) const;
-
-        static const std::string& defaultIndentationString();
-        static void setDefaultIndentationString(const std::string& str);
     private:
         std::string m_IndentationString;
         std::vector<int> m_Indents;
-        static std::string s_DefaultIndentationString;
     };
 
     std::ostream& operator<<(std::ostream& os, const Indentation& i);

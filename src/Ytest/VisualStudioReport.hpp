@@ -13,7 +13,7 @@ namespace Ytest
 {
     class Session;
 
-    bool isRunnningInVisualStudio();
+    bool isRunningInVisualStudio();
 
     void writeVisualStudioReport(
             void (*reportFunc)(std::ostream&, const Session&),

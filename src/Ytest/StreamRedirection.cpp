@@ -21,7 +21,7 @@ namespace Ytest
           m_OriginalBuffer(stream.rdbuf(replacement))
     {}
 
-    StreamRedirection::StreamRedirection(StreamRedirection&& other)
+    StreamRedirection::StreamRedirection(StreamRedirection&& other) noexcept
         : m_Stream(other.m_Stream),
           m_OriginalBuffer(other.m_OriginalBuffer)
     {

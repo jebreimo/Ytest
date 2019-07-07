@@ -36,8 +36,8 @@ namespace Ytest
                                 const TestPtr& test)
     {
         std::string name;
-        for (auto it = parents.begin(); it != parents.end(); ++it)
-            name += (*it)->name() + "/";
+        for (const auto & parent : parents)
+            name += parent->name() + "/";
         name += test->name();
         return name;
     }
@@ -48,30 +48,30 @@ namespace Ytest
             std::vector<TestPtr>& parents)
     {
         Counters counters;
-        for (auto it = tests.begin(); it != tests.end(); ++it)
+        for (const auto & test : tests)
         {
-            if ((*it)->failed() || (*it)->tests().empty() ||
-                    (*it)->assertions())
+            if (test->failed() || test->tests().empty() ||
+                    test->assertions())
             {
                 ++counters.tests;
             }
-            counters.assertions += (*it)->assertions();
-            if (!(*it)->tests().empty())
+            counters.assertions += test->assertions();
+            if (!test->tests().empty())
             {
-                parents.push_back(*it);
-                counters += writeTextReport(os, (*it)->tests(), parents);
+                parents.push_back(test);
+                counters += writeTextReport(os, test->tests(), parents);
                 parents.pop_back();
             }
-            auto& errors = (*it)->errors();
-            if ((*it)->failed())
+            auto& errors = test->errors();
+            if (test->failed())
             {
                 ++counters.failedTests;
-                os << testName(parents, *it) << ": FAILED (assertion "
-                   << ((*it)->assertions() + 1) << ")\n";
+                os << testName(parents, test) << ": FAILED (assertion "
+                   << (test->assertions() + 1) << ")\n";
             }
             else if (!errors.empty())
             {
-                os << testName(parents, *it) << ": SUCCEEDED WITH WARNINGS\n";
+                os << testName(parents, test) << ": SUCCEEDED WITH WARNINGS\n";
             }
             for (auto err = begin(errors); err != end(errors); ++err)
             {
@@ -81,8 +81,8 @@ namespace Ytest
                 if (!context.empty())
                 {
                     os << "    Called from:\n";
-                    for (auto c = context.begin(); c != context.end(); ++c)
-                        os << "        " << c->text() << "\n";
+                    for (const auto & c : context)
+                        os << "        " << c.text() << "\n";
                 }
             }
         }
