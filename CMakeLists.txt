@@ -12,37 +12,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(external/Ystring)
 
-set(SOURCE_FILES
-    src/Ytest/AutoTest.cpp
-    src/Ytest/AutoTestRunner.cpp
-    src/Ytest/Error.cpp
-    src/Ytest/Formatters.cpp
-    src/Ytest/Indentation.cpp
-    src/Ytest/JUnitReport.cpp
-    src/Ytest/MacroUtilities.cpp
-    src/Ytest/ParseArguments.cpp
-    src/Ytest/PathFilter.cpp
-    src/Ytest/Session.cpp
-    src/Ytest/StreamRedirection.cpp
-    src/Ytest/Test.cpp
-    src/Ytest/TextReport.cpp
-    src/Ytest/VisualStudioReport.cpp
-    src/Ytest/XmlWriter.cpp
-    )
-
-set(PRIVATE_HEADERS
-    src/Ytest/Indentation.hpp
-    src/Ytest/JUnitReport.hpp
-    src/Ytest/ParseArguments.hpp
-    src/Ytest/PathFilter.hpp
-    src/Ytest/StreamRedirection.hpp
-    src/Ytest/Test.hpp
-    src/Ytest/TextReport.hpp
-    src/Ytest/VisualStudioReport.hpp
-    src/Ytest/XmlWriter.hpp
-    )
-
-set(PUBLIC_HEADERS
+add_library(Ytest STATIC
     include/Ytest/AutoTest.hpp
     include/Ytest/AutoTestRunner.hpp
     include/Ytest/Comparers.hpp
@@ -55,13 +25,30 @@ set(PUBLIC_HEADERS
     include/Ytest/TestScope.hpp
     include/Ytest/Ytest.hpp
     include/Ytest/YtestMain.hpp
-    )
-
-add_library(
-    Ytest STATIC
-    ${PUBLIC_HEADERS}
-    ${PRIVATE_HEADERS}
-    ${SOURCE_FILES}
+    src/Ytest/AutoTest.cpp
+    src/Ytest/AutoTestRunner.cpp
+    src/Ytest/Error.cpp
+    src/Ytest/Formatters.cpp
+    src/Ytest/Indentation.cpp
+    src/Ytest/Indentation.hpp
+    src/Ytest/JUnitReport.cpp
+    src/Ytest/JUnitReport.hpp
+    src/Ytest/MacroUtilities.cpp
+    src/Ytest/ParseArguments.cpp
+    src/Ytest/ParseArguments.hpp
+    src/Ytest/PathFilter.cpp
+    src/Ytest/PathFilter.hpp
+    src/Ytest/Session.cpp
+    src/Ytest/StreamRedirection.cpp
+    src/Ytest/StreamRedirection.hpp
+    src/Ytest/Test.cpp
+    src/Ytest/Test.hpp
+    src/Ytest/TextReport.cpp
+    src/Ytest/TextReport.hpp
+    src/Ytest/VisualStudioReport.cpp
+    src/Ytest/VisualStudioReport.hpp
+    src/Ytest/XmlWriter.cpp
+    src/Ytest/XmlWriter.hpp
     $<TARGET_OBJECTS:Ytest::Ystring>
     )
 
@@ -90,17 +77,21 @@ add_library(Ytest::Ytest ALIAS Ytest)
 add_subdirectory(examples)
 
 export(TARGETS Ytest
-    NAMESPACE Ytest::
-    FILE YtestConfig.cmake)
-
-export(PACKAGE Ytest)
+    NAMESPACE
+        Ytest::
+    FILE
+        YtestConfig.cmake
+    )
 
 include(GNUInstallDirs)
 
 install(TARGETS Ytest
-    EXPORT YtestTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    EXPORT
+        YtestTargets
+    LIBRARY
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
 install(EXPORT YtestTargets
