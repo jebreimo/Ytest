@@ -7,7 +7,8 @@
 //****************************************************************************
 #pragma once
 
-#include "Ytest.hpp"
+#include "AutoTestRunner.hpp"
+#include "Macros.hpp"
 
 int main(int argc, char* argv[])
 {
