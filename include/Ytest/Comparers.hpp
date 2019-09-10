@@ -16,54 +16,47 @@
 namespace Ytest
 {
     template <typename T, typename U>
-    bool equal(T t, U u)
+    bool equal(T&& t, U&& u)
     {
         return t == u;
     }
 
-    template <>
-    inline bool equal<char*, char*>(char* t, char* u)
+    inline bool equal(char* t, char* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
         return std::strcmp(t, u) == 0;
     }
 
-    template <>
-    inline bool equal<const char*, const char*>(const char* t, const char* u)
+    inline bool equal(const char* t, const char* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
         return std::strcmp(t, u) == 0;
     }
 
-    template <>
-    inline bool equal<char*, const char*>(char* t, const char* u)
+    inline bool equal(char* t, const char* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
         return std::strcmp(t, u) == 0;
     }
 
-    template <>
-    inline bool equal<wchar_t*, wchar_t*>(wchar_t* t, wchar_t* u)
+    inline bool equal(wchar_t* t, wchar_t* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
         return std::wcscmp(t, u) == 0;
     }
 
-    template <>
-    inline bool equal<const wchar_t*, const wchar_t*>(
-            const wchar_t* t, const wchar_t* u)
+    inline bool equal(const wchar_t* t, const wchar_t* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
         return std::wcscmp(t, u) == 0;
     }
 
-    template <>
-    inline bool equal<wchar_t*, const wchar_t*>(wchar_t* t, const wchar_t* u)
+    inline bool equal(wchar_t* t, const wchar_t* u)
     {
         if (t == nullptr || u == nullptr)
             return t == u;
@@ -71,26 +64,26 @@ namespace Ytest
     }
 
     template <typename T, typename U>
-    bool notEqual(T t, U u)
+    bool notEqual(T&& t, U&& u)
     {
-        return !::Ytest::equal(t, u);
+        return !::Ytest::equal(std::forward<T>(t), std::forward<U>(u));
     }
 
     template <typename T, typename U, typename V>
-    bool equivalent(T a, U b, V epsilon)
+    bool equivalent(T&& a, U&& b, V epsilon)
     {
         using namespace std;
         return abs(a - b) <= epsilon;
     }
 
     template <typename T, typename U>
-    bool lessThan(T a, U b)
+    bool lessThan(T&& a, U&& b)
     {
         return a < b;
     }
 
     template <typename T, typename U>
-    bool greaterThan(T a, U b)
+    bool greaterThan(T&& a, U&& b)
     {
         return b < a;
     }
