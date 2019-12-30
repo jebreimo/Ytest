@@ -15,10 +15,6 @@
   * @brief Defines the exception thrown by Ystring functions.
   */
 
-#ifndef _NOEXCEPT
-    #define _NOEXCEPT
-#endif
-
 namespace Ystring
 {
     class YSTRING_API YstringException : public std::logic_error
@@ -30,7 +26,7 @@ namespace Ystring
                          const std::string& filename,
                          int lineno,
                          const std::string& funcname);
-        const char* what() const _NOEXCEPT override;
+        const char* what() const noexcept override;
     private:
         std::string m_Message;
     };

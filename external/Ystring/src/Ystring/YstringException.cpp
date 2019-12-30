@@ -32,7 +32,7 @@ namespace Ystring
         m_Message = ss.str();
     }
 
-    const char* YstringException::what() const _NOEXCEPT
+    const char* YstringException::what() const noexcept
     {
         if (!m_Message.empty())
             return m_Message.c_str();
