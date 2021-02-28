@@ -357,13 +357,13 @@
         } YTEST_CATCH_UNEXPECTED_EXCEPTION(file, line) \
     } while (false)
 
-#define Y_IMPL_EQUIVALENT(a, b, epsilon, failure, file, line) \
+#define Y_IMPL_EQUIVALENT(a, b, margin, failure, file, line) \
     do { \
         try { \
             auto&& Y_PRIV_UNIQUE_NAME(aa) = (a); \
             auto&& Y_PRIV_UNIQUE_NAME(bb) = (b); \
             if (::Ytest::equivalent(Y_PRIV_UNIQUE_NAME(aa), \
-                                    Y_PRIV_UNIQUE_NAME(bb), epsilon)) { \
+                                    Y_PRIV_UNIQUE_NAME(bb), margin)) { \
                 ::Ytest::Session::instance().assertPassed(); \
             } else { \
                 throw ::Ytest::failure(file, line, \
@@ -416,11 +416,11 @@
         } YTEST_CATCH_UNEXPECTED_EXCEPTION(__FILE__, __LINE__) \
     } while (false)
 
-#define Y_EQUIVALENT_RANGES(a, b, epsilon) \
+#define Y_EQUIVALENT_RANGES(a, b, margin) \
     do { \
         try { \
             auto Y_PRIV_UNIQUE_NAME(r) = ::Ytest::equivalentRanges(a, b, \
-                     epsilon, #a, #b); \
+                     margin, #a, #b); \
             if (Y_PRIV_UNIQUE_NAME(r).first) { \
                 ::Ytest::Session::instance().assertPassed(); \
             } else { \
@@ -432,14 +432,14 @@
 
 /** @brief Verifies that number @a a is sufficiently close to @a b.
   */
-#define Y_EQUIVALENT(a, b, epsilon) \
-    Y_IMPL_EQUIVALENT(a, b, epsilon, TestFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT(a, b, margin) \
+    Y_IMPL_EQUIVALENT(a, b, margin, TestFailure, __FILE__, __LINE__)
 
-#define Y_EQUIVALENT_CRITICAL(a, b, epsilon) \
-    Y_IMPL_EQUIVALENT(a, b, epsilon, CriticalFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT_CRITICAL(a, b, margin) \
+    Y_IMPL_EQUIVALENT(a, b, margin, CriticalFailure, __FILE__, __LINE__)
 
-#define Y_EQUIVALENT_FATAL(a, b, epsilon) \
-    Y_IMPL_EQUIVALENT(a, b, epsilon, FatalFailure, __FILE__, __LINE__)
+#define Y_EQUIVALENT_FATAL(a, b, margin) \
+    Y_IMPL_EQUIVALENT(a, b, margin, FatalFailure, __FILE__, __LINE__)
 
 /** @brief Verifies that @a a is not equal to @a b.
   *

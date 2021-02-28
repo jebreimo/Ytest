@@ -5,14 +5,29 @@
 ## This file is distributed under the Simplified BSD License.
 ## License text is included with the source distribution.
 ##****************************************************************************
-cmake_minimum_required(VERSION 3.13)
-project(Ytest)
+cmake_minimum_required(VERSION 3.16)
+project(Ytest VERSION 0.1.0)
+
+# Set YTEST_MASTER_PROJECT to ON if Ystring is the root level project.
+if(NOT DEFINED YTEST_MASTER_PROJECT)
+    if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+        set(YTEST_MASTER_PROJECT ON)
+    else()
+        set(YTEST_MASTER_PROJECT OFF)
+    endif()
+endif()
+
+# Install option
+option(YTEST_INSTALL "Generate the install target" ${YTEST_MASTER_PROJECT})
+
+# Install option
+option(YTEST_BUILD_EXAMPLES "Build the examples" ${YTEST_MASTER_PROJECT})
 
 set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(external/Ystring)
 
-add_library(Ytest STATIC
+add_library(Ytest
     include/Ytest/AutoTest.hpp
     include/Ytest/AutoTestRunner.hpp
     include/Ytest/Comparers.hpp
@@ -63,9 +78,11 @@ set_target_properties(Ytest
         DEBUG_OUTPUT_NAME "Ytest.debug"
     )
 
+include(GNUInstallDirs)
+
 target_include_directories(Ytest
     PUBLIC
-        $<INSTALL_INTERFACE:include>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -74,7 +91,9 @@ target_include_directories(Ytest
 
 add_library(Ytest::Ytest ALIAS Ytest)
 
-add_subdirectory(examples)
+if(YTEST_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 export(TARGETS Ytest
     NAMESPACE
@@ -83,29 +102,37 @@ export(TARGETS Ytest
         YtestConfig.cmake
     )
 
-include(GNUInstallDirs)
+if(YTEST_INSTALL)
+    install(TARGETS Ytest
+        EXPORT YtestConfig
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        )
 
-install(TARGETS Ytest
-    EXPORT
-        YtestTargets
-    LIBRARY
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
+    install(EXPORT YtestConfig
+        FILE
+            YtestConfig.cmake
+        NAMESPACE
+            Ytest::
+        DESTINATION
+            ${CMAKE_INSTALL_LIBDIR}/cmake/Ytest
+        )
 
-install(EXPORT YtestTargets
-    FILE
-        YtestConfig.cmake
-    NAMESPACE
-        Ytest::
-    DESTINATION
-        ${CMAKE_INSTALL_LIBDIR}/cmake/Ytest
-    )
+    install(
+        DIRECTORY
+            include/
+        DESTINATION
+            ${CMAKE_INSTALL_INCLUDEDIR}
+        )
 
-install(
-    DIRECTORY
-        include/
-    DESTINATION
-        ${CMAKE_INSTALL_INCLUDEDIR}
-    )
+    include(CMakePackageConfigHelpers)
+
+    write_basic_package_version_file(YtestConfigVersion.cmake
+        COMPATIBILITY SameMajorVersion
+        )
+
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/YtestConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Ytest
+        )
+endif()

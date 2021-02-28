@@ -70,10 +70,10 @@ namespace Ytest
     }
 
     template <typename T, typename U, typename V>
-    bool equivalent(T&& a, U&& b, V epsilon)
+    bool equivalent(T&& a, U&& b, V margin)
     {
         using namespace std;
-        return abs(a - b) <= epsilon;
+        return abs(a - b) <= margin;
     }
 
     template <typename T, typename U>
@@ -129,7 +129,7 @@ namespace Ytest
 
     template <typename Range1, typename Range2, typename Epsilon>
     inline std::pair<bool, std::string> equivalentRanges(
-            Range1&& a, Range2&& b, Epsilon epsilon,
+            Range1&& a, Range2&& b, Epsilon margin,
             const std::string& aName, const std::string& bName)
     {
         using namespace std;
@@ -138,7 +138,7 @@ namespace Ytest
         size_t i = 0;
         for (; itA != end(a) && itB != end(b); ++itA, ++itB)
         {
-            if (!equivalent(*itA, *itB, epsilon))
+            if (!equivalent(*itA, *itB, margin))
             {
                 std::stringstream ss;
                 ss << aName << "[" << i << "] != " << bName << "[" << i
