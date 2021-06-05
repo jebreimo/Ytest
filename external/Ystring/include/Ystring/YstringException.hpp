@@ -33,4 +33,4 @@ namespace Ystring
 }
 
 #define YSTRING_THROW(msg) \
-    throw YstringException((msg), __FILE__, __LINE__, __FUNCTION__)
+    throw YstringException((msg), __FILE__, __LINE__, __func__)
