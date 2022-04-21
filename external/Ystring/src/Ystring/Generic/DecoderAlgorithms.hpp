@@ -110,6 +110,6 @@ namespace Ystring { namespace EncodedString
     template <typename Decoder1, typename Decoder2>
     Decoder1 search(Decoder1& str, Decoder2& cmp)
     {
-        return search(str, cmp, [](char32_t a, char32_t b){return a == b;});
+        return EncodedString::search(str, cmp, [](char32_t a, char32_t b){return a == b;});
     }
 }}
