@@ -6,7 +6,7 @@
 ## License text is included with the source distribution.
 ##****************************************************************************
 cmake_minimum_required(VERSION 3.16)
-project(Ytest VERSION 0.1.0)
+project(Ytest VERSION 0.1.1)
 
 # Set YTEST_MASTER_PROJECT to ON if Ystring is the root level project.
 if(NOT DEFINED YTEST_MASTER_PROJECT)
@@ -27,7 +27,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(external/Ystring)
 
-add_library(Ytest
+add_library(Ytest STATIC
     include/Ytest/AutoTest.hpp
     include/Ytest/AutoTestRunner.hpp
     include/Ytest/Comparers.hpp
