@@ -19,12 +19,8 @@ add_library(Ytest_Ystring OBJECT
     include/Ystring/CodePointPredicates.hpp
     include/Ystring/ConvertCase.hpp
     include/Ystring/DecodeUtf8.hpp
-    include/Ystring/Escape.hpp
-    include/Ystring/Normalize.hpp
     include/Ystring/Subrange.hpp
     include/Ystring/TokenIterator.hpp
-    include/Ystring/Utf32.hpp
-    include/Ystring/Ystring.hpp
     include/Ystring/YstringDefinitions.hpp
     src/Ystring/Algorithms.cpp
     src/Ystring/AlgorithmUtilities.hpp
@@ -33,13 +29,10 @@ add_library(Ytest_Ystring OBJECT
     src/Ystring/CharClassTables.hpp
     src/Ystring/ConvertCase.cpp
     src/Ystring/EncodeUtf8.hpp
-    src/Ystring/Escape.cpp
     src/Ystring/LowerCaseTables.hpp
-    src/Ystring/Normalize.cpp
     src/Ystring/Subrange.cpp
     src/Ystring/TitleCaseTables.hpp
     src/Ystring/UpperCaseTables.hpp
-    src/Ystring/Utf32.cpp
     )
 
 include(GNUInstallDirs)

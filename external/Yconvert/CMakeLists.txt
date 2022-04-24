@@ -18,7 +18,6 @@ add_library(Ytest_Yconvert OBJECT
     include/Yconvert/ConversionException.hpp
     include/Yconvert/Encoding.hpp
     include/Yconvert/ErrorPolicy.hpp
-    include/Yconvert/Yconvert.hpp
     include/Yconvert/YconvertDefinitions.hpp
     include/Yconvert/YconvertException.hpp
     src/Yconvert/CodePageDecoder.cpp
