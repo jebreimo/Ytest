@@ -11,6 +11,7 @@
 #include <iosfwd>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 #include "Indentation.hpp"
 
@@ -35,6 +36,7 @@ namespace Ytest
         /** @brief Construct an XmlWriter that writes to std::cout.
           */
         XmlWriter();
+
         /** @brief Construct an XmlWriter that writes to @a stream.
           *
           *  @a stream should remain valid during the entire life-time of the
@@ -43,17 +45,11 @@ namespace Ytest
           */
         explicit XmlWriter(std::ostream& stream);
 
-        explicit XmlWriter(std::unique_ptr<std::ostream> stream);
-
         XmlWriter(XmlWriter&& rhs) noexcept;
 
         ~XmlWriter();
 
         XmlWriter& operator=(XmlWriter&& rhs) noexcept;
-
-        bool open(const std::string& filename);
-
-        void close();
 
         /** @brief Write the XML declaration tag.
           *
@@ -64,62 +60,58 @@ namespace Ytest
         void xmlDeclaration(bool standalone = true,
                             const std::string& version = "1.0");
 
-        void beginAttribute(const std::string& name);
+        void beginAttribute(std::string_view name);
         void endAttribute();
 
-        void attributeValue(const std::string& value);
-        void attributeValue(const std::wstring& value);
+        void attributeValue(std::string_view value);
         void attributeValue(int32_t value);
         void attributeValue(int64_t value);
         void attributeValue(double value);
         void attributeValue(double value, int precision);
 
-        void attribute(const std::string& name, const std::string& value);
-        void attribute(const std::string& name, const std::wstring& value);
-        void attribute(const std::string& name, int32_t value);
-        void attribute(const std::string& name, int64_t value);
-        void attribute(const std::string& name, double value);
-        void attribute(const std::string& name, double value, int precision);
+        void attribute(std::string_view name, std::string_view value);
+        void attribute(std::string_view name, int32_t value);
+        void attribute(std::string_view name, int64_t value);
+        void attribute(std::string_view name, double value);
+        void attribute(std::string_view name, double value, int precision);
 
-        void beginElement(const std::string& name);
+        void beginElement(std::string name);
         void endElement();
 
-        void element(const std::string& name, const std::string& charData);
-        void element(const std::string& name, const std::wstring& charData);
-        void element(const std::string& name, int32_t value);
-        void element(const std::string& name, int64_t value);
-        void element(const std::string& name, double value);
-        void element(const std::string& name, double value, int precision);
+        void element(std::string name, std::string_view charData);
+        void element(std::string name, int32_t value);
+        void element(std::string name, int64_t value);
+        void element(std::string name, double value);
+        void element(std::string name, double value, int precision);
 
         void endTag();
 
-        void characterData(const std::string& charData);
-        void characterData(const std::wstring& charData);
+        void characterData(std::string_view charData);
         void characterData(int32_t value);
         void characterData(int64_t value);
         void characterData(double value);
         void characterData(double value, int precision);
 
-        void rawCharacterData(const std::string& rawData);
+        void rawCharacterData(std::string_view rawData);
 
-        void beginSpecialTag(const std::string& start,
-                             const std::string& end);
+        void beginSpecialTag(std::string_view start,
+                             std::string end);
 
-        void rawText(const std::string& text);
+        void rawText(std::string_view text);
 
         void beginComment();
         void endComment();
-        void comment(const std::string& str);
+        void comment(std::string_view str);
 
         void beginCData();
         void endCData();
-        void cdata(const std::string& str);
+        void cdata(std::string_view str);
 
         void indentLine();
         void newline(bool indent = true);
 
-        int formatting() const;
-        void setFormatting(int formatting);
+        unsigned formatting() const;
+        void setFormatting(unsigned formatting);
 
         const std::string& indentation() const;
         void setIndentation(const std::string& indentation);
@@ -127,8 +119,6 @@ namespace Ytest
         bool hasStream() const;
         std::ostream& stream() const;
         void setStream(std::ostream& stream);
-        void setStream(std::unique_ptr<std::ostream> stream);
-        std::ostream* releaseStream();
     private:
         void reset();
         void tagContext();
@@ -136,11 +126,9 @@ namespace Ytest
         size_t linePos() const;
         void ensureNewline();
         void writeAttributeSeparator();
-        void writeAttributeText(const std::string& s);
-        void writeElementText(const std::string& s);
-        void write(const std::string& s);
-        void write(std::string::const_iterator beg,
-                   std::string::const_iterator end);
+        void writeAttributeText(std::string_view s);
+        void writeElementText(std::string_view s);
+        void write(std::string_view s);
 
         enum State
         {
@@ -168,6 +156,5 @@ namespace Ytest
         size_t m_PrevStreamPos;
         std::vector<State> m_States;
         std::ostream* m_Stream;
-        std::unique_ptr<std::ostream> m_StreamPtr;
     };
 }

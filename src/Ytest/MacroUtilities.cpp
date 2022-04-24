@@ -8,23 +8,20 @@
 #include "Ytest/MacroUtilities.hpp"
 
 #include <cassert>
-#include "Ystring/Utf8.hpp"
+#include "Ystring/Algorithms.hpp"
 #include "Ytest/Exceptions.hpp"
 #include "Ytest/Session.hpp"
 #include "Ytest/TestScope.hpp"
 
 namespace Ytest
 {
-    using namespace Ystring;
-
     namespace
     {
         std::vector<std::string> extractTestNames(const std::string& names)
         {
-            auto result = Utf8::split(names, ",", 0,
-                                      SplitFlags::IGNORE_EMPTY);
-            for (auto & it : result)
-              it = Utf8::trim(it);
+            std::vector<std::string> result;
+            for (auto & it : ystring::split(names, ","))
+              result.emplace_back(ystring::trim(it));
             return result;
         }
     }

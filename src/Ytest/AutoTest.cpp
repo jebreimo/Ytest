@@ -9,22 +9,33 @@
 
 #include <limits>
 #include <utility>
-#include "Ystring/Predicates.hpp"
-#include "Ystring/Utf8.hpp"
+#include "Ystring/Algorithms.hpp"
 #include "Ytest/AutoTestRunner.hpp"
 
 namespace Ytest
 {
-    using namespace Ystring;
+    using namespace ystring;
 
     namespace
     {
+        const ystring::Char32Span PATH_SEPARATORS({'/', '\\'});
+
         std::string extractSuiteName(const std::string& path)
         {
-            auto parts = Utf8::splitIf(path, isPathSeparator, -1,
-                                       SplitFlags::IGNORE_REMAINDER);
-            auto parts2 = Utf8::split(parts[0], ".", -1);
-            return parts2.back();
+            auto parts = ystring::split(path, PATH_SEPARATORS);
+            auto parts2 = ystring::split(parts.back(), ".");
+            return std::string(parts2.back());
+        }
+
+        std::vector<std::string> splitPath(const std::string& path)
+        {
+            if (path.empty())
+                return {};
+
+            std::vector<std::string> result;
+            for (const auto part: ystring::split(path, PATH_SEPARATORS))
+                result.emplace_back(part);
+            return result;
         }
     }
 
@@ -32,21 +43,19 @@ namespace Ytest
                        const std::string& path) noexcept
         : m_Function(std::move(func)),
           m_Name(std::move(fileName)),
+          m_Path(splitPath(path)),
           m_Priority(std::numeric_limits<int>::max())
     {
-        if (!path.empty())
-            m_Path = Utf8::split(path, "/");
         AutoTestRunner::instance().addTest(this);
     }
 
-    AutoTest::AutoTest(std::string  fileName, Func func,
+    AutoTest::AutoTest(std::string fileName, Func func,
                        const std::string& path, int priority) noexcept
         : m_Function(std::move(func)),
           m_Name(std::move(fileName)),
+          m_Path(splitPath(path)),
           m_Priority(priority)
     {
-        if (!path.empty())
-            m_Path = Utf8::split(path, "/");
         AutoTestRunner::instance().addTest(this);
     }
 

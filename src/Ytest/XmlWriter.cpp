@@ -12,8 +12,8 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include "Ystring/Utf8.hpp"
-#include "Ystring/Predicates.hpp"
+#include "Ystring/Algorithms.hpp"
+#include "Ystring/CodePointPredicates.hpp"
 
 #define PRECONDITION(cond, msg) \
     if (!(cond)) \
@@ -94,19 +94,6 @@ namespace Ytest
             m_PrevStreamPos = (size_t)stream.tellp();
     }
 
-    XmlWriter::XmlWriter(std::unique_ptr<std::ostream> stream)
-        : m_Formatting(DefaultFormatting),
-          m_FormattingState(AfterIndentation),
-          m_LinePos(0),
-          m_PrevStreamPos(0),
-          m_Stream(stream.get()),
-          m_StreamPtr(std::move(stream))
-    {
-        m_States.push_back(Text);
-        if (stream)
-            m_PrevStreamPos = (size_t)stream->tellp();
-    }
-
     XmlWriter::XmlWriter(XmlWriter&& rhs) noexcept
         : m_Context(std::move(rhs.m_Context)),
           m_Formatting(rhs.m_Formatting),
@@ -115,8 +102,7 @@ namespace Ytest
           m_LinePos(rhs.m_LinePos),
           m_PrevStreamPos(rhs.m_PrevStreamPos),
           m_States(std::move(rhs.m_States)),
-          m_Stream(rhs.m_Stream),
-          m_StreamPtr(std::move(rhs.m_StreamPtr))
+          m_Stream(rhs.m_Stream)
     {
         rhs.m_Stream = nullptr;
     }
@@ -133,27 +119,11 @@ namespace Ytest
 
         m_Stream = rhs.m_Stream;
         rhs.m_Stream = nullptr;
-        m_StreamPtr = std::move(rhs.m_StreamPtr);
 
         m_States = std::move(rhs.m_States);
         m_Context = std::move(rhs.m_Context);
 
         return *this;
-    }
-
-    bool XmlWriter::open(const std::string& filename)
-    {
-        m_StreamPtr.reset(new std::ofstream(filename));
-        m_Stream = m_StreamPtr.get();
-        reset();
-        return !m_Stream->fail();
-    }
-
-    void XmlWriter::close()
-    {
-        m_StreamPtr.reset();
-        m_Stream = &cout;
-        reset();
     }
 
     void XmlWriter::xmlDeclaration(bool standalone,
@@ -166,7 +136,7 @@ namespace Ytest
         endTag();
     }
 
-    void XmlWriter::beginAttribute(const string& name)
+    void XmlWriter::beginAttribute(std::string_view name)
     {
         PRECONDITION(m_Stream, "stream is nullptr");
         tagContext();
@@ -186,17 +156,11 @@ namespace Ytest
         m_FormattingState = AfterText;
     }
 
-    void XmlWriter::attributeValue(const string& value)
+    void XmlWriter::attributeValue(std::string_view value)
     {
         PRECONDITION(m_States.back() == AttributeValue,
                      "attribute value without name");
         writeAttributeText(value);
-    }
-
-    void XmlWriter::attributeValue(const std::wstring& value)
-    {
-        using namespace Ystring;
-        attributeValue(Utf8::toUtf8(value, Encoding::UTF_16));
     }
 
     void XmlWriter::attributeValue(int32_t value)
@@ -229,43 +193,36 @@ namespace Ytest
         m_Stream->precision(prev);
     }
 
-    void XmlWriter::attribute(const std::string& name,
-                              const std::string& value)
+    void XmlWriter::attribute(std::string_view name,
+                              std::string_view value)
     {
         beginAttribute(name);
         attributeValue(value);
         endAttribute();
     }
 
-    void XmlWriter::attribute(const std::string& name,
-                              const std::wstring& value)
-    {
-        using namespace Ystring;
-        attribute(name, Utf8::toUtf8(value, Encoding::UTF_16));
-    }
-
-    void XmlWriter::attribute(const std::string& name, int32_t value)
+    void XmlWriter::attribute(std::string_view name, int32_t value)
     {
         beginAttribute(name);
         attributeValue(value);
         endAttribute();
     }
 
-    void XmlWriter::attribute(const std::string& name, int64_t value)
+    void XmlWriter::attribute(std::string_view name, int64_t value)
     {
         beginAttribute(name);
         attributeValue(value);
         endAttribute();
     }
 
-    void XmlWriter::attribute(const std::string& name, double value)
+    void XmlWriter::attribute(std::string_view name, double value)
     {
         beginAttribute(name);
         attributeValue(value);
         endAttribute();
     }
 
-    void XmlWriter::attribute(const std::string& name,
+    void XmlWriter::attribute(std::string_view name,
                               double value, int precision)
     {
         beginAttribute(name);
@@ -273,14 +230,14 @@ namespace Ytest
         endAttribute();
     }
 
-    void XmlWriter::beginElement(const string& name)
+    void XmlWriter::beginElement(std::string name)
     {
         textContext();
         if (m_Formatting & IndentElements)
             ensureNewline();
         *m_Stream << '<';
         write(name);
-        m_Context.push_back(name);
+        m_Context.push_back(std::move(name));
         m_FormattingState = FirstAttribute;
         m_States.push_back(ElementTag);
     }
@@ -318,61 +275,48 @@ namespace Ytest
         m_States.pop_back();
     }
 
-    void XmlWriter::element(const std::string& name,
-                            const std::string& charData)
+    void XmlWriter::element(std::string name,
+                            std::string_view charData)
     {
-        beginElement(name);
+        beginElement(std::move(name));
         characterData(charData);
         endElement();
     }
 
-    void XmlWriter::element(const std::string& name,
-                            const std::wstring& charData)
+    void XmlWriter::element(std::string name, int32_t value)
     {
-        using namespace Ystring;
-        element(name, Utf8::toUtf8(charData, Encoding::UTF_16));
-    }
-
-    void XmlWriter::element(const std::string& name, int32_t value)
-    {
-        beginElement(name);
+        beginElement(std::move(name));
         characterData(value);
         endElement();
     }
 
-    void XmlWriter::element(const std::string& name, int64_t value)
+    void XmlWriter::element(std::string name, int64_t value)
     {
-        beginElement(name);
+        beginElement(std::move(name));
         characterData(value);
         endElement();
     }
 
-    void XmlWriter::element(const std::string& name, double value)
+    void XmlWriter::element(std::string name, double value)
     {
-        beginElement(name);
+        beginElement(std::move(name));
         characterData(value);
         endElement();
     }
 
-    void XmlWriter::element(const std::string& name,
+    void XmlWriter::element(std::string name,
                             double value, int precision)
     {
-        beginElement(name);
+        beginElement(std::move(name));
         characterData(value, precision);
         endElement();
     }
 
-    void XmlWriter::characterData(const string& charData)
+    void XmlWriter::characterData(std::string_view charData)
     {
         textContext();
         writeElementText(charData);
         m_FormattingState = AfterText;
-    }
-
-    void XmlWriter::characterData(const std::wstring& charData)
-    {
-        using namespace Ystring;
-        characterData(Utf8::toUtf8(charData, Encoding::UTF_16));
     }
 
     void XmlWriter::characterData(int32_t value)
@@ -405,12 +349,12 @@ namespace Ytest
         m_FormattingState = AfterText;
     }
 
-    void XmlWriter::rawCharacterData(const string& rawData)
+    void XmlWriter::rawCharacterData(std::string_view rawData)
     {
         textContext();
     }
 
-    void XmlWriter::beginSpecialTag(const string& start, const string& end)
+    void XmlWriter::beginSpecialTag(std::string_view start, std::string end)
     {
         PRECONDITION(m_Stream, "stream is nullptr");
         textContext();
@@ -418,10 +362,9 @@ namespace Ytest
             oneOf(m_FormattingState, StartOfLine, AfterBraces, AfterEndTag))
             ensureNewline();
         write(start);
-        m_Context.push_back(end);
+        m_Context.push_back(std::move(end));
 
-        using namespace Ystring;
-        if (Unicode::isAlphaNumeric(Utf8::getCodePoint(start, -1)))
+        if (ystring::is_alpha_numeric(ystring::get_code_point(start, -1).second))
         {
             m_FormattingState = FirstAttribute;
         }
@@ -461,7 +404,7 @@ namespace Ytest
         }
     }
 
-    void XmlWriter::rawText(const std::string& text)
+    void XmlWriter::rawText(std::string_view text)
     {
         if (text.empty())
             return;
@@ -470,17 +413,17 @@ namespace Ytest
         size_t startOfLine = text.find_last_of('\n');
         if (startOfLine != std::string::npos)
         {
-            std::string::const_iterator beg = text.begin() + startOfLine + 1;
-            m_LinePos = Ystring::Utf8::countCharacters(beg, text.end());
-            if (beg == text.end())
+            auto lastLine = text.substr(startOfLine + 1);
+            m_LinePos = ystring::count_characters(lastLine);
+            if (lastLine.empty())
                 m_FormattingState = StartOfLine;
         }
         else
         {
             m_LinePos += (size_t)m_Stream->tellp() - m_PrevStreamPos +
-                         Ystring::Utf8::countCharacters(text);
+                         ystring::count_characters(text);
         }
-        m_Stream->write(text.data(), text.size());
+        m_Stream->write(text.data(), std::streamsize(text.size()));
         m_PrevStreamPos = (size_t)m_Stream->tellp();
     }
 
@@ -494,7 +437,7 @@ namespace Ytest
         endTag();
     }
 
-    void XmlWriter::comment(const std::string& str)
+    void XmlWriter::comment(std::string_view str)
     {
         beginComment();
         rawText(str);
@@ -511,7 +454,7 @@ namespace Ytest
         endTag();
     }
 
-    void XmlWriter::cdata(const std::string& str)
+    void XmlWriter::cdata(std::string_view str)
     {
         beginCData();
         rawText(str);
@@ -539,12 +482,12 @@ namespace Ytest
         m_PrevStreamPos = (size_t)m_Stream->tellp();
     }
 
-    int XmlWriter::formatting() const
+    unsigned XmlWriter::formatting() const
     {
         return m_Formatting;
     }
 
-    void XmlWriter::setFormatting(int formatting)
+    void XmlWriter::setFormatting(unsigned formatting)
     {
         m_Formatting = formatting;
     }
@@ -567,27 +510,14 @@ namespace Ytest
     std::ostream& XmlWriter::stream() const
     {
         if (!m_Stream)
-            throw std::logic_error(
+            throw std::runtime_error(
                 "Attempt to access stream member before it's been assigned.");
         return *m_Stream;
     }
 
     void XmlWriter::setStream(std::ostream& stream)
     {
-        m_StreamPtr.reset();
         m_Stream = &stream;
-    }
-
-    void XmlWriter::setStream(std::unique_ptr<std::ostream> streamPtr)
-    {
-        m_StreamPtr = std::move(streamPtr);
-        m_Stream = m_StreamPtr.get();
-    }
-
-    std::ostream* XmlWriter::releaseStream()
-    {
-        m_Stream = nullptr;
-        return m_StreamPtr.release();
     }
 
     void XmlWriter::reset()
@@ -667,13 +597,13 @@ namespace Ytest
         }
     }
 
-    void XmlWriter::writeAttributeText(const string& s)
+    void XmlWriter::writeAttributeText(string_view s)
     {
-        auto first = begin(s);
         auto last = find_if(begin(s), end(s), isBadAttributeTextCharacter);
         while (last != end(s))
         {
-            write(first, last);
+            auto pos = std::distance(begin(s), last);
+            write(s.substr(0, pos));
             if (static_cast<unsigned char>(*last) < 32)
             {
                 writeControlChar(*m_Stream, *last);
@@ -688,19 +618,19 @@ namespace Ytest
                 case '&': m_Stream->write("&amp;", 5); break;
                 }
             }
-            first = next(last);
-            last = find_if(first, end(s), isBadAttributeTextCharacter);
+            s = s.substr(pos + 1);
+            last = find_if(begin(s), end(s), isBadAttributeTextCharacter);
         }
-        write(first, end(s));
+        write(s);
     }
 
-    void XmlWriter::writeElementText(const std::string& s)
+    void XmlWriter::writeElementText(std::string_view s)
     {
-        auto first = begin(s);
         auto last = find_if(begin(s), end(s), isBadElementTextCharacter);
         while (last != end(s))
         {
-            write(first, last);
+            auto pos = std::distance(begin(s), last);
+            write(s.substr(0, pos));
             if (static_cast<unsigned char>(*last) < 32)
             {
                 writeControlChar(*m_Stream, *last);
@@ -714,28 +644,17 @@ namespace Ytest
                 case '&': m_Stream->write("&amp;", 5); break;
                 }
             }
-            first = next(last);
-            last = find_if(first, end(s), isBadElementTextCharacter);
+            s = s.substr(pos + 1);
+            last = find_if(begin(s), end(s), isBadAttributeTextCharacter);
         }
-        write(first, end(s));
+        write(s);
     }
 
-    void XmlWriter::write(const std::string& s)
+    void XmlWriter::write(std::string_view s)
     {
         m_LinePos += (size_t)m_Stream->tellp() - m_PrevStreamPos +
-                     Ystring::Utf8::countCharacters(s);
+                     ystring::count_characters(s);
         m_Stream->write(s.data(), s.size());
-        m_PrevStreamPos = (size_t)m_Stream->tellp();
-    }
-
-    void XmlWriter::write(std::string::const_iterator beg,
-                          std::string::const_iterator end)
-    {
-        if (beg == end)
-            return;
-        m_LinePos += (size_t)m_Stream->tellp() - m_PrevStreamPos +
-                     Ystring::Utf8::countCharacters(beg, end);
-        m_Stream->write(&*beg, end - beg);
         m_PrevStreamPos = (size_t)m_Stream->tellp();
     }
 }

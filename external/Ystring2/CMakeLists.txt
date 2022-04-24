@@ -1,0 +1,64 @@
+##****************************************************************************
+## Copyright © 2020 Jan Erik Breimo. All rights reserved.
+## Created by Jan Erik Breimo on 2020-05-04.
+##
+## This file is distributed under the Simplified BSD License.
+## License text is included with the source distribution.
+##****************************************************************************
+cmake_minimum_required(VERSION 3.13)
+project(Ytest_Ystring VERSION 2.1.1)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_library(Ytest_Ystring OBJECT
+    include/Ystring/Algorithms.hpp
+    include/Ystring/CaseInsensitive.hpp
+    include/Ystring/Char32Span.hpp
+    include/Ystring/CharClass.hpp
+    include/Ystring/CodePointConstants.hpp
+    include/Ystring/CodePointPredicates.hpp
+    include/Ystring/ConvertCase.hpp
+    include/Ystring/DecodeUtf8.hpp
+    include/Ystring/Escape.hpp
+    include/Ystring/Normalize.hpp
+    include/Ystring/Subrange.hpp
+    include/Ystring/TokenIterator.hpp
+    include/Ystring/Utf32.hpp
+    include/Ystring/Ystring.hpp
+    include/Ystring/YstringDefinitions.hpp
+    src/Ystring/Algorithms.cpp
+    src/Ystring/AlgorithmUtilities.hpp
+    src/Ystring/AlgorithmUtilities.cpp
+    src/Ystring/CharClass.cpp
+    src/Ystring/CharClassTables.hpp
+    src/Ystring/ConvertCase.cpp
+    src/Ystring/EncodeUtf8.hpp
+    src/Ystring/Escape.cpp
+    src/Ystring/LowerCaseTables.hpp
+    src/Ystring/Normalize.cpp
+    src/Ystring/Subrange.cpp
+    src/Ystring/TitleCaseTables.hpp
+    src/Ystring/UpperCaseTables.hpp
+    src/Ystring/Utf32.cpp
+    )
+
+include(GNUInstallDirs)
+
+target_include_directories(Ytest_Ystring BEFORE
+    PUBLIC
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    )
+
+target_compile_definitions(Ytest_Ystring
+    PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:YSTRING_EXPORTS>
+    )
+
+target_compile_options(Ytest_Ystring
+    PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:/utf-8>
+    )
+
+add_library(Ytest::Ystring ALIAS Ytest_Ystring)

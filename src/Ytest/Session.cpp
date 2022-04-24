@@ -11,7 +11,7 @@
 #include <ctime>
 #include <iostream>
 #include <stdexcept>
-#include "Ystring/Utf8.hpp"
+#include "Ystring/Algorithms.hpp"
 #include "JUnitReport.hpp"
 #include "ParseArguments.hpp"
 #include "PathFilter.hpp"
@@ -22,8 +22,6 @@
 
 namespace Ytest
 {
-    using namespace Ystring;
-
     Session::Session()
         : m_AllTestsEnabled(true),
           m_EnabledReports(0),
@@ -112,8 +110,7 @@ namespace Ytest
                 func(std::cout, session);
         }
         else if (!forceExtension ||
-                 Utf8::endsWith(fileName, fileNameExtension,
-                                FindFlags::CASE_INSENSITIVE))
+                 ystring::case_insensitive_ends_with(fileName, fileNameExtension))
         {
             writeFileReport(func, fileName, session);
         }
@@ -275,24 +272,24 @@ namespace Ytest
         if (it != end(m_Tests))
             return *it;
         else
-            return TestPtr();
+            return {};
     }
 
     std::string Session::getTestName() const
     {
         std::vector<std::string> names;
-        for (auto it = begin(m_ActiveTest); it != end(m_ActiveTest); ++it)
-            names.push_back((*it)->name());
-        return Utf8::join(names, "/");
+        for (const auto& test : m_ActiveTest)
+            names.push_back(test->name());
+        return ystring::join(names.begin(), names.end(), "/");
     }
 
     std::string Session::getTestName(const std::string& name) const
     {
         std::vector<std::string> names;
-        for (auto it = begin(m_ActiveTest); it != end(m_ActiveTest); ++it)
-            names.push_back((*it)->name());
+        for (const auto& test: m_ActiveTest)
+            names.push_back(test->name());
         names.push_back(name);
-        return Utf8::join(names, "/");
+        return ystring::join(names.begin(), names.end(), "/");
     }
 
     void Session::setLogFile(const std::string& fileName)

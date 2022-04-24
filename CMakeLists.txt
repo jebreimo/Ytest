@@ -8,6 +8,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(Ytest VERSION 0.1.1)
 
+set(CMAKE_CXX_STANDARD 17)
+
 # Set YTEST_MASTER_PROJECT to ON if Ystring is the root level project.
 if(NOT DEFINED YTEST_MASTER_PROJECT)
     if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
@@ -23,9 +25,8 @@ option(YTEST_INSTALL "Generate the install target" ${YTEST_MASTER_PROJECT})
 # Install option
 option(YTEST_BUILD_EXAMPLES "Build the examples" ${YTEST_MASTER_PROJECT})
 
-set(CMAKE_CXX_STANDARD 14)
-
-add_subdirectory(external/Ystring)
+add_subdirectory(external/Ystring2)
+add_subdirectory(external/Yconvert)
 
 add_library(Ytest STATIC
     include/Ytest/AutoTest.hpp
@@ -65,11 +66,13 @@ add_library(Ytest STATIC
     src/Ytest/XmlWriter.cpp
     src/Ytest/XmlWriter.hpp
     $<TARGET_OBJECTS:Ytest::Ystring>
+    $<TARGET_OBJECTS:Ytest::Yconvert>
     )
 
 target_compile_definitions(Ytest
     PRIVATE
         $<$<BOOL:${MSVC}>:_SCL_SECURE_NO_WARNINGS>
+        Yconvert=Ytest_Yconvert
         Ystring=Ytest_Ystring
     )
 
@@ -86,7 +89,8 @@ target_include_directories(Ytest
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/external/Ystring/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/Yconvert/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/Ystring2/include
     )
 
 add_library(Ytest::Ytest ALIAS Ytest)
