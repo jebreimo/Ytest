@@ -1,5 +1,3 @@
-#include <utility>
-
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -9,6 +7,7 @@
 //****************************************************************************
 #include "Ytest/Error.hpp"
 #include <sstream>
+#include <utility>
 
 namespace Ytest
 {

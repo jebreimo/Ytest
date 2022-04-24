@@ -1,7 +1,3 @@
-#include <utility>
-
-#include <utility>
-
 //****************************************************************************
 // Copyright © 2015 Jan Erik Breimo. All rights reserved.
 // Created by Jan Erik Breimo on 2015-08-06.
@@ -12,6 +8,7 @@
 #include "Ytest/AutoTest.hpp"
 
 #include <limits>
+#include <utility>
 #include "Ystring/Predicates.hpp"
 #include "Ystring/Utf8.hpp"
 #include "Ytest/AutoTestRunner.hpp"
