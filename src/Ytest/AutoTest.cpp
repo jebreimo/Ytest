@@ -24,7 +24,7 @@ namespace Ytest
         {
             auto parts = ystring::split(path, PATH_SEPARATORS);
             auto parts2 = ystring::split(parts.back(), ".");
-            return std::string(parts2.back());
+            return std::string(parts2.front());
         }
 
         std::vector<std::string> splitPath(const std::string& path)
