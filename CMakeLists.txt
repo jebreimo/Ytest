@@ -73,7 +73,7 @@ target_compile_definitions(Ytest
     PRIVATE
         $<$<BOOL:${MSVC}>:_SCL_SECURE_NO_WARNINGS>
         Yconvert=Ytest_Yconvert
-        Ystring=Ytest_Ystring
+        ystring=Ytest_Ystring
     )
 
 set_target_properties(Ytest

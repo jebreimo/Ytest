@@ -47,6 +47,7 @@ target_include_directories(Ytest_Ystring BEFORE
 target_compile_definitions(Ytest_Ystring
     PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:YSTRING_EXPORTS>
+        ystring=Ytest_Ystring
     )
 
 target_compile_options(Ytest_Ystring
