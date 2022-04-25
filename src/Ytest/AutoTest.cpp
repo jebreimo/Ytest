@@ -18,7 +18,7 @@ namespace Ytest
 
     namespace
     {
-        const ystring::Char32Span PATH_SEPARATORS({'/', '\\'});
+        const char32_t PATH_SEPARATORS[] = {'/', '\\'};
 
         std::string extractSuiteName(const std::string& path)
         {
