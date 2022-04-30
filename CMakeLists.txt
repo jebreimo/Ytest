@@ -11,13 +11,13 @@ project(Ytest VERSION 0.1.2)
 set(CMAKE_CXX_STANDARD 17)
 
 # Set YTEST_MASTER_PROJECT to ON if Ystring is the root level project.
-if(NOT DEFINED YTEST_MASTER_PROJECT)
-    if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+if (NOT DEFINED YTEST_MASTER_PROJECT)
+    if (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
         set(YTEST_MASTER_PROJECT ON)
-    else()
+    else ()
         set(YTEST_MASTER_PROJECT OFF)
-    endif()
-endif()
+    endif ()
+endif ()
 
 # Install option
 option(YTEST_INSTALL "Generate the install target" ${YTEST_MASTER_PROJECT})
@@ -41,6 +41,8 @@ add_library(Ytest STATIC
     include/Ytest/TestScope.hpp
     include/Ytest/Ytest.hpp
     include/Ytest/YtestMain.hpp
+    src/Ytest/Argos/Argos.cpp
+    src/Ytest/Argos/Argos.hpp
     src/Ytest/AutoTest.cpp
     src/Ytest/AutoTestRunner.cpp
     src/Ytest/Error.cpp
@@ -50,8 +52,6 @@ add_library(Ytest STATIC
     src/Ytest/JUnitReport.cpp
     src/Ytest/JUnitReport.hpp
     src/Ytest/MacroUtilities.cpp
-    src/Ytest/ParseArguments.cpp
-    src/Ytest/ParseArguments.hpp
     src/Ytest/PathFilter.cpp
     src/Ytest/PathFilter.hpp
     src/Ytest/Session.cpp
@@ -72,6 +72,7 @@ add_library(Ytest STATIC
 target_compile_definitions(Ytest
     PRIVATE
         $<$<BOOL:${MSVC}>:_SCL_SECURE_NO_WARNINGS>
+        $<$<BOOL:${MSVC}>:_CRT_SECURE_NO_WARNINGS>
         Yconvert=Ytest_Yconvert
         ystring=Ytest_Ystring
     )
@@ -95,9 +96,9 @@ target_include_directories(Ytest
 
 add_library(Ytest::Ytest ALIAS Ytest)
 
-if(YTEST_BUILD_EXAMPLES)
+if (YTEST_BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif()
+endif ()
 
 export(TARGETS Ytest
     NAMESPACE
@@ -106,7 +107,7 @@ export(TARGETS Ytest
         YtestConfig.cmake
     )
 
-if(YTEST_INSTALL)
+if (YTEST_INSTALL)
     install(TARGETS Ytest
         EXPORT YtestConfig
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -139,4 +140,4 @@ if(YTEST_INSTALL)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/YtestConfigVersion.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Ytest
         )
-endif()
+endif ()

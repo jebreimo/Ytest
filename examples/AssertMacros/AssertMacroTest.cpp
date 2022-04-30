@@ -2,8 +2,8 @@
 #include <stdexcept>
 #include <vector>
 
-namespace {
-
+namespace
+{
     double divide(double a, double b)
     {
         if (b == 0)
@@ -165,7 +165,6 @@ namespace {
         Y_EQUAL(s, U"Foozball");
 #endif
     }
-
 
     void stringTypes_w()
     {

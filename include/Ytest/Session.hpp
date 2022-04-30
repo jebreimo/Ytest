@@ -25,8 +25,7 @@ namespace Ytest
     enum ReportFormat
     {
         TextReport = 1,
-        JUnitReport = 2,
-        FullTextReport = 3
+        JUnitReport = 2
     };
 
     class Session
@@ -55,7 +54,7 @@ namespace Ytest
         bool areAllTestsEnabled() const;
         void setAllTestsEnabled(bool enable);
         bool isTestEnabled(const std::string& name) const;
-        void setTestEnabled(const std::string& name, bool enable);
+        void setTestEnabled(std::string name, bool enable);
 
         const std::vector<TestPtr>& tests() const;
 
@@ -73,7 +72,6 @@ namespace Ytest
         ~Session();
         TestPtr findTest(const std::string& name);
         std::string getTestName() const;
-        std::string getTestName(const std::string& name) const;
         void setLogFile(const std::string& fileName);
 
         std::vector<TestPtr> m_ActiveTest;
