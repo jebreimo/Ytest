@@ -45,11 +45,6 @@ namespace Ytest
 
             ArgumentParser argument_parser(argv[0]);
             auto report_default = get_env("YTEST_REPORT");
-            if (report_default == "-")
-            {
-                report_default = "testresult."
-                                 + std::string(get_base_name(argv[0]));
-            }
             const auto junit_default = get_env("YTEST_JUNIT");
             const auto text_default = get_env("YTEST_TEXT");
             return argument_parser
@@ -112,7 +107,9 @@ namespace Ytest
                     .help("The name of the report file. FILE will have a"
                           " suitable file type extension appended to it (txt,"
                           " xml etc.). Test reports are written to stdout if"
-                          " this option isn't used."))
+                          " this option isn't used. If the name is \"-\", a"
+                          " name, \"YTestResult.<program name>\", is"
+                          " auto-generated."))
                 .add(Option{"--host"}.argument("HOST")
                     .section(report_section)
                     .help("Set the host name. This option has no effect on"
@@ -121,12 +118,10 @@ namespace Ytest
                       "The following environment variables can also be used"
                       " to override the default behavior, but will themselves"
                       " be overridden by the corresponding arguments:\n"
-                      "- YTEST_REPORT to set the default value for --report."
-                      " If the value is \"-\", a name,"
-                      " \"testreport.<program name>\", is auto-generated.\n"
-                      "- YTEST_JUNIT to set the default value for --junit"
+                      "- YTEST_REPORT sets the default value for --report.\n"
+                      "- YTEST_JUNIT sets the default value for --junit"
                       " (\"true\" or \"false\").\n"
-                      "- YTEST_TEXT to set the default value for --text"
+                      "- YTEST_TEXT sets the default value for --text"
                       " (\"true\" or \"false\").")
                 .parse(argc, argv);
         }
@@ -156,6 +151,11 @@ namespace Ytest
         setReportEnabled(TextReport, args.value("--text").as_bool());
         setLogFile(args.value("--logfile").as_string());
         m_ReportFileName = args.value("--report").as_string();
+        if (m_ReportFileName == "-")
+        {
+            m_ReportFileName = "YTestResult."
+                               + std::string(get_base_name(argv[0]));
+        }
         const auto exclude = args.value("--exclude").as_bool();
         const auto test_names = args.values("TEST").as_strings();
         setAllTestsEnabled(exclude || test_names.empty());
@@ -234,8 +234,7 @@ namespace Ytest
             writeReport(writeTextReport, {}, {}, *this);
     }
 
-    void Session::beginTest(const std::string& name /*= "<unnamed>"*/,
-                            bool silent /*= false*/)
+    void Session::beginTest(const std::string& name, bool silent)
     {
         TestPtr test;
         if (!m_ActiveTest.empty())
@@ -244,7 +243,7 @@ namespace Ytest
             test = findTest(name);
         if (!test)
         {
-            test = TestPtr(new Test(name));
+            test = std::make_shared<Test>(name);
             if (!m_ActiveTest.empty())
                 m_ActiveTest.back()->addTest(test);
             else
