@@ -32,7 +32,7 @@ namespace Ytest
         void excludePath(std::string path);
         void includePath(std::string path);
 
-        PathFilterType type() const;
+        [[nodiscard]] PathFilterType type() const;
         void setType(PathFilterType type);
     private:
         std::vector<std::string> m_Exclude;
@@ -72,12 +72,12 @@ namespace Ytest
 
     void FilterState::excludePath(std::string path)
     {
-        m_Exclude.push_back(move(path));
+        m_Exclude.push_back(std::move(path));
     }
 
     void FilterState::includePath(std::string path)
     {
-        m_Include.push_back(move(path));
+        m_Include.push_back(std::move(path));
     }
 
     PathFilterType FilterState::type() const
@@ -116,12 +116,12 @@ namespace Ytest
 
     void PathFilter::excludePath(std::string path)
     {
-        m_States.front().excludePath(move(path));
+        m_States.front().excludePath(std::move(path));
     }
 
     void PathFilter::includePath(std::string path)
     {
-        m_States.front().includePath(move(path));
+        m_States.front().includePath(std::move(path));
     }
 
     PathFilterType PathFilter::type() const

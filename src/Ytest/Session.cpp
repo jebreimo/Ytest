@@ -314,9 +314,9 @@ namespace Ytest
     void Session::setTestEnabled(std::string name, bool enable)
     {
         if (enable)
-            m_TestFilter->includePath(move(name));
+            m_TestFilter->includePath(std::move(name));
         else
-            m_TestFilter->excludePath(move(name));
+            m_TestFilter->excludePath(std::move(name));
     }
 
     const std::vector<TestPtr>& Session::tests() const
@@ -381,6 +381,7 @@ namespace Ytest
     std::string Session::getTestName() const
     {
         std::vector<std::string> names;
+        names.reserve(m_ActiveTest.size());
         for (const auto& test : m_ActiveTest)
             names.push_back(test->name());
         return ystring::join(names.begin(), names.end(), "/");

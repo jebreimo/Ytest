@@ -15,7 +15,7 @@
 /**
  * @brief String representation of the complete version number.
  */
-constexpr char ARGOS_VERSION[] = "1.1.262";
+constexpr char ARGOS_VERSION[] = "1.1.271";
 
 /**
  * @brief Incremented when a new version contains significant changes. It
@@ -33,7 +33,7 @@ constexpr char ARGOS_VERSION[] = "1.1.262";
 /**
  * @brief Incremented when the changes does not affect the interface.
  */
-#define ARGOS_VERSION_PATCH 260
+#define ARGOS_VERSION_PATCH 271
 
 //****************************************************************************
 // Copyright © 2020 Jan Erik Breimo. All rights reserved.
@@ -88,8 +88,8 @@ namespace argos
     {
         /**
          * @brief Options starts with either one dash (`-`) followed by
-         *  exactly one character (short option) or two dashes (`--`) followed by
-         *  one or more characters (long option).
+         *  exactly one character (short option) or two dashes (`--`) followed
+         *  by one or more characters (long option).
          *
          * Short options can be concatenated making `-pq` and `-p -q`
          * equivalent as long as neither of them take an argument.
@@ -918,13 +918,12 @@ namespace argos
          * comes from and the usage section from the help text. If auto_exit is
          * true the program will exit after displaying the message.
          */
-        void error(const std::string& message) const;
+        [[noreturn]] void error(const std::string& message) const;
 
         /**
-         * Calls error(message) with a message that says the given value
-         * is invalid.
+         * Calls error(message) with a message that says this value is invalid.
          */
-        void error() const;
+        [[noreturn]] void error() const;
     private:
         std::optional<std::string_view> m_value;
         std::shared_ptr<ParsedArgumentsImpl> m_args;
@@ -1091,6 +1090,19 @@ namespace argos
          */
         [[nodiscard]]
         explicit operator bool() const;
+
+        /**
+         * @brief Returns the value with the given index.
+         *
+         * Calling this operator is identical to calling value(index).
+         *
+         * If @a index is to great, an error message is written to stderr, the
+         * program also automatically exits if auto_exit is true.
+         *
+         * @throw ArgosException if @a index is too great and auto_exit
+         *  is false.
+         */
+        ArgumentValue operator[](size_t index) const;
 
         /**
          * @brief Returns instances of IArgumentView that identifies the
@@ -1293,8 +1305,7 @@ namespace argos
          *  @a min_parts parts.
          */
         ArgumentValues
-        split(char separator, size_t min_parts = 0,
-              size_t max_parts = 0) const;
+        split(char separator, size_t min_parts = 0, size_t max_parts = 0) const;
 
         /**
          * @brief Returns an iterator pointing to the first value.
@@ -1725,7 +1736,23 @@ namespace argos
          * @return Reference to itself. This makes it possible to chain
          *      method calls.
          */
-        Argument& optional(bool optional);
+        Argument& optional(bool optional = true);
+
+        /**
+         * @brief Make this argument mandatory (or optional).
+         *
+         * All arguments are mandatory by default.
+         *
+         * This function is a convenience function that affects the argument's
+         * minimum count.
+         * @param mandatory
+         *      @arg false The argument's minimum count is set to 1
+         *          if it currently is 0.
+         *      @arg false The argument's minimum count is set to 0.
+         * @return Reference to itself. This makes it possible to chain
+         *      method calls.
+         */
+        Argument& mandatory(bool mandatory = true);
 
         /**
          * @brief Set the number of times this argument must appear on the
@@ -1760,6 +1787,11 @@ namespace argos
 
         std::unique_ptr<ArgumentData> m_argument;
     };
+
+    /**
+     * @brief A convenient short alias for Argument.
+     */
+    using Arg = Argument;
 }
 
 //****************************************************************************
@@ -2344,7 +2376,15 @@ namespace argos
          * @return Reference to itself. This makes it possible to chain
          *  method calls.
          */
-        Option& optional(bool optional);
+        Option& optional(bool optional = true);
+
+        /**
+         * @brief Set whether this option is mandatory or optional.
+         *
+         * @return Reference to itself. This makes it possible to chain
+         *  method calls.
+         */
+        Option& mandatory(bool mandatory = true);
 
         /**
          * @private
@@ -2368,6 +2408,11 @@ namespace argos
 
         std::unique_ptr<OptionData> m_option;
     };
+
+    /**
+     * @brief A convenient short alias for Option.
+     */
+    using Opt = Option;
 }
 
 //****************************************************************************
