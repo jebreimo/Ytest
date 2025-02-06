@@ -291,8 +291,8 @@ namespace Ytest
     size_t Session::numberOfFailedTests() const
     {
         size_t failures = 0;
-        for (auto test = begin(m_Tests); test != end(m_Tests); ++test)
-            failures += (*test)->failedHierarchy() ? 1 : 0;
+        for (const auto& test : m_Tests)
+            failures += test->failedHierarchy() ? 1 : 0;
         return failures;
     }
 
@@ -301,6 +301,7 @@ namespace Ytest
         return m_AllTestsEnabled;
     }
 
+    // ReSharper disable once CppMemberFunctionMayBeConst
     void Session::setAllTestsEnabled(bool enable)
     {
         m_TestFilter->setType(enable ? InclusiveFilter : ExclusiveFilter);

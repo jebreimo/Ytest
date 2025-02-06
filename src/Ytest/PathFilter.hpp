@@ -33,7 +33,7 @@ namespace Ytest
         void excludePath(std::string path);
         void includePath(std::string path);
 
-        PathFilterType type() const;
+        [[nodiscard]] PathFilterType type() const;
         void setType(PathFilterType type);
     private:
         std::vector<FilterState> m_States;

@@ -6,9 +6,9 @@
 ## License text is included with the source distribution.
 ##****************************************************************************
 cmake_minimum_required(VERSION 3.16)
-project(Ytest VERSION 0.1.6)
+project(Ytest VERSION 0.2.0)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Set YTEST_MASTER_PROJECT to ON if Ystring is the root level project.
 if (NOT DEFINED YTEST_MASTER_PROJECT)

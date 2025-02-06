@@ -12,22 +12,21 @@
 #include <sstream>
 #include <windows.h>
 
-namespace Ytest {
-
-bool isRunningInVisualStudio()
+namespace Ytest
 {
-    return IsDebuggerPresent() != 0;
-}
+    bool isRunningInVisualStudio()
+    {
+        return IsDebuggerPresent() != 0;
+    }
 
-void writeVisualStudioReport(
-        void (*reportFunc)(std::ostream&, const Session&),
-        const Session& session)
-{
-    std::ostringstream ss;
-    reportFunc(ss, session);
-    OutputDebugStringA(ss.str().c_str());
-}
-
+    void writeVisualStudioReport(
+            void (*reportFunc)(std::ostream&, const Session&),
+            const Session& session)
+    {
+        std::ostringstream ss;
+        reportFunc(ss, session);
+        OutputDebugStringA(ss.str().c_str());
+    }
 }
 
 #else

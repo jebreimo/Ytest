@@ -11,6 +11,18 @@
 
 namespace Ytest
 {
+    namespace
+    {
+        void write_line_no(std::ostream& os, const std::string& file, unsigned lineNo)
+        {
+#ifdef _MSC_VER
+            os << file << "(" << lineNo << "): ";
+#else
+            os << file << ":" << lineNo << ": ";
+#endif
+        }
+    }
+
     Error::Error()
         : m_Type(None),
           m_LineNo(0)
@@ -49,7 +61,7 @@ namespace Ytest
     std::string Error::text() const
     {
         std::ostringstream ss;
-        ss << m_File << ":" << m_LineNo << ": ";
+        write_line_no(ss, m_File, m_LineNo);
         if (m_Type == CriticalFailure)
             ss << "CRITICAL ";
         else if (m_Type == FatalFailure)

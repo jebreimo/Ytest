@@ -18,7 +18,7 @@ namespace Ytest
             : m_Count(0)
         {}
 
-        TestScope(const std::string& name)
+        explicit TestScope(const std::string& name)
             : m_Count(1)
         {
             Session::instance().beginTest(name);

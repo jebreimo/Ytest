@@ -18,23 +18,23 @@ namespace Ytest
     public:
         typedef std::function<void()> Func;
 
-        AutoTest(std::string  fileName, Func func,
+        AutoTest(std::string fileName, Func func,
                  const std::string& path = {}) noexcept;
 
-        AutoTest(std::string  fileName, Func func,
+        AutoTest(std::string fileName, Func func,
                  const std::string& path, int priority) noexcept;
 
         ~AutoTest();
 
-        const Func& function() const;
+        [[nodiscard]] const Func& function() const;
 
         void setFunction(const Func& function);
 
-        std::string name() const;
+        [[nodiscard]] std::string name() const;
 
-        const std::vector<std::string>& path() const;
+        [[nodiscard]] const std::vector<std::string>& path() const;
 
-        int priority() const;
+        [[nodiscard]] int priority() const;
     private:
         Func m_Function;
         std::string m_Name;

@@ -8,7 +8,6 @@
 #include "PathFilter.hpp"
 #include <algorithm>
 #include <cassert>
-#include <utility>
 
 namespace Ytest
 {
@@ -139,13 +138,12 @@ namespace Ytest
         bool containsName(const std::vector<std::string>& current,
                           const std::string& name)
         {
-            for (auto it = begin(current); it != end(current); ++it)
+            for (const auto& str : current)
             {
-                if (it->size() < name.size())
+                if (str.size() < name.size())
                     continue;
-                auto its = mismatch(begin(name), end(name), begin(*it));
-                if ((its.first == end(name)) &&
-                    (its.second == end(*it) || *its.second == '/'))
+                auto [beg, end] = mismatch(name.begin(), name.end(), str.begin());
+                if (beg == name.end() && (end == str.end() || *end == '/'))
                 {
                     return true;
                 }
@@ -158,17 +156,17 @@ namespace Ytest
                           std::vector<std::string>& next)
         {
             bool result = false;
-            for (auto it = begin(current); it != end(current); ++it)
+            for (const auto& str : current)
             {
-                if (it->size() < name.size())
+                if (str.size() < name.size())
                     continue;
-                auto its = mismatch(begin(name), end(name), begin(*it));
-                if (its.first != end(name))
+                auto [beg, end] = mismatch(name.begin(), name.end(), str.begin());
+                if (beg != name.end())
                     continue;
-                if (its.second == end(*it))
+                if (end == str.end())
                     result = true;
-                else if (*its.second == '/')
-                    next.emplace_back(std::next(its.second), end(*it));
+                else if (*end == '/')
+                    next.emplace_back(std::next(end), str.end());
             }
             return result;
         }

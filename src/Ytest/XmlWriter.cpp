@@ -39,14 +39,14 @@ namespace Ytest
 
         bool isBadAttributeTextCharacter(char c)
         {
-            return (unsigned char)c < 32 ||
+            return static_cast<unsigned char>(c) < 32 ||
                    c == '<' || c == '>' || c == '"' || c == '&';
         }
 
         bool isBadElementTextCharacter(char c)
         {
-            return ((unsigned char)c < 32 && c != '\t' && c != '\n' &&
-                                             c != '\r') ||
+            return (static_cast<unsigned char>(c) < 32 && c != '\t' && c != '\n' &&
+                    c != '\r') ||
                    c == '<' || c == '>' || c == '&';
         }
 
@@ -79,7 +79,7 @@ namespace Ytest
           m_Stream(&cout)
     {
         m_States.push_back(Text);
-        m_PrevStreamPos = (size_t)cout.tellp();
+        m_PrevStreamPos = static_cast<size_t>(cout.tellp());
     }
 
     XmlWriter::XmlWriter(std::ostream& stream)
@@ -91,7 +91,7 @@ namespace Ytest
     {
         m_States.push_back(Text);
         if (stream)
-            m_PrevStreamPos = (size_t)stream.tellp();
+            m_PrevStreamPos = static_cast<size_t>(stream.tellp());
     }
 
     XmlWriter::XmlWriter(XmlWriter&& rhs) noexcept
@@ -249,9 +249,9 @@ namespace Ytest
         tagContext();
         if (m_States.back() == ElementTag)
         {
-          if (m_FormattingState != FirstAttribute)
-              m_Indentation.pop();
-          m_Stream->write("/>", 2);
+            if (m_FormattingState != FirstAttribute)
+                m_Indentation.pop();
+            m_Stream->write("/>", 2);
         }
         else if (m_States.back() != SpecialTag)
         {
@@ -420,11 +420,11 @@ namespace Ytest
         }
         else
         {
-            m_LinePos += (size_t)m_Stream->tellp() - m_PrevStreamPos +
-                         ystring::count_characters(text);
+            m_LinePos += static_cast<size_t>(m_Stream->tellp()) - m_PrevStreamPos +
+                ystring::count_characters(text);
         }
-        m_Stream->write(text.data(), std::streamsize(text.size()));
-        m_PrevStreamPos = (size_t)m_Stream->tellp();
+        m_Stream->write(text.data(), static_cast<std::streamsize>(text.size()));
+        m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
     }
 
     void XmlWriter::beginComment()
@@ -479,7 +479,7 @@ namespace Ytest
         if (indent)
             indentLine();
         m_LinePos = 0;
-        m_PrevStreamPos = (size_t)m_Stream->tellp();
+        m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
     }
 
     unsigned XmlWriter::formatting() const
@@ -524,7 +524,7 @@ namespace Ytest
     {
         m_FormattingState = AfterIndentation;
         m_LinePos = 0;
-        m_PrevStreamPos = (size_t)m_Stream->tellp();
+        m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
         m_States.clear();
         m_Context.clear();
         m_States.push_back(Text);
@@ -579,7 +579,7 @@ namespace Ytest
 
     size_t XmlWriter::linePos() const
     {
-        return m_LinePos + (size_t)m_Stream->tellp() - m_PrevStreamPos;
+        return m_LinePos + static_cast<size_t>(m_Stream->tellp()) - m_PrevStreamPos;
     }
 
     void XmlWriter::ensureNewline()
@@ -587,13 +587,13 @@ namespace Ytest
         if (m_FormattingState == StartOfLine)
         {
             m_Indentation.write(*m_Stream);
-            m_PrevStreamPos = (size_t)m_Stream->tellp();
+            m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
         }
         else if (m_FormattingState != AfterIndentation)
         {
             *m_Stream << '\n' << m_Indentation;
             m_LinePos = 0;
-            m_PrevStreamPos = (size_t)m_Stream->tellp();
+            m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
         }
     }
 
@@ -612,10 +612,14 @@ namespace Ytest
             {
                 switch (*last)
                 {
-                case '<': m_Stream->write("&lt;", 4); break;
-                case '>': m_Stream->write("&gt;", 4); break;
-                case '"': m_Stream->write("&quot;", 6); break;
-                case '&': m_Stream->write("&amp;", 5); break;
+                case '<': m_Stream->write("&lt;", 4);
+                    break;
+                case '>': m_Stream->write("&gt;", 4);
+                    break;
+                case '"': m_Stream->write("&quot;", 6);
+                    break;
+                case '&': m_Stream->write("&amp;", 5);
+                    break;
                 }
             }
             s = s.substr(pos + 1);
@@ -639,9 +643,12 @@ namespace Ytest
             {
                 switch (*last)
                 {
-                case '<': m_Stream->write("&lt;", 4); break;
-                case '>': m_Stream->write("&gt;", 4); break;
-                case '&': m_Stream->write("&amp;", 5); break;
+                case '<': m_Stream->write("&lt;", 4);
+                    break;
+                case '>': m_Stream->write("&gt;", 4);
+                    break;
+                case '&': m_Stream->write("&amp;", 5);
+                    break;
                 }
             }
             s = s.substr(pos + 1);
@@ -652,9 +659,10 @@ namespace Ytest
 
     void XmlWriter::write(std::string_view s)
     {
-        m_LinePos += (size_t)m_Stream->tellp() - m_PrevStreamPos +
-                     ystring::count_characters(s);
+        m_LinePos += static_cast<size_t>(m_Stream->tellp())
+            - m_PrevStreamPos
+            + ystring::count_characters(s);
         m_Stream->write(s.data(), s.size());
-        m_PrevStreamPos = (size_t)m_Stream->tellp();
+        m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
     }
 }

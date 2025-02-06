@@ -63,8 +63,8 @@ namespace Ytest
     size_t Test::depth() const
     {
         size_t d = 0;
-        for (auto it = begin(m_Tests); it != end(m_Tests); ++it)
-            d = std::max(d, (*it)->depth());
+        for (const auto& test : m_Tests)
+            d = std::max(d, test->depth());
         return d + 1;
     }
 
@@ -95,7 +95,7 @@ namespace Ytest
 
     double Test::elapsedTime() const
     {
-        return double(m_EndTime - m_StartTime) / CLOCKS_PER_SEC;
+        return static_cast<double>(m_EndTime - m_StartTime) / CLOCKS_PER_SEC;
     }
 
     void Test::addTest(const TestPtr& test)
@@ -121,6 +121,6 @@ namespace Ytest
         if (it != end(m_Tests))
             return *it;
         else
-            return TestPtr();
+            return {};
     }
 }

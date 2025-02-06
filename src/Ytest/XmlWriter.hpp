@@ -110,20 +110,20 @@ namespace Ytest
         void indentLine();
         void newline(bool indent = true);
 
-        unsigned formatting() const;
+        [[nodiscard]] unsigned formatting() const;
         void setFormatting(unsigned formatting);
 
-        const std::string& indentation() const;
+        [[nodiscard]] const std::string& indentation() const;
         void setIndentation(const std::string& indentation);
 
-        bool hasStream() const;
-        std::ostream& stream() const;
+        [[nodiscard]] bool hasStream() const;
+        [[nodiscard]] std::ostream& stream() const;
         void setStream(std::ostream& stream);
     private:
         void reset();
         void tagContext();
         void textContext();
-        size_t linePos() const;
+        [[nodiscard]] size_t linePos() const;
         void ensureNewline();
         void writeAttributeSeparator();
         void writeAttributeText(std::string_view s);

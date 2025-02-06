@@ -73,11 +73,11 @@ namespace Ytest
             {
                 os << testName(parents, test) << ": SUCCEEDED WITH WARNINGS\n";
             }
-            for (auto err = begin(errors); err != end(errors); ++err)
+            for (const auto& error : errors)
             {
                 ++counters.errors;
-                os << "    " << *err << "\n";
-                const std::vector<Error>& context = err->context();
+                os << "    " << error << "\n";
+                const std::vector<Error>& context = error.context();
                 if (!context.empty())
                 {
                     os << "    Called from:\n";

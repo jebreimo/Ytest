@@ -34,23 +34,23 @@ namespace Ytest
 
         /** @brief The file where the error occurred.
           */
-        const std::string& file() const;
+        [[nodiscard]] const std::string& file() const;
 
-        Type type() const;
+        [[nodiscard]] Type type() const;
 
-        unsigned lineNo() const;
+        [[nodiscard]] unsigned lineNo() const;
 
-        const std::string& message() const;
+        [[nodiscard]] const std::string& message() const;
 
-        std::string text() const;
+        [[nodiscard]] std::string text() const;
 
         void addContext(const std::string& file,
                         unsigned lineNo,
                         const std::string& message);
 
-        const std::vector<Error>& context() const;
+        [[nodiscard]] const std::vector<Error>& context() const;
 
-        static const char* levelName(Type level);
+        [[nodiscard]] static const char* levelName(Type level);
     private:
         std::string m_File;
         Type m_Type;
