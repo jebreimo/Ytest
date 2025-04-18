@@ -12,23 +12,23 @@ namespace Ytest
 {
     std::ostream& operator<<(std::ostream& os, const std::wstring& s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             s,
-            Yconvert::Encoding::WCHAR_NATIVE,
+            Yconvert::Encoding::WSTRING_NATIVE,
             Yconvert::Encoding::UTF_8);
     }
 
     std::ostream& operator<<(std::ostream& os, const wchar_t* s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             std::basic_string_view(s),
-            Yconvert::Encoding::WCHAR_NATIVE,
+            Yconvert::Encoding::WSTRING_NATIVE,
             Yconvert::Encoding::UTF_8);
     }
 
     std::ostream& operator<<(std::ostream& os, const std::u16string& s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             s,
             Yconvert::Encoding::UTF_16_NATIVE,
             Yconvert::Encoding::UTF_8);
@@ -36,7 +36,7 @@ namespace Ytest
 
     std::ostream& operator<<(std::ostream& os, const char16_t* s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             std::basic_string_view(s),
             Yconvert::Encoding::UTF_16_NATIVE,
             Yconvert::Encoding::UTF_8);
@@ -44,7 +44,7 @@ namespace Ytest
 
     std::ostream& operator<<(std::ostream& os, const std::u32string& s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             s,
             Yconvert::Encoding::UTF_32_NATIVE,
             Yconvert::Encoding::UTF_8);
@@ -52,7 +52,7 @@ namespace Ytest
 
     std::ostream& operator<<(std::ostream& os, const char32_t* s)
     {
-        return os << Yconvert::convertTo<std::string>(
+        return os << Yconvert::convert_to<std::string>(
             std::basic_string_view(s),
             Yconvert::Encoding::UTF_32_NATIVE,
             Yconvert::Encoding::UTF_8);

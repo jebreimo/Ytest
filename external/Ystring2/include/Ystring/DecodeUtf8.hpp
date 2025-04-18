@@ -10,8 +10,10 @@
 #include <cstdint>
 #include <iterator>
 #include <limits>
+#include <optional>
+#include <string>
 #include <tuple>
-#include "CodePointConstants.hpp"
+#include "CodepointConstants.hpp"
 #include "YstringException.hpp"
 
 /** @file
@@ -21,6 +23,7 @@
 namespace ystring
 {
     template <typename BiIt>
+    [[nodiscard]]
     char32_t decode_next(BiIt& it, BiIt end)
     {
         if (it == end)
@@ -77,6 +80,7 @@ namespace ystring
     }
 
     template <typename BiIt>
+    [[nodiscard]]
     char32_t decode_prev(BiIt begin, BiIt& it)
     {
         if (it == begin)

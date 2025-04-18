@@ -364,7 +364,7 @@ namespace Ytest
         write(start);
         m_Context.push_back(std::move(end));
 
-        if (ystring::is_alpha_numeric(ystring::get_code_point(start, -1).second))
+        if (ystring::is_alpha_numeric(ystring::get_codepoint(start, -1).second))
         {
             m_FormattingState = FirstAttribute;
         }
@@ -414,14 +414,14 @@ namespace Ytest
         if (startOfLine != std::string::npos)
         {
             auto lastLine = text.substr(startOfLine + 1);
-            m_LinePos = ystring::count_characters(lastLine);
+            m_LinePos = ystring::count_chars(lastLine);
             if (lastLine.empty())
                 m_FormattingState = StartOfLine;
         }
         else
         {
             m_LinePos += static_cast<size_t>(m_Stream->tellp()) - m_PrevStreamPos +
-                ystring::count_characters(text);
+                ystring::count_chars(text);
         }
         m_Stream->write(text.data(), static_cast<std::streamsize>(text.size()));
         m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
@@ -661,7 +661,7 @@ namespace Ytest
     {
         m_LinePos += static_cast<size_t>(m_Stream->tellp())
             - m_PrevStreamPos
-            + ystring::count_characters(s);
+            + ystring::count_chars(s);
         m_Stream->write(s.data(), s.size());
         m_PrevStreamPos = static_cast<size_t>(m_Stream->tellp());
     }

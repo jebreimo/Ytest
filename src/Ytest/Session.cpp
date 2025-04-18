@@ -214,7 +214,7 @@ namespace Ytest
                 writeVisualStudioReport(func, session);
             func(std::cout, session);
         }
-        else if (ystring::case_insensitive_ends_with(fileName, fileNameExtension))
+        else if (ystring::case_insensitive::ends_with(fileName, fileNameExtension))
         {
             writeFileReport(func, fileName, session);
         }
