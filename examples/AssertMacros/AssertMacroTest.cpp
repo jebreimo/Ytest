@@ -172,6 +172,14 @@ namespace
         Y_EQUAL(s, L"Foozball");
     }
 
+    void charTypes()
+    {
+        Y_EQUAL(wchar_t('F'), wchar_t('F'));
+        Y_EQUAL(char8_t('F'), char8_t('F'));
+        Y_EQUAL(char16_t('F'), char16_t('F'));
+        Y_EQUAL(char32_t('F'), char32_t('F'));
+    }
+
     Y_TEST(throwsSuccessful,
            throwsUnsuccessful,
            assertSuccessful,
@@ -193,6 +201,7 @@ namespace
            subUnsuccessful,
            stringTypes_u16,
            stringTypes_u32,
-           stringTypes_w);
+           stringTypes_w,
+           charTypes);
 
 }
