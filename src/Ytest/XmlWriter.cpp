@@ -13,7 +13,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "Ystring/Algorithms.hpp"
-#include "Ystring/CodePointPredicates.hpp"
+#include "Ystring/CodepointPredicates.hpp"
 
 #define PRECONDITION(cond, msg) \
     if (!(cond)) \
