@@ -12,6 +12,7 @@
 #include <cwchar>
 #include <sstream>
 #include <string>
+#include "Formatters.hpp"
 
 namespace Ytest
 {

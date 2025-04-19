@@ -180,6 +180,11 @@ namespace
         Y_EQUAL(char32_t('F'), char32_t('F'));
     }
 
+    void charRanges()
+    {
+        Y_EQUAL_RANGES(std::u16string_view(u"ABCD"), std::u16string(u"ABCW"));
+    }
+
     Y_TEST(throwsSuccessful,
            throwsUnsuccessful,
            assertSuccessful,
@@ -202,6 +207,6 @@ namespace
            stringTypes_u16,
            stringTypes_u32,
            stringTypes_w,
-           charTypes);
-
+           charTypes,
+           charRanges);
 }
